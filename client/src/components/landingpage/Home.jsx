@@ -86,10 +86,10 @@ const Home = () => {
       
         
         <ul className="flex list-none gap-8 m-0 p-0 ">
-          <li><a href="#about" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">About</a></li>
-          <li><a href="#work" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Work</a></li>
-          <li><a href="#news" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">News</a></li>
-          <li><a href="#contact" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Contact</a></li>
+          <li><a href="/about" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">About</a></li>
+          <li><a href="/work" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Work</a></li>
+          <li><a href="/news" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">News</a></li>
+          <li><a href="/contact" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Contact</a></li>
         </ul>
       </footer>
 
