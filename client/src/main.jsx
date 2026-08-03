@@ -1,13 +1,10 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
     <App />
-  </StrictMode>,
-)
-{/* <div class="splash-gradient"></div> */}
-// https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/media/WhatLasts_Final_231117_1_3P60UBB.mp4
-// https://s3.amazonaws.com/bluechalk-prod-app/static/img/logosplash_fallback.png
+  </BrowserRouter>
+);
