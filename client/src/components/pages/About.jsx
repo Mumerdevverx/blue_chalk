@@ -19,6 +19,10 @@ import logoThree from "../../assets/about/aboutlogo/logoThree.jpg";
 import logoFour from "../../assets/about/aboutlogo/logoFour.jpg";
 import logoFive from "../../assets/about/aboutlogo/logoFive.jpg";
 
+import awardOne from "../../assets/about/award/awardOne.jpg";
+import awardTwo from "../../assets/about/award/awardTwo.jpg";
+import awardThree from "../../assets/about/award/awardThree.jpg";
+
 const About = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -42,6 +46,21 @@ const About = () => {
     logoFour,
     logoFive,
   ];
+
+const awards = [
+  {
+    title: "Addy Awards",
+    image: awardOne,
+  },
+  {
+    title: "Davey Awards",
+    image: awardTwo,
+  },
+  {
+    title: "Northwest Regional Emmys",
+    image: awardThree,
+  },
+];
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -288,6 +307,67 @@ const About = () => {
 </div>
 
       </section>
+        
+        <section className="w-full max-w-[1155px] mx-auto mt-[40px]">
+  <h2 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[30px]">
+    Awards
+  </h2>
+
+  <p className="text-[17px] leading-[1.65] text-[#152B3D] mb-[35px]">
+    Blue Chalk Media has been honored with numerous awards including:
+  </p>
+
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-[50px]">
+    {awards.map((award, index) => (
+      <div
+        key={index}
+        className="border-t border-[#D9D9D9] pt-[10px] flex items-center justify-between min-h-[70px]"
+      >
+        <h3 className="text-[17px] md:text-[18px] font-semibold text-[#0089D0] hover:underline underline-offset-2">
+          {award.title}
+        </h3>
+
+        <img
+          src={award.image}
+          alt={award.title}
+          className="w-[55px] h-[55px] object-contain"
+        />
+      </div>
+    ))}
+  </div>
+</section>
+
+<section className="w-full max-w-[1155px] mx-auto mt-[40px] pb-[60px]">
+  {/* Heading */}
+  <h2 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[75px]">
+    Careers
+  </h2>
+
+  {/* First Paragraph */}
+  <p className="max-w-[550px] text-[16px] md:text-[17px] leading-[1.4] text-[#8C9BA8] mb-[45px]">
+    We're always looking to work with people who share our values—people
+    who are both talented individuals and excellent collaborators. If you don't
+    see a job listing below that suits your skill set, please fill out our{" "}
+    <a
+      href="#"
+      className="text-[#0089D0] hover:underline underline-offset-2"
+    >
+      creative partners interest form
+    </a>{" "}
+    to let us know more about your background and skills. And don't forget to
+    follow us on social media to be the first to know about job new openings.
+  </p>
+
+  {/* Second Paragraph */}
+  <p className="max-w-[550px] text-[16px] md:text-[17px] leading-[1.4] text-[#8C9BA8]">
+    Blue Chalk Media is an equal opportunity employer committed to an
+    inclusive workplace. We do not tolerate sexual harassment or discrimination
+    based on race, color, religion, gender identity, age, national origin,
+    veteran status or disability. We believe that our differences make us
+    stronger and that working together with respect for each individual is
+    essential to the success of our company as a whole.
+  </p>
+</section>
 
     </div>
   );
