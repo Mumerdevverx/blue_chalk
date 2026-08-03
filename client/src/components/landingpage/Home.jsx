@@ -82,34 +82,34 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <footer className="flex justify-between items-center px-[60px] py-6 bg-white backdrop-blur-sm fixed bottom-0 left-0 right-0 z-[1000] border-t border-white/5 ">
+      <footer className="flex justify-between items-center px-[60px]  pb-4 fixed bottom-0   border-t border-white/5 ">
       
         
         <ul className="flex list-none gap-8 m-0 p-0 ">
-          <li><a href="#about" className="text-black no-underline text-xl font-light tracking-[1px] hover:text-blue-400 transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">About</a></li>
-          <li><a href="#work" className="text-black no-underline text-xl font-light tracking-[1px] hover:text-blue-400 transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Work</a></li>
-          <li><a href="#news" className="text-black no-underline text-xl font-light tracking-[1px] hover:text-blue-400 transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">News</a></li>
-          <li><a href="#contact" className="text-black no-underline text-xl font-light tracking-[1px] hover:text-blue-400 transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Contact</a></li>
+          <li><a href="#about" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">About</a></li>
+          <li><a href="#work" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Work</a></li>
+          <li><a href="#news" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">News</a></li>
+          <li><a href="#contact" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Contact</a></li>
         </ul>
       </footer>
 
       {/* Hero Section - VIDEO ON FULL LEFT SIDE AT TOP */}
-      <section className=" min-h-screen flex items-start max-[768px]:pt-[120px] max-[768px]:pb-10">
+      <section className=" min-h-screen flex items-start ">
         <div className="max-w-[1200px] w-full">
           
           {/* Video - Full width on left, positioned at top */}
-          <div className="relative w-full max-w-[1000px]  overflow-hidden bg-[#1a1a1a] aspect-video">
-            <video 
-              ref={videoRef}
-              className="w-full h-full object-cover"
-              src={heroVideo}
-              poster={imgOne}
-              muted
-              loop
-              playsInline
-              autoPlay
-            />
-          </div>
+          <div className="relative w-full max-w-[976px] h-[565px] overflow-hidden bg-[#1a1a1a]">
+  <video
+    ref={videoRef}
+    className="w-full h-full object-cover"
+    src={heroVideo}
+    poster={imgOne}
+    muted
+    loop
+    playsInline
+    autoPlay
+  />
+</div>
         </div>
       </section>
 
