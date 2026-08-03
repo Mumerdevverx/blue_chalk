@@ -101,7 +101,7 @@ const About = () => {
       <section className="w-full max-w-[1155px] mx-auto mt-[70px]">
 
         {/* ================= ABOUT US ================= */}
-        <h1 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[30px]">
+        <h1 className="text-[35px] md:text-[40px] font-normal text-[#152B3D] mb-[30px]">
           About Us
         </h1>
 
