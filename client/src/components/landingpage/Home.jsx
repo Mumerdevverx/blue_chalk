@@ -1,42 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
-
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 // Import assets
-import heroVideo from '../../assets/landingimg/herovideo.mp4';
-import bluechalkIcon from '../../assets/landingimg/bluechalk.avif';
+import heroVideo from "../../assets/landingimg/herovideo.mp4";
+import bluechalk from "../../assets/landingimg/bluechalk.avif";
 
-import imgOne from '../../assets/landingimg/one.avif';
-import imgTwo from '../../assets/landingimg/two.avif';
-import imgThree from '../../assets/landingimg/three.avif';
-import imgFour from '../../assets/landingimg/four.avif';
-import imgFive from '../../assets/landingimg/five.avif';
-import imgSix from '../../assets/landingimg/six.avif';
-import imgSeven from '../../assets/landingimg/seven.avif';
-import imgEight from '../../assets/landingimg/eight.avif';
-import imgNine from '../../assets/landingimg/nine.avif';
+import imgOne from "../../assets/landingimg/one.avif";
+import imgTwo from "../../assets/landingimg/two.avif";
+import imgThree from "../../assets/landingimg/three.avif";
+import imgFour from "../../assets/landingimg/four.avif";
+import imgFive from "../../assets/landingimg/five.avif";
+import imgSix from "../../assets/landingimg/six.avif";
+import imgSeven from "../../assets/landingimg/seven.avif";
+import imgEight from "../../assets/landingimg/eight.avif";
+import imgNine from "../../assets/landingimg/nine.avif";
+import { FiPlus } from "react-icons/fi";
 
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVideoHovered, setIsVideoHovered] = useState(false);
+  const [isSliderHovered, setIsSliderHovered] = useState(false);
   const videoRef = useRef(null);
 
   const galleryImages = [
-    { id: 1, src: imgOne, alt: 'Gallery 1' },
-    { id: 2, src: imgTwo, alt: 'Gallery 2' },
-    { id: 3, src: imgThree, alt: 'Gallery 3' },
-    { id: 4, src: imgFour, alt: 'Gallery 4' },
-    { id: 5, src: imgFive, alt: 'Gallery 5' },
-    { id: 6, src: imgSix, alt: 'Gallery 6' },
-    { id: 7, src: imgSeven, alt: 'Gallery 7' },
-    { id: 8, src: imgEight, alt: 'Gallery 8' },
-    { id: 9, src: imgNine, alt: 'Gallery 9' },
+    { id: 1, src: imgOne, alt: "Gallery 1" },
+    { id: 2, src: imgTwo, alt: "Gallery 2" },
+    { id: 3, src: imgThree, alt: "Gallery 3" },
+    { id: 4, src: imgFour, alt: "Gallery 4" },
+    { id: 5, src: imgFive, alt: "Gallery 5" },
+    { id: 6, src: imgSix, alt: "Gallery 6" },
+    { id: 7, src: imgSeven, alt: "Gallery 7" },
+    { id: 8, src: imgEight, alt: "Gallery 8" },
+    { id: 9, src: imgNine, alt: "Gallery 9" },
   ];
 
-  // Auto-slide images every 3 seconds (Right Side)
+  // Auto-slide images every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => 
-        prevIndex === galleryImages.length - 1 ? 0 : prevIndex + 1
+      setCurrentIndex((prevIndex) =>
+        prevIndex === galleryImages.length - 1 ? 0 : prevIndex + 1,
       );
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [galleryImages.length]);
@@ -52,7 +55,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white ">
+    <div className="min-h-screen bg-white font-['Helvetica_Neue',Arial,sans-serif]">
       
       {/* --- RIGHT SIDE: SLIDER + TEXT --- */}
       <div className="fixed top-[100px] right-[30px] w-[300px] z-[999]  flex flex-col gap-4">
@@ -113,6 +116,43 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Footer Navigation - Fully Responsive */}
+      <footer className="fixed bottom-4 md:bottom-4 lg:bottom-4 left-4 sm:left-8 md:left-15 right-4 sm:right-8 md:right-15 flex justify-center sm:justify-between items-center pt-4">
+        <ul className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-28 lg:pl-10 m-0 p-0">
+          <li>
+            <Link
+            to="/about"
+              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+            >
+              About
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/work"
+              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+            >
+              Work
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/news"
+              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+            >
+              News
+            </Link>
+          </li>
+          <li>
+             <Link
+            to="/about"
+              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+            >
+              Contact
+            </Link>
+          </li>
+        </ul>
+      </footer>
     </div>
   );
 };
