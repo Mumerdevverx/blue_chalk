@@ -1,13 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logonav from "../../assets/logonav.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  const getLinkClass = (path) =>
+    `text-[16px] lg:text-[17px] font-normal transition-colors ${
+      location.pathname === path
+        ? "text-black"
+        : "text-[#0089D0] hover:text-[#006fae]"
+    }`;
 
   return (
     <nav className="relative w-full bg-white">
@@ -22,35 +30,25 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Desktop / Tablet Navigation */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center ml-[70px] lg:ml-[120px] xl:ml-[160px] gap-[35px] lg:gap-[55px]">
-          <Link
-            to="/about"
-            className="text-[16px] lg:text-[17px] text-[#0089D0] font-normal hover:text-[#006fae] transition-colors"
-          >
+
+          <Link to="/about" className={getLinkClass("/about")}>
             About
           </Link>
 
-          <Link
-            to="/work"
-            className="text-[16px] lg:text-[17px] text-[#0089D0] font-normal hover:text-[#006fae] transition-colors"
-          >
+          <Link to="/work" className={getLinkClass("/work")}>
             Work
           </Link>
 
-          <Link
-            to="/news"
-            className="text-[16px] lg:text-[17px] text-black font-normal hover:text-[#0089D0] transition-colors"
-          >
+          <Link to="/news" className={getLinkClass("/news")}>
             News
           </Link>
 
-          <Link
-            to="/contact"
-            className="text-[16px] lg:text-[17px] text-[#0089D0] font-normal hover:text-[#006fae] transition-colors"
-          >
+          <Link to="/contact" className={getLinkClass("/contact")}>
             Contact
           </Link>
+
         </div>
 
         {/* Mobile Menu Button */}
@@ -78,7 +76,11 @@ const Navbar = () => {
           <Link
             to="/about"
             onClick={closeMenu}
-            className="py-3 text-[17px] text-[#0089D0] border-b border-gray-100"
+            className={`py-3 text-[17px] border-b border-gray-100 ${
+              location.pathname === "/about"
+                ? "text-black"
+                : "text-[#0089D0]"
+            }`}
           >
             About
           </Link>
@@ -86,7 +88,11 @@ const Navbar = () => {
           <Link
             to="/work"
             onClick={closeMenu}
-            className="py-3 text-[17px] text-[#0089D0] border-b border-gray-100"
+            className={`py-3 text-[17px] border-b border-gray-100 ${
+              location.pathname === "/work"
+                ? "text-black"
+                : "text-[#0089D0]"
+            }`}
           >
             Work
           </Link>
@@ -94,7 +100,11 @@ const Navbar = () => {
           <Link
             to="/news"
             onClick={closeMenu}
-            className="py-3 text-[17px] text-black border-b border-gray-100"
+            className={`py-3 text-[17px] border-b border-gray-100 ${
+              location.pathname === "/news"
+                ? "text-black"
+                : "text-[#0089D0]"
+            }`}
           >
             News
           </Link>
@@ -102,7 +112,11 @@ const Navbar = () => {
           <Link
             to="/contact"
             onClick={closeMenu}
-            className="py-3 text-[17px] text-[#0089D0]"
+            className={`py-3 text-[17px] ${
+              location.pathname === "/contact"
+                ? "text-black"
+                : "text-[#0089D0]"
+            }`}
           >
             Contact
           </Link>

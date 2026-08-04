@@ -23,6 +23,9 @@ import awardOne from "../../assets/about/award/awardOne.jpg";
 import awardTwo from "../../assets/about/award/awardTwo.jpg";
 import awardThree from "../../assets/about/award/awardThree.jpg";
 
+import teamOne from "../../assets/about/team/teamOne.jpg";
+import teamOnes from "../../assets/about/team/teamOnes.jpg";
+
 const About = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -61,6 +64,10 @@ const awards = [
     image: awardThree,
   },
 ];
+
+const [isSelected, setIsSelected] = useState(false);
+
+
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -120,10 +127,9 @@ const awards = [
       <section className="w-full max-w-[1155px] mx-auto mt-[70px]">
 
         {/* ================= ABOUT US ================= */}
-        <h1 className="text-[35px] md:text-[40px] font-normal text-[#152B3D] mb-[30px]">
-          About Us
-        </h1>
-
+      <h1 className="font-bgw-400 text-[36px] leading-[43px] text-[#293339] mb-[30px]">
+  About Us
+</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[80px]">
 
           {/* Left Column */}
@@ -182,15 +188,15 @@ const awards = [
         {/* ================= ON ASSIGNMENT ================= */}
         <div className="mt-[85px]">
 
-          <h2 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[25px]">
+          <h2 className="text-[36px] leading-[43px] md:text-[40px] font-bgw-400 text-[#152B3D] mb-[25px]">
             Blue Chalk On Assignment
           </h2>
 
-          <p className="text-[17px] leading-[1.65] text-[#152B3D]">
+          <p className="text-[17px] leading-[1.65] text-[#152B3D] font-bgw-400">
             From Asia to Europe—scroll through some of the images we’ve
           </p>
 
-          <p className="text-[17px] leading-[1.65] text-[#152B3D]">
+          <p className="text-[17px] leading-[1.65] text-[#152B3D] font-bgw-400">
             captured while on assignment around the world.
           </p>
 
@@ -334,6 +340,72 @@ const awards = [
         />
       </div>
     ))}
+  </div>
+</section>
+
+
+
+{/* ================= MEET THE TEAM ================= */}
+<section className="w-full max-w-[1155px] mx-auto py-[60px]">
+  <h2 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[50px]">
+    Meet the Team
+  </h2>
+
+  <div className="flex justify-center">
+    <div className="w-full max-w-[330px] text-center">
+
+      {/* Image */}
+      <div
+        onClick={() => setIsSelected(!isSelected)}
+        className="group relative w-[260px] h-[260px] mx-auto rounded-full overflow-hidden cursor-pointer"
+      >
+        {/* Default Image */}
+        <img
+          src={teamOne}
+          alt="Greg Moyer"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+        />
+
+        {/* Hover Image */}
+        <img
+          src={teamOnes}
+          alt="Greg Moyer"
+          className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
+      </div>
+
+      {/* Name */}
+      <h3 className="mt-[25px] text-[23px] md:text-[24px] text-[#0089D0] font-normal">
+        Greg Moyer (He/Him)
+      </h3>
+
+      {/* Position */}
+      <p className="mt-[3px] text-[11px] tracking-[3px] text-[#152B3D]">
+        FOUNDER AND CEO
+      </p>
+
+      {/* Details - Show on Click */}
+      {isSelected && (
+        <div className="mt-[30px] text-left">
+          <p className="text-[17px] leading-[1.65] text-[#152B3D]">
+            Greg Moyer founded Blue Chalk Media in 2013 intending to create a
+            world-class visual communications company whose productions
+            demonstrate the power, importance, and appeal of documentary-style
+            storytelling. Hundreds of films and awards later, Blue Chalk has
+            become known for its cinematic production style and journalistic
+            approach to stories, a reflection of Greg’s early love for visual
+            journalism as an aspiring photographer and newspaper photo editor.
+            Prior to Blue Chalk, Greg spent over 25 years in senior management
+            roles for a variety of non-fiction television brands, including
+            Discovery Channel, TLC, Animal Planet, VOOM HD and Food Network.
+            While head of programming, Greg led Discovery to five George
+            Foster Peabody Awards for editorial excellence. In his final role
+            as a television channel executive, Greg managed the launch of the
+            Food Network into 63 countries outside North America.
+          </p>
+        </div>
+      )}
+    </div>
   </div>
 </section>
 

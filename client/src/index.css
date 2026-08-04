@@ -1,0 +1,101 @@
+/* ===========================
+   Basis Grotesque Web Font Setup
+=========================== */
+
+@font-face {
+  font-family: "Basis Grotesque Web";
+  src: url("./fonts/BasisGrotesque-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Basis Grotesque Web";
+  src: url("./fonts/BasisGrotesque-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Basis Grotesque Web";
+  src: url("./fonts/BasisGrotesque-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Basis Grotesque Web";
+  src: url("./fonts/BasisGrotesque-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Basis Grotesque Web";
+  src: url("./fonts/BasisGrotesque-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Basis Grotesque Web";
+  src: url("./fonts/BasisGrotesque-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* html {
+  font-family: "Basis Grotesque Web", " Basis Grotesque Web Neue",  Basis Grotesque Web, ;
+  font-synthesis: none;
+} */
+
+body {
+  margin: 0;
+  min-height: 100%;
+  /* font-family: inherit; */
+  /* font-family: "Basis Grotesque Web", "Helvetica Neue", Helvetica, Arial, sans-serif; */
+  font-family: "Basis Grotesque Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+
+/* Utility Classes */
+
+.font-bgw-300,
+.font-bgw-400,
+.font-bgw-500,
+.font-bgw-600,
+.font-bgw-700,
+.font-bgw-800 {
+  /* font-family: "Basis Grotesque Web", " Basis Grotesque Web Neue"  !important; */
+  font-synthesis: none !important;
+}
+
+.font-bgw-300 {
+  font-weight: 300 !important;
+}
+
+.font-bgw-400 {
+  font-weight: 400 !important;
+}
+
+.font-bgw-500 {
+  font-weight: 500 !important;
+}
+
+.font-bgw-600 {
+  font-weight: 600 !important;
+}
+
+.font-bgw-700 {
+  font-weight: 700 !important;
+}
+
+.font-bgw-800 {
+  font-weight: 800 !important;
+}

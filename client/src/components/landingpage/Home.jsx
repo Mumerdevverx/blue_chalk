@@ -52,7 +52,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white font-['Helvetica_Neue',Arial,sans-serif]">
+    <div className="min-h-screen bg-white ">
       
       {/* --- RIGHT SIDE: SLIDER + TEXT --- */}
       <div className="fixed top-[100px] right-[30px] w-[300px] z-[999]  flex flex-col gap-4">
