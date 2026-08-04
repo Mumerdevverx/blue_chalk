@@ -127,7 +127,8 @@ const [isSelected, setIsSelected] = useState(false);
       <section className="w-full max-w-[1155px] mx-auto mt-[70px]">
 
         {/* ================= ABOUT US ================= */}
-      <h1 className="font-bgw-400 text-[36px] leading-[43px] text-[#293339] mb-[30px]">
+   
+<h1 className=" text-[36px] leading-[43px] text-[#293339] mb-[30px]">
   About Us
 </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[80px]">

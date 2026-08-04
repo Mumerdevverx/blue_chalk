@@ -55,7 +55,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white font-['Helvetica_Neue',Arial,sans-serif]">
+    <div className="min-h-screen bg-white font-basis-web">
       
       {/* --- RIGHT SIDE: SLIDER + TEXT --- */}
       <div className="fixed top-[100px] right-[30px] w-[300px] z-[999]  flex flex-col gap-4">
@@ -85,16 +85,7 @@ const Home = () => {
       </div>
 
       {/* Footer */}
-      <footer className="flex justify-between items-center px-[60px]  pb-4 fixed bottom-0   border-t border-white/5 ">
       
-        
-        <ul className="flex list-none gap-8 m-0 p-0 ">
-          <li><a href="/about" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">About</a></li>
-          <li><a href="/work" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Work</a></li>
-          <li><a href="/news" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">News</a></li>
-          <li><a href="/contact" className="text-blue-400 no-underline text-xl font-light tracking-[1px] hover:text-black transition-colors duration-300 max-[768px]:text-xs max-[480px]:text-[11px]">Contact</a></li>
-        </ul>
-      </footer>
 
       {/* Hero Section - VIDEO ON FULL LEFT SIDE AT TOP */}
       <section className=" min-h-screen flex items-start ">
