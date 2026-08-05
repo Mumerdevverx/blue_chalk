@@ -2,7 +2,7 @@ import React from 'react'
 
 const PrivacyPolicy = () => {
   return (
-    <div className="max-w-3xl mt-15 px-23 py-12 font-serif text-gray-800">
+    <div className="max-w-3xl mt-15 px-23 py-12 font-basis-web text-gray-800">
       {/* Main Heading */}
       <h1 className="text-4xl  text-start tracking-wide mb-2">
         Privacy Policy

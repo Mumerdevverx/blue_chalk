@@ -2,7 +2,7 @@ import React from 'react'
 
 const TermsOfUse = () => {
   return (
-    <div className="max-w-3xl  mt-15 px-6 py-12 ml-18 font-serif text-gray-800">
+    <div className="max-w-3xl  mt-15 px-6 py-12 ml-18 font-basis-web text-gray-800">
       {/* Main Heading */}
       <h1 className="text-4xl font-light text-start tracking-wide mb-2">
         Terms of Use
