@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logonav from "../../assets/logonav.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const closeMenu = () => {
     setIsOpen(false);
@@ -18,7 +33,7 @@ const Navbar = () => {
     }`;
 
   return (
-    <nav className="relative w-full bg-white">
+    <nav className="fixed top-0 left-0 w-full bg-white z-50">
       <div className="max-w-[1170px] mx-auto h-[70px] px-5 sm:px-6 lg:px-0 flex items-center">
 
         {/* Logo */}

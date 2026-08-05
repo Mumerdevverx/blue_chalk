@@ -15,7 +15,7 @@ import nine from "../../assets/about/nine.jpg";
 
 // Import components
 import AboutAwards from "./AboutAwards";
-import AboutTeam from "./AboutTeam";
+import AboutPeopleData from "./AboutPeopleData"; // ← Updated import
 import AboutClientLogo from "./AboutClientLogo";
 
 const About = () => {
@@ -204,7 +204,7 @@ const About = () => {
       <AboutAwards />
 
       {/* ================= MEET THE TEAM SECTION ================= */}
-      <AboutTeam />
+      <AboutPeopleData /> {/* ← Updated component name */}
 
       {/* ================= CAREERS ================= */}
       <section className="w-full max-w-[1155px] mx-auto mt-[40px] pb-[60px]">
