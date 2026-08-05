@@ -112,7 +112,7 @@ const AboutPeopleData = () => {
 
                 {/* Details - Shows when clicked */}
                 {selectedIndex === index && (
-                  <div className="mt-4 text-left bg-white p-4 rounded shadow-md">
+                  <div className="mt-4 text-left  p-4 ">
                     <p className="text-[14px] md:text-[16px] leading-[1.65] text-[#152B3D]">
                       {member.description}
                     </p>

@@ -18,12 +18,12 @@ import {
 const Footer = () => {
   return (
     <footer className="w-full bg-[#263238] text-[#bdbdbd]">
-      <div className="max-w-[1170px] ml-20 min-h-[270px] px-6 py-[78px] flex justify-between">
+      <div className="max-w-[1170px]  ml-18 min-h-[270px] px-6 py-[40px] flex justify-between">
         
         {/* Left Side */}
         <div>
           {/* Address */}
-          <div className="text-[16px] leading-[23px] text-[#c5c5c5]">
+          <div className="text-[16px] mt-8  leading-[23px] text-[#C2BBB6]">
             <p>68 Jay Street Suite 201</p>
             <p>Brooklyn, NY 11201</p>
           </div>
@@ -32,7 +32,7 @@ const Footer = () => {
           <div className="flex items-center mt-[32px] gap-3">
            <img src={phone} alt="Phone" className="w-[16px] h-[16px]" />
 
-            <span className="text-[16px] text-[#c5c5c5]">
+            <span className="text-[16px] text-[#C2BBB6]">
               347.410.8445
             </span>
 
@@ -53,24 +53,31 @@ const Footer = () => {
         </div>
 
         {/* Right Side */}
-        <div className="flex flex-col items-start mr-[180px]">
+        <div className="flex flex-col mt-8 items-start mr-[180px]">
           
           {/* Links */}
-          <div className="text-[14px] text-[#777f83]">
-            <a href="/privacy-policy" className="hover:text-white">
-              Privacy Policy
-            </a>
 
-            <span className="mx-2">|</span>
+<div className="text-[14px] text-[#777f83]">
+  <a
+    href="/privacy-policy"
+    className="hover:text-[#4d8baa] hover:underline"
+  >
+    Privacy Policy
+  </a>
 
-            <a href="/terms-of-use" className="hover:text-white">
-              Terms of Use
-            </a>
+  <span className="mx-2">|</span>
 
-            <span className="mx-2">|</span>
+  <a
+    href="/terms-of-use"
+    className="hover:text-[#4d8baa] hover:underline"
+  >
+    Terms of Use
+  </a>
 
-            <span>© 2026 Blue Chalk Media</span>
-          </div>
+  <span className="mx-2">|</span>
+
+  <span>© 2026 Blue Chalk Media</span>
+</div>
 
           {/* Social Icons */}
         
