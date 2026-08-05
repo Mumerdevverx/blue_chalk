@@ -14,13 +14,13 @@ const PrivacyPolicy = () => {
       </h2>
       
       {/* Last Updated */}
-      <p className="text-start text-gray-500 text-sm mt-4 italic mb-12">
+      <p className="text-start text-gray-500 text-[15px] mt-4 italic mb-12">
         Last Updated on November 17, 2013
       </p>
 
       {/* Section 1 */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
           1. Introduction
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">
@@ -33,7 +33,7 @@ const PrivacyPolicy = () => {
 
       {/* Section 2 */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
           2. Personal Information
         </h3>
         <p className="text-gray-700 leading-relaxed">
@@ -43,7 +43,7 @@ const PrivacyPolicy = () => {
 
       {/* Section 3 */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
           3. Uses of Information
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">
@@ -61,7 +61,7 @@ const PrivacyPolicy = () => {
 
       {/* Section 4 */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
           4. Tracking Software and Cookies
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">
@@ -85,7 +85,7 @@ const PrivacyPolicy = () => {
 
       {/* Section 5 */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
           5. Disclosure of Information
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">

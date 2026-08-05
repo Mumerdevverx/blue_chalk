@@ -2,25 +2,25 @@ import React from 'react'
 
 const TermsOfUse = () => {
   return (
-    <div className="max-w-3xl  mt-15 px-6 py-12 ml-18 font-basis-web text-gray-800">
+    <div className="max-w-3xl  mt-15 px-6 py-12 ml-18 font-basis-web ">
       {/* Main Heading */}
-      <h1 className="text-4xl font-light text-start tracking-wide mb-2">
+      <h1 className="text-4xl  text-start tracking-wide mb-2">
         Terms of Use
       </h1>
       
       {/* Subheading */}
-      <h2 className="text-xl font-medium text-start mt-8 text-gray-700 mb-1">
+      <h2 className="text-[19px] font-semibold text-start mt-8 text-[#293339] mb-1">
         BLUE CHALK MEDIA LLC – TERMS OF USE
       </h2>
       
       {/* Last Updated */}
-      <p className="text-start text-gray-500 text-sm mt-4 italic mb-12">
+      <p className="text-start text-gray-500 text-[16px] mt-4 italic mb-12">
         Last Updated on November 17, 2013
       </p>
 
       {/* GENERAL PROVISIONS/ACCEPTANCE */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-[16px font-semibold text-gray-900 mb-4">
           GENERAL PROVISIONS/ACCEPTANCE
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">
@@ -44,7 +44,7 @@ const TermsOfUse = () => {
 
       {/* USE OF SITE CONTENT */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-[16px font-semibold text-gray-900 mb-4">
           USE OF SITE CONTENT
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">
@@ -60,7 +60,7 @@ const TermsOfUse = () => {
 
       {/* THIRD PARTY WEBSITES */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-[16px font-semibold text-gray-900 mb-4">
           THIRD PARTY WEBSITES
         </h3>
         <p className="text-gray-700 leading-relaxed">
@@ -70,7 +70,7 @@ const TermsOfUse = () => {
 
       {/* PROTECTING YOUR PRIVACY */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-[16px font-semibold text-gray-900 mb-4">
           PROTECTING YOUR PRIVACY
         </h3>
         <p className="text-gray-700 leading-relaxed">
@@ -87,7 +87,7 @@ const TermsOfUse = () => {
 
       {/* LIMITATION OF LIABILITY */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-[16px font-semibold text-gray-900 mb-4">
           LIMITATION OF LIABILITY
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">
@@ -97,7 +97,7 @@ const TermsOfUse = () => {
 
       {/* GOVERNING LAW */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-[16px font-semibold text-gray-900 mb-4">
           GOVERNING LAW
         </h3>
         <p className="text-gray-700 leading-relaxed mb-4">
@@ -110,7 +110,7 @@ const TermsOfUse = () => {
 
       {/* CHANGES TO TERMS OF USE */}
       <section className="mb-10">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <h3 className="text-[16px font-semibold text-gray-900 mb-4">
           CHANGES TO TERMS OF USE
         </h3>
         <p className="text-gray-700 leading-relaxed">
