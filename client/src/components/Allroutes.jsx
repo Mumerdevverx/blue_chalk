@@ -9,6 +9,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import News from "./pages/News";
 import Work from "./pages/Works";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfUse from "./pages/TermsOfUse";
 
 const Allroutes = () => {
   return (
@@ -27,6 +29,11 @@ const Allroutes = () => {
         <Route path="/news" element={<News />} />
 
         <Route path="/contact" element={<Contact />} />
+
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
+        <Route path="/terms-of-use" element={<TermsOfUse />} />
+        
 
       </Route>
 
