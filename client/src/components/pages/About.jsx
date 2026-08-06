@@ -89,7 +89,7 @@ const About = () => {
   };
 
   return (
-    <div className="w-full pt-[70px]">
+    <div className="w-full pt-[70px] px-4 sm:px-6 md:px-5 lg:px-0.5 ">
 
       {/* ================= VIDEO ================= */}
       <div className="w-full flex items-center justify-center">
@@ -122,7 +122,7 @@ const About = () => {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="group">
                 <svg
-                  className="w-[100px] h-[100px] text-white group-hover:text-blue-500 transition-colors duration-300"
+                  className="w-[60px] h-[60px] sm:w-[80px] sm:h-[80px] md:w-[100px] md:h-[100px] text-white group-hover:text-blue-500 transition-colors duration-300"
                   viewBox="0 0 32 32"
                   fill="currentColor"
                 >
@@ -135,23 +135,23 @@ const About = () => {
       </div>
 
       {/* ================= ABOUT CONTENT ================= */}
-      <section className="w-full max-w-[1155px] mx-auto mt-[70px]">
+      <section className="w-full max-w-[1155px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[70px]">
 
         {/* ================= ABOUT US ================= */}
-        <h1 className="text-[36px] leading-[43px] text-[#293339] mb-[30px]">
+        <h1 className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[30px]">
           About Us
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[80px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[20px] md:gap-y-0 md:gap-x-[80px]">
 
           {/* Left Column */}
-          <div className="text-[17px] leading-[1.65] text-[#152B3D]">
-            <p className="mb-[28px]">
+          <div className="text-[15px] sm:text-[16px] md:text-[17px] leading-[1.65] text-[#152B3D]">
+            <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
               Blue Chalk Media is an award-winning, full-service production
               company and creative agency widely recognized for our
               signature cinematic nonfiction style and authentic expression
               of the human experience.
             </p>
-            <p className="mb-[28px]">
+            <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
               We serve clients all over the world in industries ranging from
               branded entertainment to advocacy and corporate storytelling.
             </p>
@@ -162,12 +162,12 @@ const About = () => {
           </div>
 
           {/* Right Column */}
-          <div className="text-[17px] leading-[1.65] text-[#152B3D]">
-            <p className="mb-[28px]">
+          <div className="text-[15px] sm:text-[16px] md:text-[17px] leading-[1.65] text-[#152B3D]">
+            <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
               including television networks, advertising agencies, healthcare
               organizations, nonprofits and editorial thought leaders.
             </p>
-            <p className="mb-[28px]">
+            <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
               We've also produced impactful documentary films that have been
               official selections at over 50 international film festivals,
               solidifying our reputation as a premier creator of high-impact
@@ -189,31 +189,32 @@ const About = () => {
         </div>
 
         {/* ================= ON ASSIGNMENT ================= */}
-        <div className="mt-[85px]">
-          <h2 className="text-[36px] leading-[43px] md:text-[40px] font-bgw-400 text-[#152B3D] mb-[25px]">
+        <div className="mt-[50px] sm:mt-[65px] md:mt-[85px]">
+          <h2 className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:text-[40px] font-bgw-400 text-[#152B3D] mb-[15px] sm:mb-[20px] md:mb-[25px]">
             Blue Chalk On Assignment
           </h2>
-          <p className="text-[17px] leading-[1.65] text-[#152B3D] font-bgw-400">
+          <p className="text-[15px] sm:text-[16px] md:text-[17px] leading-[1.65] text-[#152B3D] font-bgw-400">
             From Asia to Europe—scroll through some of the images we've
           </p>
-          <p className="text-[17px] leading-[1.65] text-[#152B3D] font-bgw-400">
+          <p className="text-[15px] sm:text-[16px] md:text-[17px] leading-[1.65] text-[#152B3D] font-bgw-400">
             captured while on assignment around the world.
           </p>
         </div>
       </section>
 
       {/* ================= 9 IMAGE GALLERY ================= */}
-      <div className="w-full mt-[50px] overflow-hidden">
-        <div className="flex w-full h-[380px]">
+      <div className="w-full mt-[30px] sm:mt-[40px] md:mt-[50px] overflow-hidden">
+        <div className="flex flex-wrap sm:flex-nowrap w-full h-[200px] sm:h-[280px] md:h-[380px]">
           {images.map((image, index) => (
             <div
               key={index}
-              className="relative h-full flex-1 min-w-0 overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:flex-[4]"
+              className="relative h-full flex-1 min-w-[50px] sm:min-w-0 overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:flex-[4]"
             >
               <img
                 src={image}
                 alt={`Assignment ${index + 1}`}
                 className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                loading="lazy"
               />
             </div>
           ))}
@@ -221,45 +222,45 @@ const About = () => {
       </div>
 
       {/* ================= SERVICES ================= */}
-      <section className="w-full max-w-[1155px] mx-auto mt-[80px]">
-        <h2 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[30px]">
+      <section className="w-full max-w-[1155px] mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px]">
+        <h2 className="text-[28px] sm:text-[32px] md:text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[20px] sm:mb-[25px] md:mb-[30px]">
           Services
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[80px] gap-y-[20px]">
-          <p className="text-[17px] text-[#152B3D]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-[30px] sm:gap-x-[50px] md:gap-x-[80px] gap-y-[12px] sm:gap-y-[16px] md:gap-y-[20px]">
+          <p className="text-[15px] sm:text-[16px] md:text-[17px] text-[#152B3D]">
             Television and video production
           </p>
-          <p className="text-[17px] text-[#152B3D]">
+          <p className="text-[15px] sm:text-[16px] md:text-[17px] text-[#152B3D]">
             Podcasting
           </p>
-          <p className="text-[17px] text-[#152B3D]">
+          <p className="text-[15px] sm:text-[16px] md:text-[17px] text-[#152B3D]">
             Documentary Filmmaking
           </p>
-          <p className="text-[17px] text-[#152B3D]">
+          <p className="text-[15px] sm:text-[16px] md:text-[17px] text-[#152B3D]">
             Post-Production
           </p>
-          <p className="text-[17px] text-[#152B3D]">
+          <p className="text-[15px] sm:text-[16px] md:text-[17px] text-[#152B3D]">
             Motion Graphics
           </p>
         </div>
       </section>
 
       {/* ================= CLIENTS & PARTNERS - DIRECTLY IN ABOUT.JS ================= */}
-      <section className="w-full max-w-[1155px] mx-auto mt-[80px]">
-        <h2 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[50px]">
+      <section className="w-full max-w-[1155px] mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px]">
+        <h2 className="text-[28px] sm:text-[32px] md:text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[30px] sm:mb-[40px] md:mb-[50px]">
           Blue Chalk Clients & Partners
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-4 lg:gap-6">
           {logoImages.map((image, index) => (
             <div
               key={`logo-${index}`}
-              className="flex items-center justify-center p-3 md:p-4 bg-white rounded-lg  transition-shadow duration-300"
+              className="flex items-center justify-center p-2 sm:p-3 md:p-4 bg-white rounded-lg transition-shadow duration-300"
             >
               <img
                 src={image}
                 alt={`Client ${index + 1}`}
-                className="w-full h-[60px] sm:h-[80px] md:h-[100px] object-contain grayscale hover:grayscale-0 transition-all duration-300"
+                className="w-full h-[40px] sm:h-[60px] md:h-[80px] lg:h-[100px] object-contain grayscale hover:grayscale-0 transition-all duration-300"
                 loading="lazy"
                 onError={(e) => {
                   console.error(`❌ Logo ${index + 1} failed to load:`, image);
@@ -278,12 +279,12 @@ const About = () => {
       <AboutPeopleData />
 
       {/* ================= CAREERS ================= */}
-      <section className="w-full max-w-[1155px] mx-auto mt-[40px] pb-[60px]">
-        <h2 className="text-[36px] md:text-[36px] font-normal text-[#152B3D] mb-[75px]">
+      <section className="w-full max-w-[1155px] mx-auto mt-[30px] sm:mt-[35px] md:mt-[40px] pb-[40px] sm:pb-[50px] md:pb-[60px]">
+        <h2 className="text-[28px] sm:text-[32px] md:text-[36px] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
           Careers
         </h2>
 
-        <p className="max-w-[550px] text-[16px] md:text-[16px] leading-[1.4] text-[#8C9BA8] mb-[45px]">
+        <p className="max-w-full md:max-w-[550px] text-[14px] sm:text-[15px] md:text-[16px] leading-[1.5] sm:leading-[1.4] text-[#8C9BA8] mb-[25px] sm:mb-[35px] md:mb-[45px]">
           We're always looking to work with people who share our values—people
           who are both talented individuals and excellent collaborators. If you don't
           see a job listing below that suits your skill set, please fill out our{" "}
@@ -297,7 +298,7 @@ const About = () => {
           follow us on social media to be the first to know about job new openings.
         </p>
 
-        <p className="max-w-[550px] text-[16px] md:text-[17px] leading-[1.4] text-[#8C9BA8]">
+        <p className="max-w-full md:max-w-[550px] text-[14px] sm:text-[15px] md:text-[16px] md:text-[17px] leading-[1.5] sm:leading-[1.4] text-[#8C9BA8]">
           Blue Chalk Media is an equal opportunity employer committed to an
           inclusive workplace. We do not tolerate sexual harassment or discrimination
           based on race, color, religion, gender identity, age, national origin,
