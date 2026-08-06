@@ -222,10 +222,8 @@ const AllProjectwork = () => {
   return (
     <div className="max-w-[1400px] mx-auto px-4">
       {/* Navigation Bar */}
-      <nav className="flex justify-between items-center py-6 border-b border-gray-100 mb-8 flex-wrap gap-4">
-        <div className="text-xl font-bold text-black tracking-wide">
-          <span className="text-[#0077be]">BLUE</span>CHALK
-        </div>
+      <nav className="flex justify-between items-center py-6  border-gray-100 mb-8 flex-wrap gap-4">
+        
 
         <div className="flex gap-4 md:gap-10 items-center flex-wrap">
           {navItems.map((item) => (
@@ -326,7 +324,7 @@ const AllProjectwork = () => {
           </div>
 
           {/* Divider Line */}
-          <div className="border-b border-gray-100 mt-4 max-w-[500px] mx-auto"></div>
+          <div className=" mt-4 max-w-[500px] mx-auto"></div>
         </div>
 
         {/* Projects Grid - 3 Images Per Row with px-1 */}
@@ -334,7 +332,7 @@ const AllProjectwork = () => {
           {filteredProjects.map((project) => (
             <div
               key={project.id}
-              className="bg-white rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg flex flex-col"
+              className="bg-white overflow-hidden  transition-all duration-300 hover:scale-[1.02] hover:shadow-lg flex flex-col"
             >
               {/* Image Wrapper */}
               <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
