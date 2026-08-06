@@ -1,9 +1,8 @@
-import React from 'react'
+import React from 'react';
+import AllProjectwork from '../work/AllProjectwork';
 
 const Works = () => {
-  return (
-    <div>Works</div>
-  )
-}
+  return <AllProjectwork />;
+};
 
-export default Works
+export default Works;
