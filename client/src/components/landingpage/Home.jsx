@@ -22,68 +22,68 @@ const Home = () => {
   const [isSliderHovered, setIsSliderHovered] = useState(false);
   const videoRef = useRef(null);
 
-  const galleryImages = [
+ const galleryImages = [
     { 
       id: 1, 
       src: imgOne, 
       alt: "Gallery 1",
-      link: "/project-1",
+      link: "https://bluechalk.com/work/sister-cities/",
       buttonText: "Now Streaming"
     },
     { 
       id: 2, 
       src: imgTwo, 
       alt: "Gallery 2",
-      link: "/project-2",
+      link: "https://bluechalk.com/work/oregon-accessibility-happens-here/",
       buttonText: "Watch Now"
     },
     { 
       id: 3, 
       src: imgThree, 
       alt: "Gallery 3",
-      link: "/project-3",
+      link: "https://bluechalk.com/work/atomic-echoes/",
       buttonText: "Learn More"
     },
     { 
       id: 4, 
       src: imgFour, 
       alt: "Gallery 4",
-      link: "/project-4",
+      link: "https://bluechalk.com/work/atomic-echoes/",
       buttonText: "View Project"
     },
     { 
       id: 5, 
       src: imgFive, 
       alt: "Gallery 5",
-      link: "/project-5",
+      link: "https://bluechalk.com/work/atomic-echoes/",
       buttonText: "See More"
     },
     { 
       id: 6, 
       src: imgSix, 
       alt: "Gallery 6",
-      link: "/project-6",
+      link: "https://bluechalk.com/work/in-with-the-old/",
       buttonText: "Discover"
     },
     { 
       id: 7, 
       src: imgSeven, 
       alt: "Gallery 7",
-      link: "/project-7",
+      link: "https://bluechalk.com/work/sister-cities/",
       buttonText: "Explore"
     },
     { 
       id: 8, 
       src: imgEight, 
       alt: "Gallery 8",
-      link: "/project-8",
+      link: "https://bluechalk.com/work/diary-old-home/",
       buttonText: "Watch"
     },
     { 
       id: 9, 
       src: imgNine, 
       alt: "Gallery 9",
-      link: "/project-9",
+      link: "https://bluechalk.com/work/morgan-stanley-sustainable-solutions/",
       buttonText: "Stream Now"
     },
   ];
@@ -113,62 +113,59 @@ const Home = () => {
   const currentSlide = galleryImages[currentIndex];
 
   return (
-    <div className="min-h-screen bg-white font-['Helvetica_Neue',Arial,sans-serif] relative overflow-x-hidden">
+    <div className="min-h-screen bg-white font-basis-web font-['Helvetica_Neue',Arial,sans-serif] relative overflow-x-hidden">
       <section className="min-h-screen flex flex-col lg:flex-row items-start">
         {/* right side video - ENTIRE SECTION CLICKABLE */}
-        <div className="w-full lg:max-w-262.5 relative">
-          <Link
-            to="/what-lasts"
-            className="relative w-full aspect-video overflow-hidden bg-[#1a1a1a] block"
-            onMouseEnter={() => setIsVideoHovered(true)}
-            onMouseLeave={() => setIsVideoHovered(false)}
-          >
-            <video
-              ref={videoRef}
-              className="w-full h-full object-cover"
-              src={heroVideo}
-              poster={imgOne}
-              muted
-              loop
-              playsInline
-              autoPlay
-            />
+        <div className="w-[978px] h-[562px] relative">
+  <Link
+    to="https://bluechalk.com/work/what-lasts/"
+    className="relative w-full h-full overflow-hidden bg-[#1a1a1a] block"
+    onMouseEnter={() => setIsVideoHovered(true)}
+    onMouseLeave={() => setIsVideoHovered(false)}
+  >
+    <video
+      ref={videoRef}
+      className="w-full h-full object-cover"
+      src={heroVideo}
+      poster={imgOne}
+      muted
+      loop
+      playsInline
+      autoPlay
+    />
 
-            <div 
-              className={`absolute inset-0 transition-all duration-300`}
-            />
+    <div className="absolute inset-0 transition-all duration-300" />
 
-            <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 md:bottom-0 md:left-20 flex pointer-events-none">
-              <img
-                src={bluechalk}
-                alt="Blue Chalk"
-                className="w-32 sm:w-48 md:w-64 lg:w-84 h-auto"
-              />
-            </div>
+    <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 md:bottom-0 md:left-20 flex pointer-events-none">
+      <img
+        src={bluechalk}
+        alt="Blue Chalk"
+        className="w-32 sm:w-48 md:w-64 lg:w-95 h-auto"
+      />
+    </div>
 
-            <div 
-              className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-14 text-white w-32 sm:w-36 md:w-40 h-14 sm:h-16 px-2 py-2 flex items-end justify-between transition-all duration-300 pointer-events-none ${
-                isVideoHovered ? "bg-[#1989c2]" : "bg-black/60"
-              }`}
-            >
-              <span className="text-sm sm:text-base md:text-sm font-medium">
-                What Lasts
-              </span>
-              <FiPlus className="absolute top-2 right-2 text-lg sm:text-xl" />
-            </div>
-          </Link>
-        </div>
+    <div
+      className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-14 text-white w-32 sm:w-36 md:w-40 h-14 sm:h-16 px-2 py-2 flex items-end justify-between transition-all duration-300 pointer-events-none ${
+        isVideoHovered ? "bg-[#1989c2]" : "bg-black/60"
+      }`}
+    >
+      <span className="text-sm sm:text-base md:text-sm font-medium">
+        What Lasts
+      </span>
 
+      <FiPlus className="absolute top-2 right-2 text-lg sm:text-xl" />
+    </div>
+  </Link>
+</div>
         {/* left side slider */}
-        <div className="flex flex-col gap-8 sm:gap-6 lg:gap-34 p-4 sm:p-6 lg:p-0 lg:pl-0 w-full lg:w-auto lg:relative lg:top-[57.5px]">
-          <p className="text-2xl md:text-xl lg:text-lg lg:pl-15 max-sm:pt-12 max-sm:pb-5 text-[#C2BBB6] leading-relaxed max-w-full lg:max-w-xs xl:max-w-sm">
-            An industry-leading production company founded by people who believe
-            in the power of nonfiction visual storytelling.
+        <div className="flex flex-col gap-8 font-basis-web sm:gap-6 lg:gap-34 p-4 sm:p-6 lg:p-0 lg:pl-0 w-full lg:w-auto lg:relative lg:top-[49px]">
+          <p className="text-2xl md:text-xl lg:text-[20px] lg:pl-11 leading-[26px] max-sm:pt-12 max-sm:pb-5 text-[#C2BBB6]  max-w-full lg:max-w-xs xl:max-w-sm">
+            An industry-leading production company founded by people <br /> who believe in the power of nonfiction visual storytelling.
           </p>
 
           {/* Slider Container with Link on entire container */}
           <div
-            className="relative w-full max-w-full lg:max-w-xs xl:max-w-sm h-70 md:h-100 lg:h-70 overflow-hidden"
+            className="relative w-full max-w-full  lg:max-w-xs xl:max-w-sm h-70 md:h-100 lg:h-68 overflow-hidden"
             onMouseEnter={() => setIsSliderHovered(true)}
             onMouseLeave={() => setIsSliderHovered(false)}
           >
@@ -182,15 +179,15 @@ const Home = () => {
             
             {/* Sliding Images */}
             <div
-              className="transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform h-full"
+              className="transition-transform duration-700  ease-[cubic-bezier(0.25,0.46,0.45,0.94)]  will-change-transform h-full"
               style={{ transform: `translateY(-${currentIndex * 100}%)` }}
             >
               {galleryImages.map((image) => (
-                <div key={image.id} className="relative min-w-full h-full shrink-0">
+                <div key={image.id} className="relative  min-w-full h-full shrink-0">
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full lg:h-full md:h-auto h-full object-cover block"
+                    className="w-full lg:h-full  md:h-auto h-full object-cover block"
                   />
                 </div>
               ))}
@@ -217,12 +214,12 @@ const Home = () => {
       </section>
 
       {/* Footer Navigation */}
-      <footer className="fixed bottom-4 md:bottom-4 lg:bottom-4 left-4 sm:left-8 md:left-15 right-4 sm:right-8 md:right-15 flex justify-center sm:justify-between items-center pt-4">
-        <ul className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-28 lg:pl-10 m-0 p-0">
+      <footer className="fixed bottom-4 md:bottom-4 lg:bottom-6 font-basis-web  left-4 sm:left-8 md:left-14 right-4 sm:right-8 md:right-15 flex   sm:justify-between items-center pt-2">
+        <ul className="flex flex-wrap justify-center  gap-4 sm:gap-6 md:gap-24 lg:pl-10 m-0 p-0">
           <li>
             <Link
               to="/about"
-              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+              className="text-blue-500 font-medium no-underline text-xs sm:text-sm md:text-[17px] leading-4  tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
             >
               About
             </Link>
@@ -230,7 +227,7 @@ const Home = () => {
           <li>
             <Link
               to="/work"
-              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+              className="text-blue-500 no-underline font-medium text-xs sm:text-sm md:text-[17px] leading-4 tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
             >
               Work
             </Link>
@@ -238,7 +235,7 @@ const Home = () => {
           <li>
             <Link
               to="/news"
-              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+              className="text-blue-500 no-underline font-medium text-xs sm:text-sm md:text-[17px] leading-4 tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
             >
               News
             </Link>
@@ -246,7 +243,7 @@ const Home = () => {
           <li>
             <Link
               to="/contact"
-              className="text-blue-400 no-underline text-xs sm:text-sm md:text-base font-light tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+              className="text-blue-500 no-underline font-medium text-xs sm:text-sm md:text-[17px] leading-4 tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
             >
               Contact
             </Link>
