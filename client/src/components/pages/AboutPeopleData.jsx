@@ -27,7 +27,7 @@ const AboutPeopleData = () => {
       id: 2,
       name: "Pam Huling",
       pronouns: "(She/Her)",
-      position: "CHIEF REVENUE OFFICER ",
+      position: "CHIEF REVENUE OFFICER",
       image: teamTwo,
       hoverImage: teamTwos,
       description: "Pam Huling is chief revenue officer and co-founder of Blue Chalk, where she drives business development and strategic partnerships. With a background in media sales and production, Pam has been instrumental in building the company's diverse client roster and expanding its global reach."
@@ -57,21 +57,21 @@ const AboutPeopleData = () => {
   };
 
   return (
-    <div className='bg-[#F5F4F2] py-[60px]'>
-      <section className="w-full max-w-[1155px] px-4 md:px-20">
-        <h2 className="text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[50px]">
+    <div className='bg-[#F5F4F2] py-[40px] sm:py-[50px] md:py-[60px]'>
+      <section className="w-full max-w-[1155px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+        <h2 className="text-[28px] sm:text-[32px] md:text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[30px] sm:mb-[40px] md:mb-[50px]">
           Meet the Teams
         </h2>
 
-        {/* Equal distribution with flex */}
-        <div className="flex justify-between items-start gap-x-4 md:gap-x-8 lg:gap-x-12">
+        {/* Grid layout for responsive team members */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 md:gap-x-8 lg:gap-x-12 gap-y-[40px] sm:gap-y-[50px] md:gap-y-[60px]">
           {teamMembers.map((member, index) => {
             return (
-              <div key={member.id} className="flex-1 text-center">
+              <div key={member.id} className="text-center">
                 {/* Image - Centered */}
                 <div
                   onClick={() => handleToggle(index)}
-                  className="group w-[180px] h-[180px] sm:w-[200px] sm:h-[200px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] rounded-full overflow-hidden cursor-pointer mx-auto"
+                  className="group w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[260px] xl:h-[260px] rounded-full overflow-hidden cursor-pointer mx-auto transition-transform duration-300 hover:scale-105"
                 >
                   <img
                     src={member.image}
@@ -95,42 +95,42 @@ const AboutPeopleData = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-center gap-2 mt-4">
-  <h3 className="text-[18px] md:text-[20px] lg:text-[23px] text-[#0089D0] font-normal">
-    {member.name}
-  </h3>
+                {/* Name and Pronouns */}
+                <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 mt-3 sm:mt-4 px-2">
+                  <h3 className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-[#0089D0] font-normal">
+                    {member.name}
+                  </h3>
+                  <p className="text-[13px] sm:text-[14px] md:text-[16px] lg:text-[18px] text-[#0089D0] font-normal">
+                    {member.pronouns}
+                  </p>
+                </div>
 
-  <p className="text-[14px] md:text-[20px] text-[#0089D0]  mt-1 font-normal">
-    {member.pronouns}
-  </p>
-</div>
-
-                {/* Position - Below pronouns */}
-                <p className="mt-1 text-[10px] md:text-[11px] tracking-[3px] text-[#152B3D]">
+                {/* Position */}
+                <p className="mt-1 text-[9px] sm:text-[10px] md:text-[11px] lg:text-[12px] tracking-[2px] sm:tracking-[3px] text-[#152B3D] uppercase px-2">
                   {member.position}
                 </p>
 
                 {/* Details - Shows when clicked */}
                 {selectedIndex === index && (
-                  <div className="mt-4 text-left  p-4 ">
-                    <p className="text-[14px] md:text-[16px] leading-[1.65] text-[#152B3D]">
+                  <div className="mt-4 text-left px-2 sm:px-3 md:px-4">
+                    <p className="text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] leading-[1.65] text-[#152B3D]">
                       {member.description}
                     </p>
 
                     <div className="mt-4">
-                      <p className="text-[14px] md:text-[16px] font-semibold text-[#152B3D]">
+                      <p className="text-[13px] sm:text-[14px] md:text-[16px] font-semibold text-[#152B3D]">
                         CONTACT / FOLLOW:
                       </p>
-                      <div className="flex justify-center gap-4 mt-3">
-                        <a href="#" className="text-[#0089D0] hover:underline text-sm">LinkedIn</a>
-                        <a href="#" className="text-[#0089D0] hover:underline text-sm">Twitter</a>
-                        <a href="#" className="text-[#0089D0] hover:underline text-sm">Instagram</a>
+                      <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-3">
+                        <a href="#" className="text-[#0089D0] hover:underline text-xs sm:text-sm transition-colors duration-200 hover:text-blue-700">LinkedIn</a>
+                        <a href="#" className="text-[#0089D0] hover:underline text-xs sm:text-sm transition-colors duration-200 hover:text-blue-700">Twitter</a>
+                        <a href="#" className="text-[#0089D0] hover:underline text-xs sm:text-sm transition-colors duration-200 hover:text-blue-700">Instagram</a>
                       </div>
                     </div>
 
                     <button
                       onClick={() => setSelectedIndex(null)}
-                      className="mt-4 text-[13px] font-semibold text-[#0089D0] hover:underline"
+                      className="mt-4 text-[12px] sm:text-[13px] font-semibold text-[#0089D0] hover:underline transition-colors duration-200 hover:text-blue-700"
                     >
                       CLOSE
                     </button>
