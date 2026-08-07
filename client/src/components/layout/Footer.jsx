@@ -9,7 +9,7 @@ import whitetwitter from "../../assets/footerlogo/whitetwitter.svg"
 const Footer = () => {
   return (
     <footer className="w-full bg-[#263238] text-[#bdbdbd]">
-      <div className="max-w-[1170px] lg:ml-18 min-h-[270px] px-6 py-[40px] flex flex-col md:flex-row justify-between">
+      <div className="max-w-[1170px] lg:ml-18 min-h-[270px] lg:px-0 px-6  py-[40px] md:px-14   flex flex-col md:flex-row justify-between">
         
         {/* Left Side */}
         <div className="mb-8 md:mb-0">
