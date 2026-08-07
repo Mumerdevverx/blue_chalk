@@ -41,7 +41,7 @@ const Footer = () => {
         </div>
 
         {/* Right Side */}
-        <div className="flex flex-col mt-4 md:mt-8 items-start md:items-start mr-0 md:mr-[180px]">
+        <div className="flex flex-col mt-4 md:mt-8 items-start md:items-start mr-0 lg:mr-[180px]">
           
           {/* Links */}
           <div className="text-[14px] text-[#777f83] flex flex-wrap items-center">
