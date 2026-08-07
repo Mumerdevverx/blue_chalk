@@ -973,7 +973,7 @@ const AllProjectwork = () => {
                   <img
                     src={project.src}
                     alt={project.alt}
-                    className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-full object-cover block transition-transform duration-300 grayscale  group-hover:grayscale-0"
                   />
 
                   {/* Text Overlay */}
