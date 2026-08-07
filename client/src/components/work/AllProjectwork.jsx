@@ -1,117 +1,724 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+import { FiPlus } from "react-icons/fi";
 
 const AllProjectwork = () => {
-  const [activeFilter, setActiveFilter] = useState('All Projects');
-  const [isBrandOpen, setIsBrandOpen] = useState(true);
+  const [activeFilter, setActiveFilter] = useState("All Projects");
+  const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const portfolioRef = useRef(null);
 
-  // All projects with full text overlays
+  // Screen size detection for LG screens
+  const [isLgScreen, setIsLgScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const isLg = window.innerWidth >= 1024;
+      setIsLgScreen(isLg);
+      
+      // Set active filter to "Branded" on LG screens
+      if (isLg) {
+        setActiveFilter("Branded");
+        setIsBrandOpen(true);
+      } else {
+        setActiveFilter("All Projects");
+        setIsBrandOpen(false);
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // 50 Projects with equal distribution - 10 projects per category
   const allProjects = [
-    { 
-      id: 1, 
-      src: 'https://picsum.photos/seed/atomic/600/400', 
+    // ============ FEATURED (10 Projects) ============
+    {
+      id: 1,
+      src: "https://picsum.photos/seed/atomic1/600/400",
       alt: "Atomic Echoes",
-      title: "ATOMIC",
-      subtitle: "ECHOES",
-      description: "ENTOLD STORIES",
-      subDescription: "FROM WORLD WIDE",
+      title: "ATOMIC ECHOES",
+      subtitle: "",
+      description: "UNTOLD STORIES",
+      subDescription: "FROM WORLD WAR II",
       category: "Featured",
       link: "https://bluechalk.com/work/atomic-echoes/",
       buttonText: "Now Streaming",
       showOverlay: true,
-      overlayType: "atomic"
+      overlayType: "atomic",
     },
-    { 
-      id: 2, 
-      src: 'https://picsum.photos/seed/firebreak/600/400', 
+    {
+      id: 2,
+      src: "https://picsum.photos/seed/firebreak1/600/400",
       alt: "Firebreak",
-      title: "FIREBREAK",
-      subtitle: "COVERING",
-      description: "THEIR",
-      subDescription: "DOCUMENTARY CREATING THEIR TRACES",
-      category: "Social Impact",
+      title: "COVERING",
+      subtitle: "THEIR",
+      description: "TRACKS",
+      subDescription: "",
+      category: "Featured",
       link: "https://bluechalk.com/work/firebreak/",
       buttonText: "Watch Now",
       showOverlay: true,
-      overlayType: "firebreak"
+      overlayType: "firebreak",
     },
-    { 
-      id: 3, 
-      src: 'https://picsum.photos/seed/sister/600/400', 
-      alt: "Sister Cities",
-      title: "Sister Cities",
+    {
+      id: 3,
+      src: "https://picsum.photos/seed/backtoyou/600/400",
+      alt: "Back To You",
+      title: "BACK TO YOU",
       subtitle: "",
       description: "",
       subDescription: "",
-      category: "Documentary",
-      link: "https://bluechalk.com/work/sister-cities/",
-      buttonText: "Now Streaming",
-      showOverlay: false
+      category: "Featured",
+      link: "https://bluechalk.com/work/back-to-you/",
+      buttonText: "Watch Now",
+      showOverlay: false,
     },
-    { 
-      id: 4, 
-      src: 'https://picsum.photos/seed/branded/600/400', 
-      alt: "Branded Project",
-      title: "Branded Campaign",
+    {
+      id: 4,
+      src: "https://picsum.photos/seed/featured4/600/400",
+      alt: "Featured Project 4",
+      title: "FEATURED PROJECT 4",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Featured",
+      link: "https://bluechalk.com/work/featured4/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 5,
+      src: "https://picsum.photos/seed/featured5/600/400",
+      alt: "Featured Project 5",
+      title: "FEATURED PROJECT 5",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Featured",
+      link: "https://bluechalk.com/work/featured5/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 6,
+      src: "https://picsum.photos/seed/featured6/600/400",
+      alt: "Featured Project 6",
+      title: "FEATURED PROJECT 6",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Featured",
+      link: "https://bluechalk.com/work/featured6/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 7,
+      src: "https://picsum.photos/seed/featured7/600/400",
+      alt: "Featured Project 7",
+      title: "FEATURED PROJECT 7",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Featured",
+      link: "https://bluechalk.com/work/featured7/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 8,
+      src: "https://picsum.photos/seed/featured8/600/400",
+      alt: "Featured Project 8",
+      title: "FEATURED PROJECT 8",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Featured",
+      link: "https://bluechalk.com/work/featured8/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 9,
+      src: "https://picsum.photos/seed/featured9/600/400",
+      alt: "Featured Project 9",
+      title: "FEATURED PROJECT 9",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Featured",
+      link: "https://bluechalk.com/work/featured9/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 10,
+      src: "https://picsum.photos/seed/featured10/600/400",
+      alt: "Featured Project 10",
+      title: "FEATURED PROJECT 10",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Featured",
+      link: "https://bluechalk.com/work/featured10/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+
+    // ============ BRANDED (10 Projects) ============
+    {
+      id: 11,
+      src: "https://picsum.photos/seed/branded1/600/400",
+      alt: "Branded Project 1",
+      title: "BRANDED CAMPAIGN 1",
       subtitle: "",
       description: "",
       subDescription: "",
       category: "Branded",
-      link: "https://bluechalk.com/work/branded/",
+      link: "https://bluechalk.com/work/branded1/",
       buttonText: "Watch Now",
-      showOverlay: false
+      showOverlay: false,
     },
-    { 
-      id: 5, 
-      src: 'https://picsum.photos/seed/entertain/600/400', 
-      alt: "Entertainment",
-      title: "Entertainment Special",
+    {
+      id: 12,
+      src: "https://picsum.photos/seed/branded2/600/400",
+      alt: "Branded Project 2",
+      title: "BRANDED CAMPAIGN 2",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded2/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 13,
+      src: "https://picsum.photos/seed/branded3/600/400",
+      alt: "Branded Project 3",
+      title: "BRANDED CAMPAIGN 3",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded3/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 14,
+      src: "https://picsum.photos/seed/branded4/600/400",
+      alt: "Branded Project 4",
+      title: "BRANDED CAMPAIGN 4",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded4/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 15,
+      src: "https://picsum.photos/seed/branded5/600/400",
+      alt: "Branded Project 5",
+      title: "BRANDED CAMPAIGN 5",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded5/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 16,
+      src: "https://picsum.photos/seed/branded6/600/400",
+      alt: "Branded Project 6",
+      title: "BRANDED CAMPAIGN 6",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded6/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 17,
+      src: "https://picsum.photos/seed/branded7/600/400",
+      alt: "Branded Project 7",
+      title: "BRANDED CAMPAIGN 7",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded7/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 18,
+      src: "https://picsum.photos/seed/branded8/600/400",
+      alt: "Branded Project 8",
+      title: "BRANDED CAMPAIGN 8",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded8/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 19,
+      src: "https://picsum.photos/seed/branded9/600/400",
+      alt: "Branded Project 9",
+      title: "BRANDED CAMPAIGN 9",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded9/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 20,
+      src: "https://picsum.photos/seed/branded10/600/400",
+      alt: "Branded Project 10",
+      title: "BRANDED CAMPAIGN 10",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Branded",
+      link: "https://bluechalk.com/work/branded10/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+
+    // ============ ENTERTAINMENT (10 Projects) ============
+    {
+      id: 21,
+      src: "https://picsum.photos/seed/entertain1/600/400",
+      alt: "Entertainment 1",
+      title: "ENTERTAINMENT 1",
       subtitle: "",
       description: "",
       subDescription: "",
       category: "Entertainment",
-      link: "https://bluechalk.com/work/entertainment/",
-      buttonText: "Now Streaming",
-      showOverlay: false
+      link: "https://bluechalk.com/work/entertain1/",
+      buttonText: "Watch Now",
+      showOverlay: false,
     },
-    { 
-      id: 6, 
-      src: 'https://picsum.photos/seed/doc/600/400', 
-      alt: "Documentary",
-      title: "Documentary Film",
+    {
+      id: 22,
+      src: "https://picsum.photos/seed/entertain2/600/400",
+      alt: "Entertainment 2",
+      title: "ENTERTAINMENT 2",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain2/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 23,
+      src: "https://picsum.photos/seed/entertain3/600/400",
+      alt: "Entertainment 3",
+      title: "ENTERTAINMENT 3",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain3/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 24,
+      src: "https://picsum.photos/seed/entertain4/600/400",
+      alt: "Entertainment 4",
+      title: "ENTERTAINMENT 4",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain4/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 25,
+      src: "https://picsum.photos/seed/entertain5/600/400",
+      alt: "Entertainment 5",
+      title: "ENTERTAINMENT 5",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain5/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 26,
+      src: "https://picsum.photos/seed/entertain6/600/400",
+      alt: "Entertainment 6",
+      title: "ENTERTAINMENT 6",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain6/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 27,
+      src: "https://picsum.photos/seed/entertain7/600/400",
+      alt: "Entertainment 7",
+      title: "ENTERTAINMENT 7",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain7/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 28,
+      src: "https://picsum.photos/seed/entertain8/600/400",
+      alt: "Entertainment 8",
+      title: "ENTERTAINMENT 8",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain8/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 29,
+      src: "https://picsum.photos/seed/entertain9/600/400",
+      alt: "Entertainment 9",
+      title: "ENTERTAINMENT 9",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain9/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 30,
+      src: "https://picsum.photos/seed/entertain10/600/400",
+      alt: "Entertainment 10",
+      title: "ENTERTAINMENT 10",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Entertainment",
+      link: "https://bluechalk.com/work/entertain10/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+
+    // ============ SOCIAL IMPACT (10 Projects) ============
+    {
+      id: 31,
+      src: "https://picsum.photos/seed/social1/600/400",
+      alt: "Social Impact 1",
+      title: "SOCIAL IMPACT 1",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social1/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 32,
+      src: "https://picsum.photos/seed/social2/600/400",
+      alt: "Social Impact 2",
+      title: "SOCIAL IMPACT 2",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social2/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 33,
+      src: "https://picsum.photos/seed/social3/600/400",
+      alt: "Social Impact 3",
+      title: "SOCIAL IMPACT 3",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social3/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 34,
+      src: "https://picsum.photos/seed/social4/600/400",
+      alt: "Social Impact 4",
+      title: "SOCIAL IMPACT 4",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social4/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 35,
+      src: "https://picsum.photos/seed/social5/600/400",
+      alt: "Social Impact 5",
+      title: "SOCIAL IMPACT 5",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social5/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 36,
+      src: "https://picsum.photos/seed/social6/600/400",
+      alt: "Social Impact 6",
+      title: "SOCIAL IMPACT 6",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social6/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 37,
+      src: "https://picsum.photos/seed/social7/600/400",
+      alt: "Social Impact 7",
+      title: "SOCIAL IMPACT 7",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social7/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 38,
+      src: "https://picsum.photos/seed/social8/600/400",
+      alt: "Social Impact 8",
+      title: "SOCIAL IMPACT 8",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social8/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 39,
+      src: "https://picsum.photos/seed/social9/600/400",
+      alt: "Social Impact 9",
+      title: "SOCIAL IMPACT 9",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social9/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 40,
+      src: "https://picsum.photos/seed/social10/600/400",
+      alt: "Social Impact 10",
+      title: "SOCIAL IMPACT 10",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Social Impact",
+      link: "https://bluechalk.com/work/social10/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+
+    // ============ DOCUMENTARY (10 Projects) ============
+    {
+      id: 41,
+      src: "https://picsum.photos/seed/doc1/600/400",
+      alt: "Documentary 1",
+      title: "DOCUMENTARY 1",
       subtitle: "",
       description: "",
       subDescription: "",
       category: "Documentary",
-      link: "https://bluechalk.com/work/documentary/",
+      link: "https://bluechalk.com/work/doc1/",
       buttonText: "Watch Now",
-      showOverlay: false
-    }
+      showOverlay: false,
+    },
+    {
+      id: 42,
+      src: "https://picsum.photos/seed/doc2/600/400",
+      alt: "Documentary 2",
+      title: "DOCUMENTARY 2",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc2/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 43,
+      src: "https://picsum.photos/seed/doc3/600/400",
+      alt: "Documentary 3",
+      title: "DOCUMENTARY 3",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc3/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 44,
+      src: "https://picsum.photos/seed/doc4/600/400",
+      alt: "Documentary 4",
+      title: "DOCUMENTARY 4",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc4/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 45,
+      src: "https://picsum.photos/seed/doc5/600/400",
+      alt: "Documentary 5",
+      title: "DOCUMENTARY 5",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc5/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 46,
+      src: "https://picsum.photos/seed/doc6/600/400",
+      alt: "Documentary 6",
+      title: "DOCUMENTARY 6",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc6/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 47,
+      src: "https://picsum.photos/seed/doc7/600/400",
+      alt: "Documentary 7",
+      title: "DOCUMENTARY 7",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc7/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 48,
+      src: "https://picsum.photos/seed/doc8/600/400",
+      alt: "Documentary 8",
+      title: "DOCUMENTARY 8",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc8/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 49,
+      src: "https://picsum.photos/seed/doc9/600/400",
+      alt: "Documentary 9",
+      title: "DOCUMENTARY 9",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc9/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
+    {
+      id: 50,
+      src: "https://picsum.photos/seed/doc10/600/400",
+      alt: "Documentary 10",
+      title: "DOCUMENTARY 10",
+      subtitle: "",
+      description: "",
+      subDescription: "",
+      category: "Documentary",
+      link: "https://bluechalk.com/work/doc10/",
+      buttonText: "Watch Now",
+      showOverlay: false,
+    },
   ];
 
   // Filter projects
   useEffect(() => {
-    const filtered = activeFilter === 'All Projects' 
-      ? allProjects 
-      : allProjects.filter(p => p.category === activeFilter);
+    const filtered =
+      activeFilter === "All Projects"
+        ? allProjects
+        : allProjects.filter((p) => p.category === activeFilter);
     setFilteredProjects(filtered);
   }, [activeFilter]);
 
-  // Portfolio Filter
+  // Portfolio Filter - No auto-close
   const portfolioFilter = {
     filter: (category) => {
       setActiveFilter(category);
+      // No auto-close - Branded stays open when clicking other filters
     },
     reset: () => {
-      setActiveFilter('All Projects');
+      setActiveFilter("All Projects");
     },
     getCurrentFilter: () => {
       return activeFilter;
     },
     getProjects: () => {
       return filteredProjects;
-    }
+    },
   };
 
   // Expose to window
@@ -125,92 +732,87 @@ const AllProjectwork = () => {
     };
   }, [portfolioFilter, activeFilter]);
 
-  const navItems = ['About', 'Work', 'News', 'Contact'];
+  const navItems = ["About", "Work", "News", "Contact"];
 
   // Render overlay based on type
   const renderOverlay = (project) => {
     if (!project.showOverlay) return null;
 
-    if (project.overlayType === 'atomic') {
+    if (project.overlayType === "atomic") {
       return (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-5 pointer-events-none">
-          <h2 className="text-white font-extrabold leading-tight"
+        <div className="absolute top-1/2 font-basis-web left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-5 pointer-events-none">
+          <h2
+            className="text-white font-extrabold leading-tight"
             style={{
-              fontSize: 'clamp(2rem, 4.5vw, 4.5rem)',
-              letterSpacing: 'clamp(4px, 1vw, 12px)',
-              textShadow: '0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)'
-            }}>
+              fontSize: "clamp(2rem, 4.5vw, 4.5rem)",
+              letterSpacing: "clamp(4px, 1vw, 12px)",
+              textShadow:
+                "0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)",
+            }}
+          >
             {project.title}
           </h2>
-          <h3 className="text-white font-bold"
+          <p
+            className="text-white font-light opacity-90"
             style={{
-              fontSize: 'clamp(1.5rem, 3vw, 3rem)',
-              letterSpacing: 'clamp(4px, 0.8vw, 8px)',
-              textShadow: '0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)',
-              margin: '5px 0 10px 0'
-            }}>
-            {project.subtitle}
-          </h3>
-          <p className="text-white font-light opacity-90"
-            style={{
-              fontSize: 'clamp(0.8rem, 1.2vw, 1.2rem)',
-              letterSpacing: 'clamp(3px, 0.6vw, 6px)',
-              textShadow: '0 2px 20px rgba(0,0,0,0.6)',
-              margin: '5px 0'
-            }}>
+              fontSize: "clamp(0.8rem, 1.2vw, 1.2rem)",
+              letterSpacing: "clamp(3px, 0.6vw, 6px)",
+              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
+              margin: "5px 0",
+            }}
+          >
             {project.description}
           </p>
-          <p className="text-white font-light opacity-80"
+          <p
+            className="text-white font-light opacity-80"
             style={{
-              fontSize: 'clamp(0.7rem, 1vw, 1rem)',
-              letterSpacing: 'clamp(2px, 0.4vw, 4px)',
-              textShadow: '0 2px 20px rgba(0,0,0,0.6)',
-              margin: '5px 0'
-            }}>
+              fontSize: "clamp(0.7rem, 1vw, 1rem)",
+              letterSpacing: "clamp(2px, 0.4vw, 4px)",
+              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
+              margin: "5px 0",
+            }}
+          >
             {project.subDescription}
           </p>
         </div>
       );
     }
 
-    if (project.overlayType === 'firebreak') {
+    if (project.overlayType === "firebreak") {
       return (
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-5 pointer-events-none">
-          <h2 className="text-white font-extrabold leading-tight"
+          <h2
+            className="text-white font-extrabold leading-tight"
             style={{
-              fontSize: 'clamp(1.8rem, 3.5vw, 3.5rem)',
-              letterSpacing: 'clamp(4px, 1vw, 10px)',
-              textShadow: '0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)'
-            }}>
+              fontSize: "clamp(2rem, 4.5vw, 4.5rem)",
+              letterSpacing: "clamp(4px, 1vw, 12px)",
+              textShadow:
+                "0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)",
+            }}
+          >
             {project.title}
           </h2>
-          <p className="text-white font-normal opacity-90"
+          <p
+            className="text-white font-normal opacity-90"
             style={{
-              fontSize: 'clamp(0.9rem, 1.4vw, 1.4rem)',
-              letterSpacing: 'clamp(3px, 0.6vw, 6px)',
-              textShadow: '0 2px 20px rgba(0,0,0,0.6)',
-              margin: '8px 0'
-            }}>
+              fontSize: "clamp(0.9rem, 1.4vw, 1.4rem)",
+              letterSpacing: "clamp(3px, 0.6vw, 6px)",
+              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
+              margin: "8px 0",
+            }}
+          >
             {project.subtitle}
           </p>
-          <p className="text-white font-semibold opacity-90"
+          <p
+            className="text-white font-semibold opacity-90"
             style={{
-              fontSize: 'clamp(1.2rem, 1.8vw, 1.8rem)',
-              letterSpacing: 'clamp(4px, 0.8vw, 8px)',
-              textShadow: '0 2px 20px rgba(0,0,0,0.6)',
-              margin: '5px 0'
-            }}>
+              fontSize: "clamp(1.2rem, 1.8vw, 1.8rem)",
+              letterSpacing: "clamp(4px, 0.8vw, 8px)",
+              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
+              margin: "5px 0",
+            }}
+          >
             {project.description}
-          </p>
-          <p className="text-white font-light opacity-80 mx-auto"
-            style={{
-              fontSize: 'clamp(0.6rem, 0.9vw, 0.9rem)',
-              letterSpacing: 'clamp(2px, 0.3vw, 3px)',
-              textShadow: '0 2px 20px rgba(0,0,0,0.6)',
-              margin: '8px 0',
-              maxWidth: '80%'
-            }}>
-            {project.subDescription}
           </p>
         </div>
       );
@@ -219,19 +821,22 @@ const AllProjectwork = () => {
     return null;
   };
 
-  return (
-    <div className="max-w-[1400px] mx-auto px-4">
-      {/* Navigation Bar */}
-      <nav className="flex justify-between items-center py-6  border-gray-100 mb-8 flex-wrap gap-4">
-        
+  // Check if current filter is "All Projects"
+  const isAllProjects = activeFilter === "All Projects";
 
+  return (
+    <div className="max-w-[1440px] mx-auto">
+      {/* Navigation Bar */}
+      <nav className="flex justify-between items-center py-6 border-gray-100 mb-8 flex-wrap gap-4">
         <div className="flex gap-4 md:gap-10 items-center flex-wrap">
           {navItems.map((item) => (
             <a
               key={item}
               href="#"
               className={`text-sm md:text-base uppercase tracking-wide transition-colors duration-300 hover:text-[#0077be] ${
-                item === 'Work' ? 'text-[#0077be] font-semibold' : 'text-gray-700'
+                item === "Work"
+                  ? "text-[#0077be] font-semibold"
+                  : "text-gray-700"
               }`}
             >
               {item}
@@ -245,75 +850,100 @@ const AllProjectwork = () => {
         {/* Filter Bar */}
         <div className="text-center mb-10">
           {/* 2-Column Filter Layout */}
-          <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-3 max-w-[500px] mx-auto px-4">
+          <div className="relative grid grid-cols-2 gap-1 sm:gap-3 lg:max-w-[500px] mx-auto px-4 pt-6 sm:pt-0 w-full lg:px-0 md:px-6">
             {/* FILTER BY - Small text above Featured */}
-            <div className="absolute -top-5 left-0 text-[0.6rem] font-semibold text-gray-400 tracking-widest uppercase">
+            <div className="absolute lg:-top-4 md:-top-1.5 top-3 lg:left-1 md:left-6.5 left-4 text-[11px] font-semibold text-gray-400 tracking-widest uppercase">
               FILTER BY
             </div>
 
-            {/* Left Column */}
+            {/* Left Column - Featured and All Projects */}
             <div className="flex flex-col items-start gap-0.5 mt-2">
               <button
-                onClick={() => portfolioFilter.filter('Featured')}
-                className={`bg-transparent border-none text-sm md:text-[0.9rem] py-0.5 cursor-pointer transition-all duration-300 tracking-wider uppercase w-full text-left hover:text-[#0077be] ${
-                  activeFilter === 'Featured' ? 'text-[#0077be] font-semibold' : 'text-gray-700 font-normal'
+                onClick={() => portfolioFilter.filter("Featured")}
+                className={`lg:text-[36px] md:text-2xl text-xl py-0.5 font cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                  activeFilter === "Featured"
+                    ? "text-[#1893D2]"
+                    : "text-[#C2BBB6] hover:text-[#1893D2]"
                 }`}
               >
                 Featured
               </button>
 
               <button
-                onClick={() => portfolioFilter.filter('All Projects')}
-                className={`bg-transparent border-none text-sm md:text-[0.9rem] py-0.5 cursor-pointer transition-all duration-300 tracking-wider uppercase w-full text-left hover:text-[#0077be] ${
-                  activeFilter === 'All Projects' ? 'text-[#0077be] font-semibold' : 'text-gray-700 font-normal'
+                onClick={() => portfolioFilter.filter("All Projects")}
+                className={`lg:text-[36px] md:text-2xl text-xl py-0.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                  activeFilter === "All Projects"
+                    ? "text-[#1893D2]"
+                    : "text-[#C2BBB6] hover:text-[#1893D2]"
                 }`}
               >
                 All Projects
               </button>
             </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col items-start gap-0.5 mt-2">
+            {/* Right Column - Branded with Arrow */}
+            <div className="flex flex-col md:ml-8 lg:ml-25 mt-2">
               {/* Branded with Arrow */}
-              <button
-                onClick={() => setIsBrandOpen(!isBrandOpen)}
-                className={`bg-transparent border-none text-sm md:text-[0.9rem] py-0.5 cursor-pointer transition-all duration-300 tracking-wider uppercase w-full text-left flex items-center gap-2 hover:text-[#0077be] ${
-                  activeFilter === 'Branded' ? 'text-[#0077be] font-semibold' : 'text-gray-700 font-normal'
-                }`}
-              >
-                Branded
-                <span className={`inline-block transition-transform duration-300 text-gray-400 text-xs ${
-                  isBrandOpen ? 'rotate-180' : 'rotate-0'
-                }`}>
-                  ▲
-                </span>
-              </button>
+              <div className="flex items-center w-full gap-3 md:gap-4 lg:gap-6">
+               <button
+  onClick={() => setIsBrandOpen(!isBrandOpen)}
+  className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider text-left flex items-center gap-3 md:gap-4 lg:gap-6 ${
+    activeFilter === "Branded" 
+      ? "text-[#1893D2]" 
+      : "text-[#C2BBB6] hover:text-[#1893D2]"
+  }`}
+>
+  <span>Branded</span>
+  {/* Arrow SVG - Rotates when open */}
+  <svg
+    className={`w-7 h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 transition-all duration-300 text-[#7d7c7c] hover:text-[#1893D2] flex-shrink-0 lg:ml-46 md:ml-14  ${
+      isBrandOpen ? "rotate-180" : ""
+    }`}
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1}
+      d="M19 9l-7 7-7-7"
+    />
+  </svg>
+</button>
+              </div>
 
-              {/* Sub Categories */}
+              {/* Sub Categories - Only show when Branded is open */}
               {isBrandOpen && (
-                <div className="flex flex-col items-start gap-0.5 w-full animate-[slideDown_0.3s_ease]">
+                <div className="flex flex-col items-start w-full pl-0 animate-[slideDown_0.3s_ease]">
                   <button
-                    onClick={() => portfolioFilter.filter('Entertainment')}
-                    className={`bg-transparent border-none text-sm md:text-[0.9rem] py-0.5 cursor-pointer transition-all duration-300 tracking-wider uppercase w-full text-left hover:text-[#0077be] ${
-                      activeFilter === 'Entertainment' ? 'text-[#0077be] font-semibold' : 'text-gray-500'
+                    onClick={() => portfolioFilter.filter("Entertainment")}
+                    className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                      activeFilter === "Entertainment"
+                        ? "text-[#1893D2]"
+                        : "text-[#C2BBB6] hover:text-[#1893D2]"
                     }`}
                   >
                     Entertainment
                   </button>
 
                   <button
-                    onClick={() => portfolioFilter.filter('Social Impact')}
-                    className={`bg-transparent border-none text-sm md:text-[0.9rem] py-0.5 cursor-pointer transition-all duration-300 tracking-wider uppercase w-full text-left hover:text-[#0077be] ${
-                      activeFilter === 'Social Impact' ? 'text-[#0077be] font-semibold' : 'text-gray-500'
+                    onClick={() => portfolioFilter.filter("Social Impact")}
+                    className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                      activeFilter === "Social Impact"
+                        ? "text-[#1893D2]"
+                        : "text-[#C2BBB6] hover:text-[#1893D2]"
                     }`}
                   >
-                    Social Impact
+                    SocialImpact
                   </button>
 
                   <button
-                    onClick={() => portfolioFilter.filter('Documentary')}
-                    className={`bg-transparent border-none text-sm md:text-[0.9rem] py-0.5 cursor-pointer transition-all duration-300 tracking-wider uppercase w-full text-left hover:text-[#0077be] ${
-                      activeFilter === 'Documentary' ? 'text-[#0077be] font-semibold' : 'text-gray-500'
+                    onClick={() => portfolioFilter.filter("Documentary")}
+                    className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                      activeFilter === "Documentary"
+                        ? "text-[#1893D2]"
+                        : "text-[#C2BBB6] hover:text-[#1893D2]"
                     }`}
                   >
                     Documentary
@@ -322,52 +952,46 @@ const AllProjectwork = () => {
               )}
             </div>
           </div>
-
-          {/* Divider Line */}
-          <div className=" mt-4 max-w-[500px] mx-auto"></div>
         </div>
 
-        {/* Projects Grid - 3 Images Per Row with px-1 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 px-1">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className="bg-white overflow-hidden  transition-all duration-300 hover:scale-[1.02] hover:shadow-lg flex flex-col"
-            >
-              {/* Image Wrapper */}
-              <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
-                <img
-                  src={project.src}
-                  alt={project.alt}
-                  className="w-full h-full object-cover block transition-transform duration-500 hover:scale-110"
-                />
-                
-                {/* Text Overlay */}
-                {renderOverlay(project)}
+        {/* Projects Grid - 3 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
+          {filteredProjects.map((project, index) => {
+            // For filtered views (not "All Projects"), first image takes 2 columns on md and lg
+            const isFirstItem = index === 0;
+            const shouldBeWide = !isAllProjects && isFirstItem;
 
-                {/* Hover Overlay with Button */}
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-100">
-                  <a href={project.link} target="_blank" rel="noopener noreferrer">
-                    <button className="bg-[#0077be] text-white border-none px-6 py-2.5 text-sm font-semibold rounded-full cursor-pointer tracking-wider transition-all duration-300 shadow-[0_4px_15px_rgba(0,119,190,0.4)] uppercase hover:bg-[#005f99] hover:scale-105 hover:shadow-lg">
-                      {project.buttonText}
-                    </button>
-                  </a>
-                </div>
+            return (
+              <div
+                key={project.id}
+                className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${
+                  shouldBeWide ? "md:col-span-2" : "md:col-span-1"
+                }`}
+              >
+                {/* Image Wrapper */}
+                <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
+                  <img
+                    src={project.src}
+                    alt={project.alt}
+                    className="w-full h-full object-cover block transition-transform duration-300 group-hover:scale-105"
+                  />
 
-                {/* Category Badge */}
-                <div className="absolute top-3 right-3 bg-black/70 text-white px-3.5 py-1 rounded-full text-[0.65rem] font-semibold tracking-wide uppercase backdrop-blur-[5px]">
-                  {project.category}
+                  {/* Text Overlay */}
+                  {renderOverlay(project)}
+
+                  {/* Bottom Right - What Lasts with Plus Icon */}
+                  <div
+                    className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-43 h-12 sm:h-14 md:h-16 px-2 py-2 flex items-end justify-between transition-all duration-200 bg-black/60 group-hover:bg-[#1989c2]`}
+                  >
+                    <span className="text-xs sm:text-sm md:text-sm font-medium">
+                      What Lasts
+                    </span>
+                    <FiPlus className="absolute top-1 right-1 sm:top-2 sm:right-2 text-base sm:text-lg" />
+                  </div>
                 </div>
               </div>
-
-              {/* Title for non-overlay projects */}
-              {!project.showOverlay && (
-                <h3 className="text-[clamp(0.9rem,1.05vw,1.05rem)] font-semibold text-black px-4 py-3 m-0 bg-white text-center border-t border-gray-100 tracking-wide transition-all duration-300 hover:bg-[#0077be] hover:text-white">
-                  {project.title}
-                </h3>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* No projects message */}
