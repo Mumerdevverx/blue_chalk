@@ -64,7 +64,7 @@ const News = () => {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="h-[230px] w-full object-cover sm:h-[250px] md:h-[267px]"
+                    className="h-[230px] grayscale hover:grayscale-0 w-full object-cover sm:h-[250px] md:h-[267px]"
                   />
                 </div>
 
