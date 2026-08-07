@@ -187,7 +187,7 @@ const Home = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className="text-blue-500 font-medium text-lg hover:text-black transition-colors duration-300 border-b border-gray-100 pb-3"
+                className="text-blue-500 font-medium  text-lg hover:text-black transition-colors duration-300 border-b border-gray-100 pb-3"
                 onClick={() => setIsDrawerOpen(false)}
               >
                 {item.label}
@@ -223,7 +223,7 @@ const Home = () => {
               <img
                 src={bluechalk}
                 alt="Blue Chalk"
-                className="w-24 sm:w-32 md:w-48 lg:w-64 h-auto"
+                className="w-40 sm:w-32 md:w-48 lg:w-64 h-auto"
               />
             </div>
 
@@ -301,15 +301,15 @@ const Home = () => {
       <footer className="hidden md:flex fixed bottom-4 md:bottom-4 lg:bottom-6 font-basis-web left-4 sm:left-8 md:left-14 right-4 sm:right-8 md:right-15 items-center pt-2">
         <ul className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-24 lg:pl-10 m-0 p-0">
           {navItems.map((item) => (
-            <li key={item.path}>
-              <Link
-                to={item.path}
-                className="text-blue-500 font-medium no-underline text-xs sm:text-sm md:text-[17px] leading-4 tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
+  <li key={item.path} className="md:hidden lg:block">
+    <Link
+      to={item.path}
+      className="text-blue-500 font-medium no-underline text-xs sm:text-sm lg:text-[17px] leading-4 tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
+    >
+      {item.label}
+    </Link>
+  </li>
+))}
         </ul>
       </footer>
     </div>
