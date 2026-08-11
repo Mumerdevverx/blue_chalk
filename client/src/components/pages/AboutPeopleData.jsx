@@ -65,12 +65,12 @@ const AboutPeopleData = () => {
   return (
     <div className="bg-[#F5F4F2] py-[40px] sm:py-[50px] md:py-[60px]">
       <section className="w-full max-w-[1155px] mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
-        <h2 className="text-[28px] sm:text-[32px] md:text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[30px] sm:mb-[40px] md:mb-[50px]">
+        <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] max-sm:pl-4 md:pl-4 lg:pl-0 mb-[40px] md:mb-[60px] lg:mb-[50px]">
           Meet the Teams
         </h2>
 
         {/* Grid layout for responsive team members */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 md:gap-x-8 lg:gap-x-12 gap-y-[40px] sm:gap-y-[50px] md:gap-y-[60px]">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 md:gap-x-10 lg:gap-x-12 gap-y-[40px] sm:gap-y-[50px] md:gap-y-[60px]">
           {teamMembers.map((member, index) => {
             return (
               <div key={member.id} className="text-center">
@@ -115,7 +115,7 @@ const AboutPeopleData = () => {
 
                 {/* Name and Pronouns */}
                 <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 mt-3 sm:mt-4 px-2">
-                  <h3 className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-[#0089D0] font-normal">
+                  <h3 className="text-[18px] md:text-[24px] lg:text-[24px] md:leading-[24px] leading-[18px] text-[#0089D0] font-normal">
                     {member.name}
                   </h3>
                   <p className="text-[13px] sm:text-[14px] md:text-[16px] lg:text-[18px] text-[#0089D0] font-normal">
@@ -124,19 +124,19 @@ const AboutPeopleData = () => {
                 </div>
 
                 {/* Position */}
-                <p className="mt-1 text-[9px] sm:text-[10px] md:text-[11px] lg:text-[12px] tracking-[2px] sm:tracking-[3px] text-[#152B3D] uppercase px-2">
+                <p className="mt-1 text-[9px] sm:text-[10px] md:text-[11px] lg:text-[11px] tracking-[2px] sm:tracking-[3px] text-[#152B3D] uppercase px-2">
                   {member.position}
                 </p>
 
                 {/* Details - Shows when clicked */}
                 {selectedIndex === index && (
                   <div className="mt-4 text-left px-2 sm:px-3 md:px-4">
-                    <p className="text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] leading-[1.65] text-[#152B3D]">
+                    <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
                       {member.description}
                     </p>
 
                     <div className="mt-4">
-                      <p className="text-[13px] md:text-[14px] lg:text-[12px]  text-[#3C93D8]">
+                      <p className="text-[11px] md:text-[11px] lg:text-[11px]  leading-[28px] text-[#3C93D8]">
                         CONTACT / FOLLOW:
                       </p>
                       <div className="flex flex-wrap gap-3 sm:gap-4 mt-3">
@@ -189,7 +189,7 @@ const AboutPeopleData = () => {
                     <div className="flex gap-2 mt-4">
                       <button
                         onClick={() => setSelectedIndex(null)}
-                        className="mt-1.5 text-[12px] sm:text-[13px] md:text-[18px] text-[#293339] hover:underline transition-colors duration-200 hover:text-blue-700"
+                        className="lg:mt-2.5 mt-2  text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#293339]  transition-colors duration-200 hover:text-[#0089D0]"
                       >
                         CLOSE
                       </button>
@@ -197,7 +197,7 @@ const AboutPeopleData = () => {
                       <img
                         src={closeicon}
                         alt="Close Icon"
-                        className="w-6 h-6"
+                        className="lg:w-7 lg:h-7 md:w-8 md:h-8 w-8 h-8"
                       />
                     </div>
                   </div>
