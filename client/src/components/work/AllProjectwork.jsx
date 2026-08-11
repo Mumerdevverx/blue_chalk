@@ -826,10 +826,10 @@ const AllProjectwork = () => {
   const isAllProjects = activeFilter === "All Projects";
 
   return (
-    <div className="max-w-[1440px] mx-auto">
+    <div className="max-w-[1440px] ">
       {/* Navigation Bar */}
-      <nav className="flex justify-between items-center py-6 border-gray-100 mb-8 flex-wrap gap-4">
-        <div className="flex gap-4 md:gap-10 items-center flex-wrap">
+      <nav className="flex justify-between items-start py-6 border-gray-100 mb-8 flex-wrap gap-4">
+        <div className="flex gap-4 md:gap-10 items-start flex-wrap">
           {navItems.map((item) => (
             <a
               key={item}
@@ -849,19 +849,19 @@ const AllProjectwork = () => {
       {/* Portfolio Filter */}
       <div ref={portfolioRef} className="w-full js-portfolio-variety-1">
         {/* Filter Bar */}
-        <div className="text-center mb-10">
+        <div className="text-start mb-10">
           {/* 2-Column Filter Layout */}
-          <div className="relative grid grid-cols-2 gap-1 sm:gap-3 lg:max-w-[500px] mx-auto px-4 pt-6 sm:pt-0 w-full lg:px-0 md:px-6">
+          <div className="relative grid grid-cols-2 gap-1 sm:gap-3 lg:max-w-[500px] mx-auto px-4 lg:pt-6 pt-0 w-full lg:px-0 md:px-6">
             {/* FILTER BY - Small text above Featured */}
-            <div className="absolute lg:-top-4 md:-top-1.5 top-3 lg:left-1 md:left-6.5 left-4 text-[11px] font-semibold text-gray-400 tracking-widest uppercase">
-              FILTER BY
-            </div>
+              <div className="absolute lg:top-1 md:-top-2.5 top-3 lg:left-17 md:left-13.5 left-4 text-[11px] font-semibold text-[#C2BBB6] tracking-[3px]   uppercase">
+                FILTER BY:
+              </div>
 
             {/* Left Column - Featured and All Projects */}
-            <div className="flex flex-col items-start gap-0.5 mt-2">
+            <div className="flex flex-col items-center gap-0.5 lg:mt-2 md:mt-2 mt-8 md:ml-7 lg:ml-16">
               <button
                 onClick={() => portfolioFilter.filter("Featured")}
-                className={`lg:text-[36px] md:text-2xl text-xl py-0.5 font cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                className={`lg:text-[36px] md:text-4xl text-xl py-0.5 font cursor-pointer transition-all duration-300   w-full text-left ${
                   activeFilter === "Featured"
                     ? "text-[#1893D2]"
                     : "text-[#C2BBB6] hover:text-[#1893D2]"
@@ -870,26 +870,26 @@ const AllProjectwork = () => {
                 Featured
               </button>
 
-              <button
-                onClick={() => portfolioFilter.filter("All Projects")}
-                className={`lg:text-[36px] md:text-2xl text-xl py-0.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
-                  activeFilter === "All Projects"
-                    ? "text-[#1893D2]"
-                    : "text-[#C2BBB6] hover:text-[#1893D2]"
-                }`}
-              >
-                All Projects
-              </button>
+             <button
+  onClick={() => portfolioFilter.filter("All Projects")}
+  className={`lg:text-[36px] md:text-4xl text-xl py-0.5 cursor-pointer transition-all duration-300   w-full text-left whitespace-nowrap ${
+    activeFilter === "All Projects"
+      ? "text-[#1893D2]"
+      : "text-[#877A71] hover:text-[#1893D2]"
+  }`}
+>
+  All Projects
+</button>
             </div>
 
             {/* Right Column - Branded with Arrow */}
-            <div className="flex flex-col md:ml-8 lg:ml-25 mt-2">
+            <div className="flex flex-col md:ml-2 lg:ml-45 mt-2">
               {/* Branded with Arrow */}
               <div className="flex items-center w-full gap-3 md:gap-4 lg:gap-6">
                 {/* ✅ FIX 1: Branded Text par click karne par SIRF Filter chale, toggle nahi */}
                 <button
                   onClick={() => portfolioFilter.filter("Branded")}
-                  className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider text-left ${
+                  className={`lg:text-[36px] md:text-4xl max-sm:mt-4 text-xl py-1.5 cursor-pointer transition-all duration-300   text-left ${
                     activeFilter === "Branded"
                       ? "text-[#1893D2]"
                       : "text-[#C2BBB6] hover:text-[#1893D2]"
@@ -904,7 +904,7 @@ const AllProjectwork = () => {
                   className="cursor-pointer transition-colors duration-200 text-[#7d7c7c] hover:text-[#1893D2] flex-shrink-0 flex items-center justify-center"
                 >
                   <svg
-                    className={`w-7 h-7 md:w-9 md:h-9 lg:w-10 lg:h-10  lg:ml-50 md:ml-36 ml-16
+                    className={`w-7 h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 max-sm:mt-4  lg:ml-50 md:ml-20 ml-10
                        transition-all duration-300 ${
                       isBrandOpen ? "rotate-180" : ""
                     }`}
@@ -924,10 +924,10 @@ const AllProjectwork = () => {
 
               {/* Sub Categories - Only show when Branded is open */}
               {isBrandOpen && (
-                <div className="flex flex-col items-start w-full pl-0 animate-[slideDown_0.3s_ease]">
+                <div className="flex flex-col items-start  w-full pl-0 animate-[slideDown_0.3s_ease]">
                   <button
                     onClick={() => portfolioFilter.filter("Entertainment")}
-                    className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                    className={`lg:text-[36px] md:text-4xl leading-[43px] text-xl py-1.5 cursor-pointer transition-all duration-300   w-full text-left ${
                       activeFilter === "Entertainment"
                         ? "text-[#1893D2]"
                         : "text-[#C2BBB6] hover:text-[#1893D2]"
@@ -938,7 +938,7 @@ const AllProjectwork = () => {
 
                   <button
                     onClick={() => portfolioFilter.filter("Social Impact")}
-                    className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                    className={`lg:text-[36px] md:text-4xl leading-[43px] text-xl py-1.5 cursor-pointer transition-all duration-300   w-full text-left ${
                       activeFilter === "Social Impact"
                         ? "text-[#1893D2]"
                         : "text-[#C2BBB6] hover:text-[#1893D2]"
@@ -949,7 +949,7 @@ const AllProjectwork = () => {
 
                   <button
                     onClick={() => portfolioFilter.filter("Documentary")}
-                    className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider w-full text-left ${
+                    className={`lg:text-[36px] leading-[43px] md:text-4xl text-xl py-1.5 cursor-pointer transition-all duration-300  w-full text-left ${
                       activeFilter === "Documentary"
                         ? "text-[#1893D2]"
                         : "text-[#C2BBB6] hover:text-[#1893D2]"
