@@ -10,15 +10,16 @@ const AllProjectwork = () => {
   // Screen size detection for LG screens
   const [isLgScreen, setIsLgScreen] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     const checkScreenSize = () => {
       const isLg = window.innerWidth >= 1024;
       setIsLgScreen(isLg);
-      
-      // Set active filter to "Branded" on LG screens
+
+      // ✅ FIX 1: Active filter "Featured" kar diya
+      // ✅ FIX 2: isBrandOpen ko true kar diya (taake arrow by default open rahe)
       if (isLg) {
-        setActiveFilter("Branded");
-        setIsBrandOpen(true);
+        setActiveFilter("Featured"); 
+        setIsBrandOpen(true); // <-- Arrow by default open rahega
       } else {
         setActiveFilter("All Projects");
         setIsBrandOpen(false);
@@ -26,8 +27,8 @@ const AllProjectwork = () => {
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   // 50 Projects with equal distribution - 10 projects per category
@@ -885,32 +886,40 @@ const AllProjectwork = () => {
             <div className="flex flex-col md:ml-8 lg:ml-25 mt-2">
               {/* Branded with Arrow */}
               <div className="flex items-center w-full gap-3 md:gap-4 lg:gap-6">
-               <button
-  onClick={() => setIsBrandOpen(!isBrandOpen)}
-  className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider text-left flex items-center gap-3 md:gap-4 lg:gap-6 ${
-    activeFilter === "Branded" 
-      ? "text-[#1893D2]" 
-      : "text-[#C2BBB6] hover:text-[#1893D2]"
-  }`}
->
-  <span>Branded</span>
-  {/* Arrow SVG - Rotates when open */}
-  <svg
-    className={`w-7 h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 transition-all duration-300 text-[#7d7c7c] hover:text-[#1893D2] flex-shrink-0 lg:ml-46 md:ml-14  ${
-      isBrandOpen ? "rotate-180" : ""
-    }`}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={1}
-      d="M19 9l-7 7-7-7"
-    />
-  </svg>
-</button>
+                {/* ✅ FIX 1: Branded Text par click karne par SIRF Filter chale, toggle nahi */}
+                <button
+                  onClick={() => portfolioFilter.filter("Branded")}
+                  className={`lg:text-[36px] md:text-2xl text-xl py-1.5 cursor-pointer transition-all duration-300 tracking-wider text-left ${
+                    activeFilter === "Branded"
+                      ? "text-[#1893D2]"
+                      : "text-[#C2BBB6] hover:text-[#1893D2]"
+                  }`}
+                >
+                  <span>Branded</span>
+                </button>
+
+                {/* ✅ FIX 2: Sirf Arrow par click karne par Toggle open/close hoga */}
+                <button
+                  onClick={() => setIsBrandOpen(!isBrandOpen)}
+                  className="cursor-pointer transition-colors duration-200 text-[#7d7c7c] hover:text-[#1893D2] flex-shrink-0 flex items-center justify-center"
+                >
+                  <svg
+                    className={`w-7 h-7 md:w-9 md:h-9 lg:w-10 lg:h-10  lg:ml-50 md:ml-36 ml-16
+                       transition-all duration-300 ${
+                      isBrandOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
               </div>
 
               {/* Sub Categories - Only show when Branded is open */}
@@ -955,25 +964,42 @@ const AllProjectwork = () => {
         </div>
 
         {/* Projects Grid - 3 columns */}
+        {/* Projects Grid - 3 columns (Fixed Layout for 10 items) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
           {filteredProjects.map((project, index) => {
-            // For filtered views (not "All Projects"), first image takes 2 columns on md and lg
-            const isFirstItem = index === 0;
-            const shouldBeWide = !isAllProjects && isFirstItem;
+            // Agar "All Projects" nahi hai (filtered view hai), toh layout fix karo
+            const isFilteredView = !isAllProjects;
+
+            // Agar Filtered View hai aur Index 0, 1, ya 2 hai toh alag layout do
+            let gridClass = "md:col-span-1";
+
+            if (isFilteredView) {
+              if (index === 0) {
+                // 1st image: 2 columns wide, 2 rows tall
+                gridClass = "md:col-span-2 md:row-span-2";
+              } else if (index === 1 || index === 2) {
+                // 2nd aur 3rd image: Right column mein (Col 3) vertically stack hongi
+                gridClass = "md:col-start-3";
+              }
+              // Baaki (Index 3 se 9 tak) normal 3-column grid mein chale jayenge
+            }
 
             return (
               <div
                 key={project.id}
-                className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${
-                  shouldBeWide ? "md:col-span-2" : "md:col-span-1"
-                }`}
+                className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${gridClass}`}
               >
                 {/* Image Wrapper */}
                 <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
                   <img
                     src={project.src}
                     alt={project.alt}
-                    className="w-full h-full object-cover block transition-transform duration-300 grayscale  group-hover:grayscale-0"
+                    className="w-full h-full object-cover block transition-transform duration-300 grayscale group-hover:grayscale-0"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src =
+                        "https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found";
+                    }}
                   />
 
                   {/* Text Overlay */}

@@ -21,6 +21,27 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close menu on escape key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  // Prevent scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+
   const closeMenu = () => {
     setIsOpen(false);
   };
@@ -35,19 +56,17 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 w-full bg-white z-50">
       <div className="max-w-[1170px] mx-auto h-[70px] px-5 sm:px-6 lg:px-0 flex items-center">
-
         {/* Logo */}
         <Link to="/" onClick={closeMenu} className="shrink-0">
           <img
             src={logonav}
             alt="Blue Chalk"
-            className="w-[75px] sm:w-[80px] md:w-[85px] h-auto"
+            className="lg:w-[85px] md:w-[80px] w-[75px] h-auto"
           />
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center ml-[70px] lg:ml-[120px] xl:ml-[160px] gap-[35px] lg:gap-[55px]">
-
           <Link to="/about" className={getLinkClass("/about")}>
             About
           </Link>
@@ -63,7 +82,6 @@ const Navbar = () => {
           <Link to="/contact" className={getLinkClass("/contact")}>
             Contact
           </Link>
-
         </div>
 
         {/* Mobile Menu Button */}
@@ -78,24 +96,33 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Top to Bottom with Half Screen */}
       <div
-        className={`md:hidden absolute left-0 top-[70px] w-full bg-white border-t border-gray-100 shadow-lg z-50 transition-all duration-300 ${
-          isOpen
-            ? "opacity-100 visible translate-y-0"
-            : "opacity-0 invisible -translate-y-2"
+        className={`md:hidden fixed top-0 left-0 w-full bg-white shadow-lg z-[100] transition-transform duration-400 ease-in-out ${
+          isOpen ? "translate-y-0" : "-translate-y-full"
         }`}
+        style={{ height: "45vh", maxHeight: "400px" }}
       >
-        <div className="px-6 py-5 flex flex-col">
+        {/* Close button */}
+        <div className="flex justify-end p-4">
+          <button
+            type="button"
+            onClick={closeMenu}
+            className="text-[#0089D0] text-[30px] leading-none w-[42px] h-[42px] flex items-center justify-center"
+            aria-label="Close menu"
+          >
+            ×
+          </button>
+        </div>
 
+        {/* Menu Links - Centered */}
+        <div className="flex flex-col items-center justify-center h-[calc(100%-70px)] px-20">
           <Link
             to="/about"
             onClick={closeMenu}
-            className={`py-3 text-[17px] border-b border-gray-100 ${
-              location.pathname === "/about"
-                ? "text-black"
-                : "text-[#0089D0]"
-            }`}
+            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+              location.pathname === "/about" ? "text-black" : "text-[#0089D0]"
+            } hover:text-[#006fae] transition-colors`}
           >
             About
           </Link>
@@ -103,11 +130,9 @@ const Navbar = () => {
           <Link
             to="/work"
             onClick={closeMenu}
-            className={`py-3 text-[17px] border-b border-gray-100 ${
-              location.pathname === "/work"
-                ? "text-black"
-                : "text-[#0089D0]"
-            }`}
+            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+              location.pathname === "/work" ? "text-black" : "text-[#0089D0]"
+            } hover:text-[#006fae] transition-colors`}
           >
             Work
           </Link>
@@ -115,11 +140,9 @@ const Navbar = () => {
           <Link
             to="/news"
             onClick={closeMenu}
-            className={`py-3 text-[17px] border-b border-gray-100 ${
-              location.pathname === "/news"
-                ? "text-black"
-                : "text-[#0089D0]"
-            }`}
+            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+              location.pathname === "/news" ? "text-black" : "text-[#0089D0]"
+            } hover:text-[#006fae] transition-colors`}
           >
             News
           </Link>
@@ -127,17 +150,22 @@ const Navbar = () => {
           <Link
             to="/contact"
             onClick={closeMenu}
-            className={`py-3 text-[17px] ${
-              location.pathname === "/contact"
-                ? "text-black"
-                : "text-[#0089D0]"
-            }`}
+            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+              location.pathname === "/contact" ? "text-black" : "text-[#0089D0]"
+            } hover:text-[#006fae] transition-colors`}
           >
             Contact
           </Link>
-
         </div>
       </div>
+
+      {/* Overlay for background */}
+      <div
+        className={`md:hidden fixed inset-0 bg-black/50 z-[90] transition-opacity duration-300 ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={closeMenu}
+      />
     </nav>
   );
 };
