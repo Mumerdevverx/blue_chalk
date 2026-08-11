@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 // Import all team images
 import teamOne from "../../assets/about/team/teamOne.jpg";
@@ -9,6 +9,8 @@ import teamThree from "../../assets/about/team/teamThree.jpg";
 import teamThrees from "../../assets/about/team/teamThrees.jpg";
 import teamFour from "../../assets/about/team/teamFour.jpg";
 import teamFours from "../../assets/about/team/teamFours.jpg";
+
+import closeicon from "../../assets/about/team/closeicon.svg";
 
 const AboutPeopleData = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -21,7 +23,8 @@ const AboutPeopleData = () => {
       position: "FOUNDER AND CEO",
       image: teamOne,
       hoverImage: teamOnes,
-      description: "Greg Moyer founded Blue Chalk Media in 2013 with a vision to create compelling, cinematic nonfiction content that resonates with audiences worldwide. Under his leadership, the company has grown into an award-winning production house known for its authentic storytelling and human-centered approach."
+      description:
+        "Greg Moyer founded Blue Chalk Media in 2013 with a vision to create compelling, cinematic nonfiction content that resonates with audiences worldwide. Under his leadership, the company has grown into an award-winning production house known for its authentic storytelling and human-centered approach.",
     },
     {
       id: 2,
@@ -30,7 +33,8 @@ const AboutPeopleData = () => {
       position: "CHIEF REVENUE OFFICER",
       image: teamTwo,
       hoverImage: teamTwos,
-      description: "Pam Huling is chief revenue officer and co-founder of Blue Chalk, where she drives business development and strategic partnerships. With a background in media sales and production, Pam has been instrumental in building the company's diverse client roster and expanding its global reach."
+      description:
+        "Pam Huling is chief revenue officer and co-founder of Blue Chalk, where she drives business development and strategic partnerships. With a background in media sales and production, Pam has been instrumental in building the company's diverse client roster and expanding its global reach.",
     },
     {
       id: 3,
@@ -39,7 +43,8 @@ const AboutPeopleData = () => {
       position: "Post-Production Manager",
       image: teamThree,
       hoverImage: teamThrees,
-      description: "Mariko Fujinaka joined Blue Chalk in 2018 and brings a wealth of experience in documentary writing and post-production. Her keen eye for detail and narrative structure has elevated countless projects, from branded content to feature-length documentaries."
+      description:
+        "Mariko Fujinaka joined Blue Chalk in 2018 and brings a wealth of experience in documentary writing and post-production. Her keen eye for detail and narrative structure has elevated countless projects, from branded content to feature-length documentaries.",
     },
     {
       id: 4,
@@ -48,8 +53,9 @@ const AboutPeopleData = () => {
       position: "EXECUTIVE PRODUCER",
       image: teamFour,
       hoverImage: teamFours,
-      description: "Natalie Taylor is an executive producer who has been with Blue Chalk since 2014. With over a decade of experience in nonfiction production, Natalie oversees complex projects from concept to completion, ensuring each story is told with integrity and impact."
-    }
+      description:
+        "Natalie Taylor is an executive producer who has been with Blue Chalk since 2014. With over a decade of experience in nonfiction production, Natalie oversees complex projects from concept to completion, ensuring each story is told with integrity and impact.",
+    },
   ];
 
   const handleToggle = (index) => {
@@ -57,8 +63,8 @@ const AboutPeopleData = () => {
   };
 
   return (
-    <div className='bg-[#F5F4F2] py-[40px] sm:py-[50px] md:py-[60px]'>
-      <section className="w-full max-w-[1155px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+    <div className="bg-[#F5F4F2] py-[40px] sm:py-[50px] md:py-[60px]">
+      <section className="w-full max-w-[1155px] mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
         <h2 className="text-[28px] sm:text-[32px] md:text-[36px] md:text-[40px] font-normal text-[#152B3D] mb-[30px] sm:mb-[40px] md:mb-[50px]">
           Meet the Teams
         </h2>
@@ -73,24 +79,36 @@ const AboutPeopleData = () => {
                   onClick={() => handleToggle(index)}
                   className="group w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[260px] xl:h-[260px] rounded-full overflow-hidden cursor-pointer mx-auto transition-transform duration-300 hover:scale-105"
                 >
+                  {/* Default Image - Pure CSS Filter se #B1DAEF (Light Blue) color diya gaya */}
                   <img
                     src={member.image}
                     alt={member.name}
                     className="w-full h-full object-cover group-hover:hidden"
+                    style={{
+                      filter:
+                        "sepia(0.5) hue-rotate(180deg) saturate(5) opacity(0.6)",
+                    }}
                     loading="lazy"
                     onError={(e) => {
                       console.error("❌ Image failed to load:", member.image);
-                      e.target.src = 'https://via.placeholder.com/200?text=Team+Member';
+                      e.target.src =
+                        "https://via.placeholder.com/200?text=Team+Member";
                     }}
                   />
+
+                  {/* Hover Image - Bilkul waise hi Black & White (Grayscale) */}
                   <img
                     src={member.hoverImage}
                     alt={member.name}
-                    className="w-full h-full object-cover hidden group-hover:block"
+                    className="w-full h-full object-cover hidden group-hover:block grayscale"
                     loading="lazy"
                     onError={(e) => {
-                      console.error("❌ Hover image failed to load:", member.hoverImage);
-                      e.target.src = 'https://via.placeholder.com/200?text=Team+Member';
+                      console.error(
+                        "❌ Hover image failed to load:",
+                        member.hoverImage,
+                      );
+                      e.target.src =
+                        "https://via.placeholder.com/200?text=Team+Member";
                     }}
                   />
                 </div>
@@ -118,22 +136,70 @@ const AboutPeopleData = () => {
                     </p>
 
                     <div className="mt-4">
-                      <p className="text-[13px] sm:text-[14px] md:text-[16px] font-semibold text-[#152B3D]">
+                      <p className="text-[13px] md:text-[14px] lg:text-[12px]  text-[#3C93D8]">
                         CONTACT / FOLLOW:
                       </p>
-                      <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-3">
-                        <a href="#" className="text-[#0089D0] hover:underline text-xs sm:text-sm transition-colors duration-200 hover:text-blue-700">LinkedIn</a>
-                        <a href="#" className="text-[#0089D0] hover:underline text-xs sm:text-sm transition-colors duration-200 hover:text-blue-700">Twitter</a>
-                        <a href="#" className="text-[#0089D0] hover:underline text-xs sm:text-sm transition-colors duration-200 hover:text-blue-700">Instagram</a>
+                      <div className="flex flex-wrap gap-3 sm:gap-4 mt-3">
+                        {/* LinkedIn Icon (FIXED) */}
+                        <a
+                          href="#"
+                          className="w-[25px] h-[25px] bg-[#0089D0] rounded-xs flex items-center justify-center hover:bg-[#0379b5] transition-colors duration-200"
+                          aria-label="LinkedIn"
+                        >
+                          <svg
+                            className="w-[14px] h-[14px]"
+                            viewBox="0 0 24 24"
+                            fill="white"
+                          >
+                            <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+                          </svg>
+                        </a>
+
+                        {/* Twitter Icon (Unchanged) */}
+                        <a
+                          href="#"
+                          className="w-[25px] h-[25px] bg-[#0089D0] rounded-xs flex items-center justify-center hover:bg-[#0379b5] transition-colors duration-200"
+                          aria-label="Twitter"
+                        >
+                          <svg
+                            className="w-[14px] h-[14px] fill-white"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                          </svg>
+                        </a>
+
+                        {/* Email Icon (Unchanged) */}
+                        <a
+                          href="#"
+                          className="w-[25px] h-[25px] bg-[#0089D0] rounded-xs flex items-center justify-center hover:bg-[#0379b5] transition-colors duration-200"
+                          aria-label="Email"
+                        >
+                          <svg
+                            className="w-[14px] h-[14px] fill-white"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z" />
+                          </svg>
+                        </a>
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => setSelectedIndex(null)}
-                      className="mt-4 text-[12px] sm:text-[13px] font-semibold text-[#0089D0] hover:underline transition-colors duration-200 hover:text-blue-700"
-                    >
-                      CLOSE
-                    </button>
+                    {/* ✅ FIXED: Correctly aligned Close Button + Close Icon */}
+                    <div className="flex gap-2 mt-4">
+                      <button
+                        onClick={() => setSelectedIndex(null)}
+                        className="mt-1.5 text-[12px] sm:text-[13px] md:text-[18px] text-[#293339] hover:underline transition-colors duration-200 hover:text-blue-700"
+                      >
+                        CLOSE
+                      </button>
+                      {/* ✅ Variable name corrected from {close} to {closeicon} */}
+                      <img
+                        src={closeicon}
+                        alt="Close Icon"
+                        className="w-6 h-6"
+                      />
+                    </div>
                   </div>
                 )}
               </div>
