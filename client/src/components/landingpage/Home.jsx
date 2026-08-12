@@ -208,7 +208,7 @@ const Home = () => {
 
       <section className="min-h-screen flex flex-col lg:flex-row items-start">
         {/* Video Section - Full height on sm, adjusted on md and lg */}
-        <div className="w-full lg:w-[982px] h-screen sm:h-screen md:h-[562px] lg:h-[562px] relative">
+        <div className="w-full lg:flex-1 h-screen sm:h-screen md:h-[562px] lg:h-[562px] relative">
           <Link
             to="https://bluechalk.com/work/what-lasts/"
             className="relative w-full h-full overflow-hidden bg-[#1a1a1a] block"
