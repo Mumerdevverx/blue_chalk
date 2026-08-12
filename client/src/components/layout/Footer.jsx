@@ -9,10 +9,10 @@ import whitetwitter from "../../assets/footerlogo/whitetwitter.svg"
 const Footer = () => {
   return (
     <footer className="w-full bg-[#263238] text-[#bdbdbd]">
-      <div className="max-w-[1170px] lg:ml-18 min-h-[270px] lg:px-0 px-6  py-[40px] md:px-14   flex flex-col md:flex-row justify-between">
+      <div className="max-w-[1170px] lg:ml-18 min-h-[270px] lg:px-14 px-7  py-[40px] md:px-14   flex flex-col md:flex-row justify-between">
         
         {/* Left Side */}
-        <div className="mb-8 md:mb-0">
+        <div className="mb-0 md:mb-0">
           {/* Address */}
           <div className="text-[16px] mt-8 leading-[23px] text-[#C2BBB6]">
             <p>68 Jay Street Suite 201</p>
@@ -44,7 +44,7 @@ const Footer = () => {
         <div className="flex flex-col mt-4 md:mt-8 items-start md:items-start mr-0 lg:mr-[180px]">
           
           {/* Links */}
-          <div className="text-[14px] text-[#777f83] flex flex-wrap items-center">
+          <div className="text-[14px] max-sm:w-[70%] text-[#777f83] flex flex-wrap items-center">
             <a
               href="/privacy-policy"
               className="hover:text-[#4d8baa] hover:underline"
