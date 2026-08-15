@@ -8,6 +8,7 @@ import Layout from "./layout/Layout";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import News from "./pages/News";
+import NewsBlogs from "./pages/NewsBlogs";
 import Work from "./pages/Works";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
@@ -28,7 +29,7 @@ const Allroutes = () => {
         <Route path="/work" element={<Work />} />
 
         <Route path="/news" element={<News />} />
-
+        <Route path="/newsblogs" element={<NewsBlogs />} />
         <Route path="/contact" element={<Contact />} />
 
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
