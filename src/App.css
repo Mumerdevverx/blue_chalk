@@ -1,0 +1,68 @@
+/* src/app.css */
+@import "tailwindcss";
+
+:root {
+  font-family: 'Basis Grotesque Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #111827;
+  background-color: #ffffff;
+}
+
+body {
+  font-family: 'Basis Grotesque Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* ========================================
+   BASIS GROTESQUE WEB FONT
+   ======================================== */
+
+@font-face {
+  font-family: 'Basis Grotesque Web';
+  src: url('/fonts/BasisGrotesqueArabicPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+
+
+/* ========================================
+   UTILITY CLASS - APPLY ONLY WHERE USED
+   ======================================== */
+
+.font-basis-web {
+  font-family: 'Basis Grotesque Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+
+/* Medium - 500 */
+@font-face {
+  font-family: 'Basis Grotesque Web';
+  src: url('/fonts/BasisGrotesqueArabicPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* SemiBold - 600 */
+@font-face {
+  font-family: 'Basis Grotesque Web';
+  src: url('/fonts/BasisGrotesqueArabicPro-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold - 700 */
+@font-face {
+  font-family: 'Basis Grotesque Web';
+  src: url('/fonts/BasisGrotesqueArabicPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
