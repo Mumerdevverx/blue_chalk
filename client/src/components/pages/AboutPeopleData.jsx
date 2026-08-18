@@ -64,7 +64,7 @@ const AboutPeopleData = () => {
 
   return (
     <div className="bg-[#F5F4F2] py-[40px] sm:py-[50px] md:py-[60px]">
-      <section className="w-full max-w-[1155px] mx-auto px-4 sm:px-6 md:px-8 lg:px-0">
+      <section className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] max-sm:pl-4 md:pl-4 lg:pl-0 mb-[40px] md:mb-[60px] lg:mb-[50px]">
           Meet the Teams
         </h2>

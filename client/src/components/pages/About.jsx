@@ -111,7 +111,7 @@ const About = () => {
       {/* ================= VIDEO ================= */}
       <div className="w-full flex items-center justify-center lg:px-0 md:px-13 px-7 ">
         <div
-          className="relative w-full max-w-[1155px] overflow-hidden cursor-pointer"
+          className="relative w-full max-w-[1200px] overflow-hidden cursor-pointer"
           onClick={!isPlaying ? handlePlay : undefined}
         >
           {/* Image */}
@@ -152,7 +152,7 @@ const About = () => {
       </div>
 
       {/* ================= ABOUT CONTENT ================= */}
-      <section className="w-full max-w-[1155px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-0 md:px-13 px-7">
+      <section className="w-full max-w-[1200px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-0 md:px-13 px-7">
         {/* ================= ABOUT US ================= */}
         <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px] ">
           About Us
@@ -237,7 +237,7 @@ const About = () => {
       </div>
 
       {/* ================= SERVICES ================= */}
-      <section className="w-full max-w-[1155px] mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px]  lg:px-0 md:px-13 px-7">
+      <section className="w-full max-w-[1200px] mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px]  lg:px-0 md:px-13 px-7">
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[20px] sm:mb-[25px] md:mb-[30px]">
           Services
         </h2>
@@ -269,7 +269,7 @@ const About = () => {
       </section>
 
       {/* ================= CLIENTS & PARTNERS - DIRECTLY IN ABOUT.JS ================= */}
-      <section className="w-full mx-auto lg:px-31 mt-[50px] sm:mt-[60px] md:mt-[80px] lg:px-0 md:px-13 px-7 ">
+      <section className="w-full mx-auto lg:px-25 mt-[50px] sm:mt-[60px] md:mt-[80px] md:px-13 px-7 ">
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[30px] sm:mb-[40px] md:mb-[50px]">
           Blue Chalk Clients & Partners
         </h2>
@@ -303,7 +303,7 @@ const About = () => {
       <AboutPeopleData />
 
       {/* ================= CAREERS ================= */}
-      <section className="w-full max-w-[1155px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
+      <section className="w-full max-w-[1200px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
         <h2 className="text-[36px] md:text-[32px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
           Careers
         </h2>

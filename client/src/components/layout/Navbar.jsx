@@ -46,27 +46,27 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  const getLinkClass = (path) =>
-    `text-[16px] lg:text-[17px] font-normal transition-colors ${
-      location.pathname === path
-        ? "text-black"
-        : "text-[#0089D0] hover:text-[#006fae]"
-    }`;
+ const getLinkClass = (path) =>
+  `text-[16px] lg:text-[17px] font-basis transition-colors ${
+    location.pathname === path
+      ? "text-black"
+      : "text-[#0089D0] hover:text-[#006fae]"
+  }`;
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white z-50">
-      <div className="max-w-[1170px] mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-0 flex items-center">
+    <nav className="fixed top-1 left-0 w-full bg-white z-50">
+      <div className="max-w-[1220px] mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-0 flex items-center">
         {/* Logo */}
         <Link to="/" onClick={closeMenu} className="shrink-0">
           <img
             src={logonav}
             alt="Blue Chalk"
-            className="lg:w-[80px] md:w-[80px] w-[75px] ml-2 h-auto"
+            className="lg:w-[90px] md:w-[80px] w-[75px] ml-2 h-auto"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center ml-[70px]  lg:ml-[120px] xl:ml-[168px] gap-[35px] md:gap-[60px] lg:gap-[100px]">
+        <div className="hidden md:flex leading-[17px]  items-center ml-[70px]  lg:ml-[120px] xl:ml-[165px] gap-[35px] md:gap-[60px] lg:gap-[105px]">
           <Link to="/about" className={getLinkClass("/about")}>
             About
           </Link>

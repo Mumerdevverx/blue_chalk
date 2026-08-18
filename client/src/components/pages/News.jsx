@@ -24,7 +24,7 @@ const News = () => {
 
   return (
     <div className="w-full bg-white mt-20 pt-[30px] pb-[60px] sm:pt-[40px] md:pt-[45px] md:pb-[80px]">
-      <div className="mx-auto w-full lg-flex-1 px-[0px] md:px-[50px] lg:px-32">
+      <div className="mx-auto w-full lg-flex-1 px-0 md:px-[50px] lg:px-25">
         {/* ================= TOP HEADINGS ================= */}
         <div className="flex w-full items-center justify-between pb-[28px] max-sm:px-8">
           {/* News Heading */}

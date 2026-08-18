@@ -32,7 +32,7 @@ const AboutAwards = () => {
   ];
 
   return (
-    <section className="w-full max-w-[1155px] mx-auto mt-[110px] md:mt-[140px] pb-6 lg:px-0 md:px-13 px-7 sm:px-6 md:px-0">
+    <section className="w-full max-w-[1200px] mx-auto mt-[110px] md:mt-[140px] pb-6 lg:px-0 md:px-13 px-7 sm:px-6 md:px-0">
       <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px]">
         Awards
       </h2>

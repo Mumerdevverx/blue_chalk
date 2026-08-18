@@ -3,7 +3,7 @@ import React from "react";
 const Contact = () => {
   return (
     <>
-      <div className="max-w-7xl mx-auto py-6 mt-20 px-7 lg:px-15 md:px-12">
+      <div className="max-w-7xl mx-auto py-6 mt-20 px-7 lg:px-9 md:px-12">
         <h1 className="font-basis-web leading-[43px] text-[36px] font-semibold text-[#293339]">
           Contact Us
         </h1>
@@ -25,7 +25,7 @@ const Contact = () => {
           </div>
 
           {/* Brooklyn Address - Below Map on Mobile, Side by Side on Desktop */}
-          <div className="px-7 lg:px-32 md:px-12 py-10 md:py-12 lg:mb-20 md:mb-20 mb-20 ">
+          <div className="px-7 lg:px-25 md:px-12 py-10 md:py-12 lg:mb-20 md:mb-20 mb-20 ">
             <h2 className="text-[24px] leading-[29px] font-basis-web text-[#293339] hover:text-[#1893D2] mb-3">
               Blue Chalk Brooklyn
             </h2>
@@ -132,7 +132,7 @@ const Contact = () => {
       </div>
 
       {/* Newsletter Section - Fully Responsive */}
-      <div className="bg-[#F5F4F2] border-t font-basis-web border-gray-200 py-12 sm:py-16 lg:py-20 px-7 md:px-12 lg:px-32">
+      <div className="bg-[#F5F4F2] border-t font-basis-web border-gray-200 py-12 sm:py-16 lg:py-20 px-7 md:px-12 lg:px-25">
         <div className=" ">
           {/* Left Content */}
 
