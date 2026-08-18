@@ -19,12 +19,12 @@ const Allroutes = () => {
     <Routes>
 
       {/* Home - No Navbar & Footer */}
-      <Route path="/" element={<Home />} />
+      {/* <Route path="/" element={<Home />} /> */}
 
       {/* Other pages - Navbar & Footer automatically */}
       <Route element={<Layout />}>
 
-        <Route path="/about" element={<About />} />
+        <Route path="/" element={<About />} />
 
         <Route path="/work" element={<Work />} />
 
