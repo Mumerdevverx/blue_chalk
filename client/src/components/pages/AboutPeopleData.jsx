@@ -77,7 +77,7 @@ const AboutPeopleData = () => {
                 {/* Image - Centered */}
                 <div
                   onClick={() => handleToggle(index)}
-                  className="group w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[260px] xl:h-[260px] rounded-full overflow-hidden cursor-pointer mx-auto transition-transform duration-300 hover:scale-105"
+                  className="group w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[270px] xl:h-[270px] rounded-full overflow-hidden cursor-pointer mx-auto transition-transform duration-300 "
                 >
                   {/* Default Image - Pure CSS Filter se #B1DAEF (Light Blue) color diya gaya */}
                   <img
@@ -100,7 +100,7 @@ const AboutPeopleData = () => {
                   <img
                     src={member.hoverImage}
                     alt={member.name}
-                    className="w-full h-full object-cover hidden group-hover:block grayscale"
+                    className="w-full h-full object-cover hidden group-hover:block grayscale "
                     loading="lazy"
                     onError={(e) => {
                       console.error(
