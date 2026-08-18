@@ -180,8 +180,6 @@ const Home = () => {
           ref={drawerRef}
           className="w-full h-full bg-white px-20 pt-36 shadow-2xl overflow-y-auto"
         >
-      
-
           {/* Menu Links - Centered */}
           <div className="flex flex-col items-center justify-center h-[calc(100%-70px)] px-6">
             {navItems.map((item) => (
@@ -250,13 +248,12 @@ const Home = () => {
         </div>
 
         {/* Left side content - hidden on sm, visible on md and lg */}
-        <div className="hidden md:flex flex-col gap-8 font-basis-web sm:gap-6 lg:gap-34 p-4 sm:p-6 lg:p-0 lg:pl-0 w-full md:w-full lg:w-auto lg:relative lg:top-[50px]">
+        <div className="hidden md:flex flex-col gap-8 font-basis-web sm:gap-6 lg:gap-27.5 xl:gap-34 p-4 sm:p-6 lg:p-0 lg:pl-0 w-full md:w-full lg:w-auto lg:relative lg:top-[50px]">
           <p className="text-xl md:text-xl lg:text-[20px] lg:pl-11 leading-[26px] max-sm:pt-12 max-sm:pb-5 text-[#C2BBB6] max-w-full md:max-w-full lg:max-w-xs xl:max-w-sm">
             An industry-leading production company founded by people <br /> who
             believe in the power of nonfiction visual storytelling.
           </p>
 
-          {/* Slider Container with Link on entire container */}
           <div
             className="relative w-full max-w-full md:max-w-full lg:max-w-xs xl:max-w-sm h-60 md:h-80 lg:h-68 overflow-hidden"
             onMouseEnter={() => setIsSliderHovered(true)}
