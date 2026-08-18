@@ -260,8 +260,7 @@ const About = () => {
               <img
                 src={image}
                 alt={`Client ${index + 1}`}
-                className="w-full h-[110px] md:h-[110px] lg:h-[140px] object-contain grayscale hover:grayscale-0 transition-all duration-300"
-                loading="lazy"
+className="w-full h-[110px] md:h-[110px] lg:h-[140px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"                loading="lazy"
                 onError={(e) => {
                   console.error(`❌ Logo ${index + 1} failed to load:`, image);
                   e.target.src = 'https://via.placeholder.com/150x100?text=Logo';
