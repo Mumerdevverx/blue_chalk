@@ -135,10 +135,10 @@ const About = () => {
        </div>
 
        {/* ================= ABOUT CONTENT ================= */}
-       <section className="w-full max-w-[1155px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[70px] lg:px-0 md:px-13 px-7">
+       <section className="w-full max-w-[1155px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-0 md:px-13 px-7">
 
         {/* ================= ABOUT US ================= */}
-        <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[30px] ">
+        <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px] ">
           About Us
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[20px] md:gap-y-0 md:gap-x-[80px]">
