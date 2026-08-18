@@ -58,27 +58,45 @@ const About = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const images = [
-    one,
-    two,
-    three,
-    four,
-    five,
-    six,
-    seven,
-    eight,
-    nine,
-  ];
+  const images = [one, two, three, four, five, six, seven, eight, nine];
 
   // Client logos array
   const logoImages = [
-    logoOne, logoTwo, logoThree, logoFour, logoFive,
-    logoSix, logoSeven, logoEight, logoNine, logoTen,
-    logoEleven, logo12, logo13, logo14, logo15,
-    logo16, logo17, logo18, logo19, logo20,
-    logo21, logo22, logo23, logo24, logo25,
-    logo26, logo27, logo28, logo29, logo30,
-    logo31, logo32, logo33, logo34, logo35,
+    logoOne,
+    logoTwo,
+    logoThree,
+    logoFour,
+    logoFive,
+    logoSix,
+    logoSeven,
+    logoEight,
+    logoNine,
+    logoTen,
+    logoEleven,
+    logo12,
+    logo13,
+    logo14,
+    logo15,
+    logo16,
+    logo17,
+    logo18,
+    logo19,
+    logo20,
+    logo21,
+    logo22,
+    logo23,
+    logo24,
+    logo25,
+    logo26,
+    logo27,
+    logo28,
+    logo29,
+    logo30,
+    logo31,
+    logo32,
+    logo33,
+    logo34,
+    logo35,
   ];
 
   const handlePlay = () => {
@@ -90,9 +108,8 @@ const About = () => {
 
   return (
     <div className="w-full pt-[70px] px-0 sm:px-0 md:px-0 lg:px-0.5 ">
-
-       {/* ================= VIDEO ================= */}
-       <div className="w-full flex items-center justify-center lg:px-0 md:px-13 px-7 ">
+      {/* ================= VIDEO ================= */}
+      <div className="w-full flex items-center justify-center lg:px-0 md:px-13 px-7 ">
         <div
           className="relative w-full max-w-[1155px] overflow-hidden cursor-pointer"
           onClick={!isPlaying ? handlePlay : undefined}
@@ -132,39 +149,37 @@ const About = () => {
             </div>
           )}
         </div>
-       </div>
+      </div>
 
-       {/* ================= ABOUT CONTENT ================= */}
-       <section className="w-full max-w-[1155px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-0 md:px-13 px-7">
-
+      {/* ================= ABOUT CONTENT ================= */}
+      <section className="w-full max-w-[1155px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-0 md:px-13 px-7">
         {/* ================= ABOUT US ================= */}
         <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px] ">
           About Us
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[20px] md:gap-y-0 md:gap-x-[80px]">
-
           {/* Left Column */}
           <div className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
             <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
               Blue Chalk Media is an award-winning, full-service production
-              company and creative agency widely recognized for our
-              signature cinematic nonfiction style and authentic expression
-              of the human experience.
+              company and creative agency widely recognized for our signature
+              cinematic nonfiction style and authentic expression of the human
+              experience.
             </p>
             <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
               We serve clients all over the world in industries ranging from
               branded entertainment to advocacy and corporate storytelling.
             </p>
             <p>
-              Since our founding in 2013, we have delivered over 1,200
-              projects and have earned 230+ honors for a diverse client roster.
+              Since our founding in 2013, we have delivered over 1,200 projects
+              and have earned 230+ honors for a diverse client roster, including
             </p>
           </div>
 
           {/* Right Column */}
           <div className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
             <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
-              including television networks, advertising agencies, healthcare
+              television networks, advertising agencies, healthcare
               organizations, nonprofits and editorial thought leaders.
             </p>
             <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
@@ -200,10 +215,10 @@ const About = () => {
             captured while on assignment around the world.
           </p>
         </div>
-       </section>
+      </section>
 
-       {/* ================= 9 IMAGE GALLERY ================= */}
-       <div className="w-full mt-[30px] sm:mt-[40px] md:mt-[50px] overflow-hidden">
+      {/* ================= 9 IMAGE GALLERY ================= */}
+      <div className="w-full mt-[30px] sm:mt-[40px] md:mt-[50px] overflow-hidden">
         <div className="flex flex-wrap sm:flex-nowrap w-full h-[200px] sm:h-[280px] md:h-[380px]">
           {images.map((image, index) => (
             <div
@@ -226,22 +241,30 @@ const About = () => {
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[20px] sm:mb-[25px] md:mb-[30px]">
           Services
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-[30px] sm:gap-x-[50px] md:gap-x-[80px] gap-y-[0px] sm:gap-y-[0px] md:gap-y-[0px]">
-          <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
-            Television and video production
-          </p>
-          <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
-            Podcasting
-          </p>
-          <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
-            Documentary Filmmaking
-          </p>
-          <p className=" max-sm:pt-4 text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-[30px] sm:gap-x-[50px] md:gap-x-[80px] gap-y-[0px] sm:gap-y-[0px] md:gap-y-[0px] max-sm:gap-6">
+          {/* left side */}
+          <div>
+            <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
+              Television and video production
+            </p>
+            <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
+              Podcasting
+            </p>
+            <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
+              Documentary Filmmaking
+            </p>
+          </div>
+          {/* right side */}
+          <div className="md:mt-7">
+             <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
             Post-Production
           </p>
-          <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
+
+          <p className=" text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
             Motion Graphics
           </p>
+          </div>
+         
         </div>
       </section>
 
@@ -260,10 +283,12 @@ const About = () => {
               <img
                 src={image}
                 alt={`Client ${index + 1}`}
-className="w-full h-[110px] md:h-[110px] lg:h-[140px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"                loading="lazy"
+                className="w-full h-[110px] md:h-[110px] lg:h-[140px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                loading="lazy"
                 onError={(e) => {
                   console.error(`❌ Logo ${index + 1} failed to load:`, image);
-                  e.target.src = 'https://via.placeholder.com/150x100?text=Logo';
+                  e.target.src =
+                    "https://via.placeholder.com/150x100?text=Logo";
                 }}
               />
             </div>
@@ -285,28 +310,30 @@ className="w-full h-[110px] md:h-[110px] lg:h-[140px] object-contain grayscale o
 
         <p className="max-w-full md:max-w-[550px] max-sm:mt-20 text-[16px] md:text-[16px] lg:text-[16px] leading-[1.5] text-[#8C9BA8] mb-[25px] sm:mb-[35px] md:mb-[45px]">
           We're always looking to work with people who share our values—people
-          who are both talented individuals and excellent collaborators. If you don't
-          see a job listing below that suits your skill set, please fill out our{" "}
+          who are both talented individuals and excellent collaborators. If you
+          don't see a job listing below that suits your skill set, please fill
+          out our{" "}
           <a
             href="https://bluechalk.com/partners/"
             className="text-[#0089D0] hover:underline underline-offset-2"
           >
             creative partners interest form
           </a>{" "}
-          to let us know more about your background and skills. And don't forget to
-          follow us on social media to be the first to know about job new openings.
+          to let us know more about your background and skills. And don't forget
+          to follow us on social media to be the first to know about job new
+          openings.
         </p>
 
         <p className="max-w-full md:max-w-[550px]  text-[16px] md:text-[16px] lg:text-[16px] leading-[1.5] text-[#8C9BA8]">
           Blue Chalk Media is an equal opportunity employer committed to an
-          inclusive workplace. We do not tolerate sexual harassment or discrimination
-          based on race, color, religion, gender identity, age, national origin,
-          veteran status or disability. We believe that our differences make us
-          stronger and that working together with respect for each individual is
-          essential to the success of our company as a whole.
+          inclusive workplace. We do not tolerate sexual harassment or
+          discrimination based on race, color, religion, gender identity, age,
+          national origin, veteran status or disability. We believe that our
+          differences make us stronger and that working together with respect
+          for each individual is essential to the success of our company as a
+          whole.
         </p>
       </section>
-
     </div>
   );
 };
