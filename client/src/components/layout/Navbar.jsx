@@ -54,7 +54,7 @@ const Navbar = () => {
   }`;
 
   return (
-    <nav className="fixed top-1 left-0 w-full bg-white z-50">
+    <nav className="fixed top-0 left-0 w-full bg-white z-50">
       <div className="max-w-[1220px] mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-0 flex items-center">
         {/* Logo */}
         <Link to="/" onClick={closeMenu} className="shrink-0">

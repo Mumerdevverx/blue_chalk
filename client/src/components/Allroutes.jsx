@@ -25,6 +25,7 @@ const Allroutes = () => {
       <Route element={<Layout />}>
 
         <Route path="/" element={<About />} />
+        <Route path="/about" element={<About />} />
 
         <Route path="/work" element={<Work />} />
 
