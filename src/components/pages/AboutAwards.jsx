@@ -37,7 +37,7 @@ const AboutAwards = () => {
         Awards
       </h2>
 
-      <p className="text-[15px] md:text-[15px] lg:text-[15px] leading-[1.48] text-[#9EA5BB]">
+      <p className="text-[15px] md:text-[15px] lg:text-[15px] leading-[1.49] text-[#9EA5BB]">
         Blue Chalk Media has been honored with numerous <br /> awards including:
       </p>
 
