@@ -1,6 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const Contact = () => {
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/contact");
+        const data = await response.json();
+        if (data.success) {
+          setContacts(data.data);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+        setLoading(false);
+      }
+    };
+    fetchContacts();
+  }, []);
+
+  // Helper to get office data by name
+  const getOffice = (name) => {
+    return contacts.find((c) => c.officeName.toLowerCase() === name) || null;
+  };
+
+  const brooklyn = getOffice("brooklyn");
+  const portland = getOffice("portland");
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="max-w-7xl mx-auto py-6 mt-20 px-7 lg:px-9 md:px-12">
@@ -16,7 +52,7 @@ const Contact = () => {
           <div className="h-[300px] sm:h-[400px] md:h-[450px] bg-gray-200 relative overflow-hidden">
             <div className="map-wrapper w-full h-full grayscale hover:grayscale-0 transition-all duration-700">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3028.1234567890!2d-73.9876543!3d40.1234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316bb7a1b7%3A0x1234567890abcdef!2s68%20Jay%20St%20%23201%2C%20Brooklyn%2C%20NY%2011201!5e0!3m2!1sen!2sus!4v1234567890"
+                src={brooklyn?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3028.1234567890!2d-73.9876543!3d40.1234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316bb7a1b7%3A0x1234567890abcdef!2s68%20Jay%20St%20%23201%2C%20Brooklyn%2C%20NY%2011201!5e0!3m2!1sen!2sus!4v1234567890"}
                 className="w-full h-full"
                 loading="lazy"
                 title="Brooklyn Office Map"
@@ -24,14 +60,23 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Brooklyn Address - Below Map on Mobile, Side by Side on Desktop */}
-          <div className="px-7 lg:px-25 md:px-12 py-10 md:py-12 lg:mb-20 md:mb-20 mb-20 ">
+          {/* Brooklyn Address */}
+          <div className="px-7 lg:px-25 md:px-12 py-10 md:py-12 lg:mb-20 md:mb-20 mb-20">
             <h2 className="text-[24px] leading-[29px] font-basis-web text-[#293339] hover:text-[#1893D2] mb-3">
-              Blue Chalk Brooklyn
+              Blue Chalk {brooklyn?.officeName || "Brooklyn"}
             </h2>
             <div className="text-[15px] leading-[28px] text-[#293339]">
-              <p>68 Jay Street Suite 201</p>
-              <p>Brooklyn, NY 11201</p>
+              {brooklyn ? (
+                <>
+                  <p>{brooklyn.address.street}</p>
+                  <p>{brooklyn.address.city}, {brooklyn.address.state} {brooklyn.address.zipCode}</p>
+                </>
+              ) : (
+                <>
+                  <p>68 Jay Street Suite 201</p>
+                  <p>Brooklyn, NY 11201</p>
+                </>
+              )}
 
               {/* Email */}
               <div className="flex items-center gap-3.5 pt-4">
@@ -47,12 +92,11 @@ const Contact = () => {
                     fill="#1893D2"
                   />
                 </svg>
-
                 <a
-                  href="mailto:hello@bluechalk.com"
+                  href={`mailto:${brooklyn?.email || "hello@bluechalk.com"}`}
                   className="text-blue-600 hover:underline break-all"
                 >
-                  hello@bluechalk.com
+                  {brooklyn?.email || "hello@bluechalk.com"}
                 </a>
               </div>
 
@@ -70,12 +114,11 @@ const Contact = () => {
                     fill="#1893D2"
                   />
                 </svg>
-
                 <a
-                  href="tel:3474108445"
+                  href={`tel:${brooklyn?.phone || "3474108445"}`}
                   className="text-blue-600 hover:underline"
                 >
-                  347.410.8445
+                  {brooklyn?.phone || "347.410.8445"}
                 </a>
               </div>
               <div className="lg:mt-7 border-b border-gray-200"></div>
@@ -88,7 +131,7 @@ const Contact = () => {
           <div className="h-[300px] sm:h-[400px] md:h-[450px] bg-gray-300 relative overflow-hidden">
             <div className="map-wrapper w-full h-full grayscale hover:grayscale-0 transition-all duration-700">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2795.1234567890!2d-122.6543210!3d45.5598765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5495a0a123456789%3A0x9876543210abcdef!2s1737%20NE%20Alberta%20St%20%23207%2C%20Portland%2C%20OR%2097211!5e0!3m2!1sen!2sus!4v1234567890"
+                src={portland?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2795.1234567890!2d-122.6543210!3d45.5598765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5495a0a123456789%3A0x9876543210abcdef!2s1737%20NE%20Alberta%20St%20%23207%2C%20Portland%2C%20OR%2097211!5e0!3m2!1sen!2sus!4v1234567890"}
                 className="w-full h-full"
                 loading="lazy"
                 title="Portland Office Map"
@@ -96,14 +139,23 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Portland Address - Below Map on Mobile, Side by Side on Desktop */}
+          {/* Portland Address */}
           <div className="px-7 lg:px-12 xl:px-24 md:px-12 py-10 md:py-12 mb-5">
             <h2 className="text-[24px] leading-[29px] font-basis-web text-[#293339] mb-3">
-              Blue Chalk Portland
+              Blue Chalk {portland?.officeName || "Portland"}
             </h2>
             <div className="text-[15px] leading-[28px] text-[#293339]">
-              <p>1737 NE Alberta, Suite 207</p>
-              <p>Portland, OR 97211</p>
+              {portland ? (
+                <>
+                  <p>{portland.address.street}</p>
+                  <p>{portland.address.city}, {portland.address.state} {portland.address.zipCode}</p>
+                </>
+              ) : (
+                <>
+                  <p>1737 NE Alberta, Suite 207</p>
+                  <p>Portland, OR 97211</p>
+                </>
+              )}
 
               <div className="flex items-center gap-3.5 pt-4">
                 <svg
@@ -118,12 +170,11 @@ const Contact = () => {
                     fill="#1893D2"
                   />
                 </svg>
-
                 <a
-                  href="mailto:hello@bluechalk.com"
+                  href={`mailto:${portland?.email || "hello@bluechalk.com"}`}
                   className="text-blue-600 hover:underline break-all"
                 >
-                  hello@bluechalk.com
+                  {portland?.email || "hello@bluechalk.com"}
                 </a>
               </div>
             </div>
@@ -131,11 +182,9 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Newsletter Section - Fully Responsive */}
+      {/* Newsletter Section - Unchanged */}
       <div className="bg-[#F5F4F2] border-t font-basis-web border-gray-200 py-12 sm:py-16 lg:py-20 px-7 md:px-12 lg:px-25">
         <div className=" ">
-          {/* Left Content */}
-
           <div>
             <h2 className="text-[36px] font-basis-web text-[#C2BBB6] leading-[43px] mb-4 lg:mb-4">
               Get Our Newsletter
@@ -155,9 +204,8 @@ const Contact = () => {
             </div>
             <div className="lg:w-1/2 xl:w-3/4 w-full mt-6 lg:mt-0">
               <form>
-                {/* Mobile only: 2-column layout (Name|Email, Title|Company) */}
+                {/* Mobile only: 2-column layout */}
                 <div className="block md:hidden flex flex-col border border-[#e8e8e8] bg-white">
-                  {/* Row 1: Name | Email */}
                   <div className="grid grid-cols-2 border-b border-[#e8e8e8]">
                     <input
                       type="text"
@@ -170,8 +218,6 @@ const Contact = () => {
                       className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] outline-none text-sm sm:text-base"
                     />
                   </div>
-
-                  {/* Row 2: Title | Company */}
                   <div className="grid grid-cols-2">
                     <input
                       type="text"
@@ -184,8 +230,6 @@ const Contact = () => {
                       className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] outline-none text-sm sm:text-base"
                     />
                   </div>
-
-                  {/* Subscribe Button - Full width on mobile only */}
                   <button
                     type="submit"
                     className="bg-[#1f93d1] text-white uppercase font-semibold hover:bg-[#167bb0] transition h-[46px] w-full text-[11px] leading-[11px]"
@@ -194,16 +238,14 @@ const Contact = () => {
                   </button>
                 </div>
 
-                {/* Tablet & Desktop: Original 3-column layout */}
-                <div className="hidden  md:grid md:grid-cols-[1fr_1fr_auto] border border-[#e8e8e8] bg-white lg:ml-4 ">
-                  {/* Left Inputs */}
-                  <div className="border-b md:border-b-0 md:border-r border-[#e8e8e8] ">
+                {/* Tablet & Desktop: 3-column layout */}
+                <div className="hidden md:grid md:grid-cols-[1fr_1fr_auto] border border-[#e8e8e8] bg-white lg:ml-4">
+                  <div className="border-b md:border-b-0 md:border-r border-[#e8e8e8]">
                     <input
                       type="text"
                       placeholder="Name*"
-                      className="w-full lg:h-[46px] h-[38px]  px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639] "
+                      className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639]"
                     />
-
                     <div className="border-t border-[#e8e8e8]">
                       <input
                         type="text"
@@ -212,28 +254,23 @@ const Contact = () => {
                       />
                     </div>
                   </div>
-
-                  {/* Right Inputs */}
                   <div className="border-b md:border-b-0 md:border-r border-[#e8e8e8]">
                     <input
                       type="email"
                       placeholder="Email*"
-                      className="w-full lg:h-[46px] h-[38px]  px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639] "
+                      className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639]"
                     />
-
                     <div className="border-t border-[#e8e8e8]">
                       <input
                         type="text"
                         placeholder="Company (optional)"
-                        className="w-full lg:h-[46px] h-[38px]  px-5 outline-none text-sm sm:text-base text-[#7F7F7F]"
+                        className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#7F7F7F]"
                       />
                     </div>
                   </div>
-
-                  {/* Button - Inline on tablet and desktop */}
                   <button
                     type="submit"
-                    className="bg-[#1f93d1] text-white uppercase font-semibold md:text-[11px] transition lg:h-[92px] h-[84px] w-full lg:w-[310px] md:w-[230px] px-6 sm:px-8 text-sm sm:text-base leading-[11px] hover:bg-white hover:text-[#1f93d1] hover:border hover:border-[#1f93d1] transition"
+                    className="bg-[#1f93d1] text-white uppercase font-semibold md:text-[11px] transition lg:h-[92px] h-[84px] w-full lg:w-[310px] md:w-[230px] px-6 sm:px-8 text-sm sm:text-base leading-[11px] hover:bg-white hover:text-[#1f93d1] hover:border hover:border-[#1f93d1]"
                   >
                     Subscribe
                   </button>
