@@ -8,10 +8,10 @@ import Contact from "./pages/Contact";
 import News from "./pages/News";
 import NewsBlogs from "./pages/NewsBlogs"; // ✅ Dynamic component
 import Work from "./pages/Works";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import TermsOfUse from "./pages/TermsOfUse";
 import AllProjectwork from "./work/AllProjectwork";
 import Workdetail from "./work/Workdetail";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfUse from "./pages/TermsOfUse";
 import Awardpage from "./pages/Awardpage";
 
 const Allroutes = () => {
@@ -34,9 +34,10 @@ const Allroutes = () => {
         <Route path="/awardpage" element={<Awardpage />} />
         {/* Work Categories */}
         <Route path="/work" element={<AllProjectwork />} />
+        <Route path="/work/:slug" element={<Workdetail />} /> {/* ✅ Dynamic slug */}  {/* Changed: Added /:slug */}
         <Route path="/workdetail" element={<Workdetail />} />
       </Route>
-    </Routes>
+    </Routes> 
   );
 };
 
