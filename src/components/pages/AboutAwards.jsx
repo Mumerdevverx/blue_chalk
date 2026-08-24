@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import awardOne from "../../assets/about/award/awardOne.jpg";
 import awardTwo from "../../assets/about/award/awardTwo.jpg";
 import awardThree from "../../assets/about/award/awardThree.jpg";
@@ -38,7 +39,8 @@ const AboutAwards = () => {
       </h2>
 
       <p className="text-[15px] md:text-[15px] lg:text-[15px] leading-[1.49] text-[#9EA5BB]">
-        Blue Chalk Media has been honored with numerous <br /> awards including:
+        Blue Chalk Media has been honored with numerous 
+ awards including:
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-[30px] sm:mt-[40px] md:mt-[30px] gap-[20px] sm:gap-[25px] md:gap-[30px]">
@@ -48,9 +50,12 @@ const AboutAwards = () => {
             className="border-t border-[#D9D9D9] pt-2.5 flex items-center justify-between min-h-[60px] sm:min-h-[65px] md:min-h-[70px] transition-colors duration-200 px-2 sm:px-3 md:px-0"
           >
             <h3 className="text-[18px] md:text-[18px] font-bold text-[#0089D0] flex-1 pr-2">
-              <span className="hover:border-b border-[#0089D0] transition-all duration-200 pb-0.5">
+              <Link
+                to="/awardpage"
+                className="hover:border-b border-[#0089D0] transition-all duration-200 pb-0.5"
+              >
                 {award.title}
-              </span>
+              </Link>
             </h3>
 
             <img
@@ -67,3 +72,4 @@ const AboutAwards = () => {
 };
 
 export default AboutAwards;
+ 

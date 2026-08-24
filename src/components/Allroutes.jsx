@@ -13,18 +13,21 @@ import Work from "./pages/Works";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 import AllProjectwork from "./work/AllProjectwork";
+import Workdetail from "./work/Workdetail";
+import Awardpage from "./pages/Awardpage";
+
 
 const Allroutes = () => {
   return (
     <Routes>
 
       {/* Home - No Navbar & Footer */}
-      {/* <Route path="/" element={<Home />} /> */}
+      <Route path="/" element={<Home />} />
 
       {/* Other pages - Navbar & Footer automatically */}
       <Route element={<Layout />}>
 
-        <Route path="/" element={<About />} />
+        {/* <Route path="/" element={<About />} /> */}
         <Route path="/about" element={<About />} />
 
         <Route path="/work" element={<Work />} />
@@ -40,6 +43,8 @@ const Allroutes = () => {
         {/* Work Categories */}
        
         <Route path="/work" element={<AllProjectwork />} />
+         <Route path="/workdetail" element={<Workdetail />} />
+          <Route path="/awardpage" element={<Awardpage />} />
         
 
       </Route>

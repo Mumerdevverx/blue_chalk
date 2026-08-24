@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FiPlus } from "react-icons/fi";
+import { Link } from "react-router-dom";
+
 
 const AllProjectwork = () => {
   const [activeFilter, setActiveFilter] = useState("All Projects");
@@ -10,16 +12,14 @@ const AllProjectwork = () => {
   // Screen size detection for LG screens
   const [isLgScreen, setIsLgScreen] = useState(false);
 
-    useEffect(() => {
+  useEffect(() => {
     const checkScreenSize = () => {
       const isLg = window.innerWidth >= 1024;
       setIsLgScreen(isLg);
 
-      // ✅ FIX 1: Active filter "Featured" kar diya
-      // ✅ FIX 2: isBrandOpen ko true kar diya (taake arrow by default open rahe)
       if (isLg) {
-        setActiveFilter("Featured"); 
-        setIsBrandOpen(true); // <-- Arrow by default open rahega
+        setActiveFilter("Featured");
+        setIsBrandOpen(true);
       } else {
         setActiveFilter("All Projects");
         setIsBrandOpen(false);
@@ -853,9 +853,9 @@ const AllProjectwork = () => {
           {/* 2-Column Filter Layout */}
           <div className="relative grid grid-cols-2 gap-1 sm:gap-3 lg:max-w-[500px] mx-auto px-4 lg:pt-6 pt-0 w-full lg:px-0 md:px-6">
             {/* FILTER BY - Small text above Featured */}
-              <div className="absolute lg:top-1 md:-top-2.5 top-3 lg:left-17 md:left-13.5 left-4 text-[11px] font-semibold text-[#C2BBB6] tracking-[3px]   uppercase">
-                FILTER BY:
-              </div>
+            <div className="absolute lg:top-1 md:-top-2.5 top-3 lg:left-17 md:left-13.5 left-4 text-[11px] font-semibold text-[#C2BBB6] tracking-[3px]   uppercase">
+              FILTER BY:
+            </div>
 
             {/* Left Column - Featured and All Projects */}
             <div className="flex flex-col items-center gap-0.5 lg:mt-2 md:mt-2 mt-8 md:ml-7 lg:ml-16">
@@ -870,23 +870,22 @@ const AllProjectwork = () => {
                 Featured
               </button>
 
-             <button
-  onClick={() => portfolioFilter.filter("All Projects")}
-  className={`lg:text-[36px] md:text-4xl text-xl py-0.5 cursor-pointer transition-all duration-300   w-full text-left whitespace-nowrap ${
-    activeFilter === "All Projects"
-      ? "text-[#1893D2]"
-      : "text-[#877A71] hover:text-[#1893D2]"
-  }`}
->
-  All Projects
-</button>
+              <button
+                onClick={() => portfolioFilter.filter("All Projects")}
+                className={`lg:text-[36px] md:text-4xl text-xl py-0.5 cursor-pointer transition-all duration-300   w-full text-left whitespace-nowrap ${
+                  activeFilter === "All Projects"
+                    ? "text-[#1893D2]"
+                    : "text-[#877A71] hover:text-[#1893D2]"
+                }`}
+              >
+                All Projects
+              </button>
             </div>
 
             {/* Right Column - Branded with Arrow */}
             <div className="flex flex-col md:ml-2 lg:ml-45 mt-2">
               {/* Branded with Arrow */}
               <div className="flex items-center w-full gap-3 md:gap-4 lg:gap-6">
-                {/* ✅ FIX 1: Branded Text par click karne par SIRF Filter chale, toggle nahi */}
                 <button
                   onClick={() => portfolioFilter.filter("Branded")}
                   className={`lg:text-[36px] md:text-4xl max-sm:mt-4 text-xl py-1.5 cursor-pointer transition-all duration-300   text-left ${
@@ -898,7 +897,6 @@ const AllProjectwork = () => {
                   <span>Branded</span>
                 </button>
 
-                {/* ✅ FIX 2: Sirf Arrow par click karne par Toggle open/close hoga */}
                 <button
                   onClick={() => setIsBrandOpen(!isBrandOpen)}
                   className="cursor-pointer transition-colors duration-200 text-[#7d7c7c] hover:text-[#1893D2] flex-shrink-0 flex items-center justify-center"
@@ -906,8 +904,8 @@ const AllProjectwork = () => {
                   <svg
                     className={`w-7 h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 max-sm:mt-4  lg:ml-50 md:ml-20 ml-10
                        transition-all duration-300 ${
-                      isBrandOpen ? "rotate-180" : ""
-                    }`}
+                         isBrandOpen ? "rotate-180" : ""
+                       }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -964,24 +962,17 @@ const AllProjectwork = () => {
         </div>
 
         {/* Projects Grid - 3 columns */}
-        {/* Projects Grid - 3 columns (Fixed Layout for 10 items) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
           {filteredProjects.map((project, index) => {
-            // Agar "All Projects" nahi hai (filtered view hai), toh layout fix karo
             const isFilteredView = !isAllProjects;
-
-            // Agar Filtered View hai aur Index 0, 1, ya 2 hai toh alag layout do
             let gridClass = "md:col-span-1";
 
             if (isFilteredView) {
               if (index === 0) {
-                // 1st image: 2 columns wide, 2 rows tall
                 gridClass = "md:col-span-2 md:row-span-2";
               } else if (index === 1 || index === 2) {
-                // 2nd aur 3rd image: Right column mein (Col 3) vertically stack hongi
                 gridClass = "md:col-start-3";
               }
-              // Baaki (Index 3 se 9 tak) normal 3-column grid mein chale jayenge
             }
 
             return (
@@ -989,32 +980,35 @@ const AllProjectwork = () => {
                 key={project.id}
                 className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${gridClass}`}
               >
-                {/* Image Wrapper */}
-                <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
-                  <img
-                    src={project.src}
-                    alt={project.alt}
-                    className="w-full h-full object-cover block transition-transform duration-300 grayscale group-hover:grayscale-0"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src =
-                        "https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found";
-                    }}
-                  />
+                {/* ✅ Link - Image click karne par /workdetail page open hoga */}
+                <Link to="/workdetail" className="block w-full h-full">
+                  {/* Image Wrapper */}
+                  <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
+                    <img
+                      src={project.src}
+                      alt={project.alt}
+                      className="w-full h-full object-cover block transition-transform duration-300 grayscale group-hover:grayscale-0"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found";
+                      }}
+                    />
 
-                  {/* Text Overlay */}
-                  {renderOverlay(project)}
+                    {/* Text Overlay */}
+                    {renderOverlay(project)}
 
-                  {/* Bottom Right - What Lasts with Plus Icon */}
-                  <div
-                    className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-43 h-12 sm:h-14 md:h-16 px-2 py-2 flex items-end justify-between transition-all duration-200 bg-black/60 group-hover:bg-[#1989c2]`}
-                  >
-                    <span className="text-xs sm:text-sm md:text-sm font-medium">
-                      What Lasts
-                    </span>
-                    <FiPlus className="absolute top-1 right-1 sm:top-2 sm:right-2 text-base sm:text-lg" />
+                    {/* Bottom Right - What Lasts with Plus Icon */}
+                    <div
+                      className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-43 h-12 sm:h-14 md:h-16 px-2 py-2 flex items-end justify-between transition-all duration-200 bg-black/60 group-hover:bg-[#1989c2]`}
+                    >
+                      <span className="text-xs sm:text-sm md:text-sm font-medium">
+                        What Lasts
+                      </span>
+                      <FiPlus className="absolute top-1 right-1 sm:top-2 sm:right-2 text-base sm:text-lg" />
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             );
           })}
