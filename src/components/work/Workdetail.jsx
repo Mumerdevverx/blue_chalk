@@ -1,191 +1,194 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import workdetailone from "../../assets/workimages/workdetailone.jpg";
 
 const Workdetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const [work, setWork] = useState(null);
+  const [allProjects, setAllProjects] = useState([]);
+  const [nextProject, setNextProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Video data based on project ID
-  const videoData = {
-    1: "https://www.youtube.com/embed/4iUpvDhoPOw",
-    2: "https://www.youtube.com/embed/another-video-id",
-    3: "https://www.youtube.com/embed/third-video-id",
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const workRes = await fetch(`http://localhost:5000/api/work/slug/${slug}`);
+        const workData = await workRes.json();
+        if (!workData.success) {
+          setError(workData.message || "Work not found");
+          setLoading(false);
+          return;
+        }
+        setWork(workData.data);
+
+        const allRes = await fetch("http://localhost:5000/api/work");
+        const allData = await allRes.json();
+        if (allData.success) {
+          setAllProjects(allData.data);
+          const currentIndex = allData.data.findIndex(p => p.slug === slug);
+          if (currentIndex !== -1 && currentIndex < allData.data.length - 1) {
+            setNextProject(allData.data[currentIndex + 1]);
+          }
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError("Failed to load work");
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [slug]);
+
+  // ✅ Extract video iframe
+  const extractVideoFromContent = (html) => {
+    if (!html) return null;
+    const match = html.match(/<iframe[^>]*src="([^"]*)"[^>]*><\/iframe>/);
+    if (match) return match[1];
+    const match2 = html.match(/<div data-youtube-video="[^"]*"><iframe[^>]*src="([^"]*)"[^>]*><\/iframe><\/div>/);
+    if (match2) return match2[1];
+    return null;
   };
 
-  const videoUrl = videoData[id] || "https://www.youtube.com/embed/4iUpvDhoPOw";
+  // ✅ Remove video AND "Write something amazing..." from content
+  const cleanContent = (html) => {
+    if (!html) return '';
+    let cleaned = html
+      .replace(/<div data-youtube-video="[^"]*"><iframe[^>]*src="[^"]*"[^>]*><\/iframe><\/div>/, '')
+      .replace(/<iframe[^>]*src="[^"]*"[^>]*><\/iframe>/, '')
+      .replace(/Write something amazing\.\.\./g, '')  // ✅ REMOVE placeholder text
+      .trim();
+    return cleaned;
+  };
 
-  return (
-    <section className="w-full max-w-[1200px] mx-auto mt-[110px] md:mt-[115px] pb-6 lg:px-0 md:px-13 px-7 sm:px-6 md:px-0">
-      {/* Video Container */}
-      <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
-        <iframe
-          src={videoUrl}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-          className="absolute top-0 left-0 w-full h-full"
-        ></iframe>
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+    if (url.includes("embed")) return url;
+    if (url.includes("watch?v=")) {
+      const videoId = new URLSearchParams(new URL(url).search).get("v");
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    }
+    return url;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
+    );
+  }
 
-      {/* Back to Work Button */}
-      <div className="mt-6 pt-4">
-        <Link
-          to="/work"
-          className="text-[15px] text-[#0089D0] hover:underline transition-all duration-200 flex items-center gap-2"
-        >
-          <span>&larr;</span> Back to Work
+  if (error || !work) {
+    return (
+      <div className="min-h-screen flex items-center justify-center flex-col">
+        <p className="text-gray-500 text-lg">{error || "Work not found"}</p>
+        <Link to="/work" className="text-[#0089D0] hover:underline mt-4">
+          ← Back to Work
         </Link>
       </div>
+    );
+  }
 
-      {/* Title and Next Project - Flex Row */}
-      <div className="flex flex-col md:flex-row justify-between  gap-70 mt-8">
-        {/* Left Side - Title and Date */}
-        <div className="flex-1">
-          <div>
+  const videoUrl = extractVideoFromContent(work.aboutContent);
+  const cleanedContent = cleanContent(work.aboutContent);
+  const finalVideoUrl = getEmbedUrl(videoUrl) || "";
+
+  // ✅ USE BUTTON TEXT AS TITLE (or fallback to title)
+  const displayTitle = work.buttonText || work.title || "Untitled";
+
+  const getImageUrl = (url) => {
+    if (!url) return 'https://placehold.co/400x300/e0e0e0/808080?text=No+Image';
+    if (url.startsWith('http')) return url;
+    return `http://localhost:5000${url}`;
+  };
+
+  return (
+    <div className="w-full lg:mt-[80px] md:mt-[115px]  mt-[100px]  lg:px-20 px-4">
+      {/* VIDEO */}
+      <div className="relative w-full aspect-video bg-gray-200">
+        {finalVideoUrl ? (
+          <iframe
+            src={finalVideoUrl}
+            title="Video"
+            className="absolute top-0 left-0 w-full h-full"
+            frameBorder="0"
+            allowFullScreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-500">
+            No video available
+          </div>
+        )}
+      </div>
+
+      {/* TWO-COLUMN LAYOUT */}
+      <div className="max-w-7xl mx-auto py-8 px-4 md:px-8 lg:px-12">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
+          {/* LEFT SIDE */}
+          <div className="flex-1">
+            {/* ✅ TITLE – from buttonText */}
             <h1 className="text-[28px] md:text-[36px] lg:text-[40px] font-normal text-[#293339] leading-[1.2]">
-              Atomic Echoes: Untold Stories from World War II
+              {displayTitle}
             </h1>
 
-            {/* Divider Line */}
-            <div className="border-b border-[#D9D9D9] mt-5"></div>
+            <div className="border-b border-[#D9D9D9] mt-4"></div>
 
-            {/* Date and Credit */}
-            <p className="text-[14px] md:text-[15px] text-[#9EA5BB]  tracking-[2px] mt-3">
-              AUG. 1, 2025 : WITH BLUE CHALK MEDIA
+            <p className="text-[14px] md:text-[15px] text-[#9EA5BB] tracking-[2px] mt-3 uppercase">
+              {work.subDescription || work.description}
             </p>
-          </div>
-          <div className="mt-20 mb-5">
-            <h1 className="mb-4 text-[#C2BBB6] text-[24px] ">
-              About the Project
-            </h1>
-            <p className="mb-5">
-              Atomic Echoes: Untold Stories from World War II is an original
-              Blue Chalk documentary that explores the intertwined legacies of
-              Hiroshima and Nagasaki through the eyes of two women whose
-              families stood on opposite sides of World War II.
-            </p>
-            <p className="mb-5">
-              The film follows authors Karin Tanabe and Victoria Kelly as they
-              trace their family histories—Karin’s great-great-uncle, who was
-              from Hiroshima, dedicated his life to peace-building after the
-              bombing, while Victoria’s grandfather, an American veteran who
-              served in Nagasaki, carried the trauma of what he witnessed for
-              the rest of his life.
-            </p>
-            <p className="mb-5">
-              Through conversations with the last remaining Japanese hibakusha
-              and American atomic veterans, along with historians and family
-              members, Karin and Victoria uncover personal stories of loss,
-              resilience, and reconciliation. Against the backdrop of the
-              recently marked 80th anniversary of the bombings, Atomic Echoes
-              offers a rare, intimate perspective on the nuclear age and its
-              enduring human cost.
-            </p>
-            <p className="mb-5">
-              Atomic Echoes aired on public television stations nationwide on
-              August 1, 2025, and is available to stream on PBS platforms.
-            </p>
-          </div>
 
-          {/* Contributors Section */}
-          <div className="mt-16">
-            <h2 className="text-[24px] md:text-[28px] lg:text-[32px] font-normal text-[#C2BBB6] leading-[1.2] mb-6">
-              Contributors
-            </h2>
-
-            <div className="flex gap-10">
-              {/* Left Column */}
-              <div className="text-[14px] text-[#293339] leading-[1.8] flex-1">
-                <p className="py-1">
-                  Beatrice Becette, Director/Producer
-                </p>
-                <p className="py-1 ">
-                  Chris Janjic, Director of Photography
-                </p>
-                <p className="py-1">
-                  Greg Moyer, Executive Producer
-                </p>
-                <p className="py-1 ">
-                  Pam Huling, Executive Producer
-                </p>
-                <p className="py-1 ">
-                  Karin Tanabe, Producer
-                </p>
-                <p className="py-1 ">
-                  Victoria Kelly, Producer
-                </p>
-                <p className="py-1 ">
-                  Tim McLaughlin, Editor
-                </p>
-                <p className="py-1 ">
-                  Conner Lee, Graphics
-                </p>
-                <p className="py-1 ">
-                  Miró Merrill, Graphics
-                </p>
-                <p className="py-1 ">
-                  Kenzie Bruce, Consulting Producer
-                </p>
-                <p className="py-1 ">
-                  Amy Polansky, Supervising Producer
-                </p>
-                <p className="py-1 ">
-                  Jessica Stewart, Supervising Producer
-                </p>
-              </div>
-
-              {/* Right Column */}
-              <div className="text-[14px] text-[#293339] leading-[1.8] flex-1">
-                <p className="py-1 ">
-                  Kunio Tanabe, Translator
-                </p>
-                <p className="py-1 ">
-                  Megumi Nishikura, Translator
-                </p>
-                <p className="py-1 ">
-                  Ruth Aravena, Communications & Digital Operations Director
-                </p>
-                <p className="py-1">
-                  Nagasaki Foundation for the Promotion of Peace, Special Thanks
-                </p>
-                <p className="py-1 ">
-                  Nagasaki Atomic Bomb Museum, Special Thanks
-                </p>
-                <p className="py-1 ">
-                  Nagasaki Film & Media Commission (JFC)/Nagasaki Prefecture
-                  Tourism Association, Special Thanks
-                </p>
-                <p className="py-1 ">
-                  Hiroshima Film Commission (JFC), Special Thanks
-                </p>
-               
-                
-               
-              
-              </div>
+            {/* ✅ CLEANED CONTENT (without video & placeholder text) */}
+            <div className="mt-8">
+              {cleanedContent ? (
+                <div
+                  className="text-gray-800 text-base leading-relaxed prose max-w-none"
+                  dangerouslySetInnerHTML={{ __html: cleanedContent }}
+                />
+              ) : (
+                <p className="text-gray-500">No content available.</p>
+              )}
             </div>
           </div>
-        </div>
 
-        {/* Right Side - Next Project with Image */}
-        <div className="flex flex-col items-end gap-4 flex-shrink-0 group">
-          <div className="text-right">
-            <Link
-              to="/work/next"
-              className="text-[12px] text-[#C2BBB6] group-hover:text-[#3D93D2] tracking-[2.5px] transition-all duration-300 leading-tight block"
-            >
-              NEXT PROJECT: MYFACE: OUR <br /> BEAUTY. OUR STORIES. OUR POWER. →
-            </Link>
+          {/* RIGHT SIDE – Next Project */}
+          <div className="lg:w-[280px] flex-shrink-0">
+            {nextProject ? (
+              <Link
+                to={`/work/${nextProject.slug}`}
+                className="group block"
+              >
+                <div className="text-right">
+                  <p className="text-[12px] text-[#C2BBB6] group-hover:text-[#3D93D2] tracking-[2.5px] transition-all duration-300 leading-tight uppercase">
+                    NEXT PROJECT:
+                  </p>
+                  <p className="text-[12px] text-[#C2BBB6] group-hover:text-[#3D93D2] tracking-[2.5px] transition-all duration-300 leading-tight mt-1">
+                    {nextProject.buttonText || nextProject.title}
+                  </p>
+                  <div className="mt-2 flex justify-end">
+                    <img
+                      src={getImageUrl(nextProject.image)}
+                      alt={nextProject.title}
+                      className="w-24 h-20 object-cover rounded-md grayscale group-hover:grayscale-0 transition-all duration-300"
+                      onError={(e) => {
+                        e.target.src = 'https://placehold.co/100x80/e0e0e0/808080?text=No+Image';
+                      }}
+                    />
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <div className="text-right">
+                <p className="text-[12px] text-[#C2BBB6] tracking-[2.5px] uppercase">
+                  No more projects
+                </p>
+              </div>
+            )}
           </div>
-          <img
-            src={workdetailone}
-            alt="Next Project"
-            className="w-20 h-15 object-cover rounded-md grayscale transition-all duration-300 group-hover:grayscale-0"
-          />
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
