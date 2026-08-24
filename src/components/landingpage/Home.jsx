@@ -204,7 +204,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white font-basis-web font-['Helvetica_Neue',Arial,sans-serif] relative overflow-x-hidden">
+    <div className="min-h-max bg-white font-basis-web font-['Helvetica_Neue',Arial,sans-serif] relative overflow-x-hidden">
       {/* Mobile Menu Button */}
       <button
         onClick={toggleDrawer}
