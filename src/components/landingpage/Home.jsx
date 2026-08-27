@@ -1,380 +1,241 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiPlus, FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX, FiPlus } from "react-icons/fi";
 
-// Import assets (Hero video aur logo static rahenge)
 import heroVideo from "../../assets/landingimg/herovideo.mp4";
-import bluechalk from "../../assets/landingimg/bluechalk.avif";
+import bluechalkLogo from "../../assets/landingimg/bluechalk.avif";
 
-// ✅ FALLBACK IMAGES (agar API fail ho ya data na ho)
+// ✅ FALLBACK IMAGES (agar API fail ho)
 const fallbackImages = [
-    {
-        id: 1,
-        src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
-        alt: "Gallery 1",
-        link: "https://bluechalk.com/work/sister-cities/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 2,
-        src: "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
-        alt: "Gallery 2",
-        link: "https://bluechalk.com/work/oregon-accessibility-happens-here/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 3,
-        src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
-        alt: "Gallery 3",
-        link: "https://bluechalk.com/work/atomic-echoes/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 4,
-        src: "https://images.unsplash.com/photo-1497366216548-37526070297c",
-        alt: "Gallery 4",
-        link: "https://bluechalk.com/work/atomic-echoes/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 5,
-        src: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
-        alt: "Gallery 5",
-        link: "https://bluechalk.com/work/atomic-echoes/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 6,
-        src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2",
-        alt: "Gallery 6",
-        link: "https://bluechalk.com/work/in-with-the-old/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 7,
-        src: "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
-        alt: "Gallery 7",
-        link: "https://bluechalk.com/work/sister-cities/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 8,
-        src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
-        alt: "Gallery 8",
-        link: "https://bluechalk.com/work/diary-old-home/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
-    {
-        id: 9,
-        src: "https://images.unsplash.com/photo-1497366216548-37526070297c",
-        alt: "Gallery 9",
-        link: "https://bluechalk.com/work/morgan-stanley-sustainable-solutions/",
-        buttonText: "Now Streaming",
-        type: "image",
-    },
+  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+  "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
+  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
+  "https://images.unsplash.com/photo-1497366216548-37526070297c",
+  "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
+  "https://images.unsplash.com/photo-1497366811353-6870744d04b2",
+  "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
+  "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
 ];
 
 const Home = () => {
-    // ✅ STATE FOR DYNAMIC DATA
-    const [galleryItems, setGalleryItems] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [currentImage, setCurrentImage] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [images, setImages] = useState(fallbackImages);
+  const [loading, setLoading] = useState(true);
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isVideoHovered, setIsVideoHovered] = useState(false);
-    const [isSliderHovered, setIsSliderHovered] = useState(false);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const videoRef = useRef(null);
-    const drawerRef = useRef(null);
-
-    // ✅ FETCH DYNAMIC DATA FROM API
-    useEffect(() => {
-        const fetchItems = async () => {
-            try {
-                const response = await fetch("http://localhost:5000/api/home");
-                const data = await response.json();
-                if (data.success && data.data.length > 0) {
-                    const items = data.data.map((item, index) => ({
-                        id: item._id,
-                        src: item.mediaUrl,
-                        alt: item.title || `Gallery ${index + 1}`,
-                        link: item.link || "#",
-                        buttonText: "Now Streaming",
-                        type: item.type || "image",
-                    }));
-                    setGalleryItems(items);
-                } else {
-                    setGalleryItems(fallbackImages);
-                }
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching home items:", error);
-                setGalleryItems(fallbackImages);
-                setLoading(false);
-            }
-        };
-        fetchItems();
-    }, []);
-
-    // ✅ USE KARO: API data agar hai toh, nahi toh fallback
-    const galleryImages = galleryItems.length > 0 ? galleryItems : fallbackImages;
-
-    // Auto-slide images every 4 seconds
-    useEffect(() => {
-        if (galleryImages.length === 0) return;
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) =>
-                prevIndex === galleryImages.length - 1 ? 0 : prevIndex + 1
-            );
-        }, 4000);
-        return () => clearInterval(interval);
-    }, [galleryImages]);
-
-    // Auto-play hero video
-    useEffect(() => {
-        if (videoRef.current) {
-            videoRef.current.play().catch(() => {
-                videoRef.current.muted = true;
-                videoRef.current.play();
+  // ✅ Fetch home items from API
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/home");
+        const data = await response.json();
+        if (data.success && data.data.length > 0) {
+          // ✅ Only take images (ignore videos)
+          const imageItems = data.data.filter(item => item.type === "image");
+          if (imageItems.length > 0) {
+            // ✅ Convert to image URLs (with full path if needed)
+            const imageUrls = imageItems.map(item => {
+              // If URL is relative, prepend backend base
+              if (item.mediaUrl.startsWith("/uploads")) {
+                return `http://localhost:5000${item.mediaUrl}`;
+              }
+              return item.mediaUrl;
             });
+            setImages(imageUrls);
+          }
         }
-    }, []);
-
-    // Close drawer when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (
-                isDrawerOpen &&
-                drawerRef.current &&
-                !drawerRef.current.contains(e.target)
-            ) {
-                if (!e.target.closest(".menu-button")) {
-                    setIsDrawerOpen(false);
-                }
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isDrawerOpen]);
-
-    // Prevent body scroll when drawer is open
-    useEffect(() => {
-        if (isDrawerOpen) {
-            document.body.style.overflow = "hidden";
-        } else {
-            document.body.style.overflow = "unset";
-        }
-        return () => {
-            document.body.style.overflow = "unset";
-        };
-    }, [isDrawerOpen]);
-
-    // Get current slide data
-    const currentSlide = galleryImages[currentIndex] || galleryImages[0];
-
-    const navItems = [
-        { path: "/about", label: "About" },
-        { path: "/work", label: "Work" },
-        { path: "/news", label: "News" },
-        { path: "/contact", label: "Contact" },
-    ];
-
-    const toggleDrawer = (e) => {
-        e.stopPropagation();
-        setIsDrawerOpen(!isDrawerOpen);
+      } catch (error) {
+        console.error("Error fetching home images:", error);
+        // fallback already set
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchImages();
+  }, []);
 
-    // ✅ LOADING STATE
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600" />
-            </div>
-        );
-    }
+  // Image slider – auto-advance
+  useEffect(() => {
+    if (images.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, [images]);
 
+  // ✅ Show loading state only if images not yet set and loading
+  if (loading && images === fallbackImages) {
     return (
-        <div className="min-h-max bg-white font-basis-web font-['Helvetica_Neue',Arial,sans-serif] relative overflow-x-hidden">
-            {/* Mobile Menu Button - hidden on tablet and above */}
-            <button
-                onClick={toggleDrawer}
-                className="menu-button fixed top-4 right-4 z-50 md:hidden text-blue-500 hover:text-black transition-colors duration-300 bg-white/90 backdrop-blur-sm p-2 rounded-md shadow-lg"
-                aria-label="Toggle menu"
-            >
-                {isDrawerOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-            </button>
-
-            {/* Mobile Drawer - hidden on tablet and above */}
-            <div
-                className={`fixed top-0 left-0 w-full z-40 md:hidden transition-transform duration-400 ease-in-out ${
-                    isDrawerOpen ? "translate-y-0" : "-translate-y-full"
-                }`}
-                style={{ height: "45vh", maxHeight: "400px" }}
-            >
-                <div
-                    ref={drawerRef}
-                    className="w-full h-full bg-white px-20 pt-26 shadow-2xl overflow-y-auto"
-                >
-                    <div className="flex flex-col items-center justify-center h-[calc(100%-70px)] px-6">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.path}
-                                to={item.path}
-                                className="w-full text-center py-4 text-[20px] font-medium border-b-2 border-gray-200 text-blue-500 hover:text-black transition-colors duration-300"
-                                onClick={() => setIsDrawerOpen(false)}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {/* Overlay - hidden on tablet and above */}
-            <div
-                className={`fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300 ${
-                    isDrawerOpen ? "opacity-100 visible" : "opacity-0 invisible"
-                }`}
-                onClick={() => setIsDrawerOpen(false)}
-            />
-
-            {/* ===== MAIN SECTION ===== */}
-            {/* flex-row from tablet (md) upwards — matches laptop layout */}
-            <section className="min-h-screen flex flex-col md:flex-row items-start overflow-x-hidden">
-                {/* ===== LEFT: HERO VIDEO ===== */}
-                {/* On tablet: 1/2 width, on laptop: fixed width as before */}
-                <div className="w-full md:w-[500px] lg:w-[568px] xl:w-[1760px] h-screen sm:h-screen md:h-[1062px] lg:h-[1050px] xl:h-[568px] relative">
-                    <Link
-                        to=""
-                        className="relative w-full h-full overflow-hidden bg-[#1a1a1a] block"
-                        onMouseEnter={() => setIsVideoHovered(true)}
-                        onMouseLeave={() => setIsVideoHovered(false)}
-                    >
-                        <video
-                            ref={videoRef}
-                            className="w-full h-full object-cover"
-                            src={heroVideo}
-                            poster={fallbackImages[0]?.src}
-                            muted
-                            loop
-                            playsInline
-                            autoPlay
-                        />
-
-                        <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 md:h-40 bg-gradient-to-t from-[#265b7a] via-[#1989c2]/2 to-transparent pointer-events-none" />
-
-                        <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 md:bottom-0 md:left-20 flex pointer-events-none">
-                            <img
-                                src={bluechalk}
-                                alt="Blue Chalk"
-                                className="w-40 sm:w-32 md:w-48 lg:w-56 xl:w-64 h-auto"
-                            />
-                        </div>
-
-                        <div
-                            className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-44 xl:w-48 h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 px-2 py-2 flex items-end justify-between transition-all duration-300 pointer-events-none ${
-                                isVideoHovered ? "bg-[#1989c2]" : "bg-black/60"
-                            }`}
-                        >
-                            <span className="text-xs sm:text-sm md:text-sm lg:text-base xl:text-lg font-medium">
-                                What Lasts
-                            </span>
-                            <FiPlus className="absolute top-1 right-1 sm:top-2 sm:right-2 text-base sm:text-lg lg:text-xl xl:text-2xl" />
-                        </div>
-                    </Link>
-                </div>
-
-                {/* ===== RIGHT: DYNAMIC SLIDER ===== */}
-                {/* On tablet: 1/2 width, on laptop: percentage width as before */}
-                <div className="hidden md:flex flex-col gap-6 sm:gap-6 lg:gap-158.5 xl:gap-10 md:gap-130 md:p-0 sm:p-6 lg:p-0 xl:p-0 w-full md:w-1/2 lg:w-[45%] xl:w-[50%] lg:p-0 xl:mr-2 lg:pt-0 xl:pt-2">
-                    <p className="text-xl md:text-xl lg:text-[22px] xl:text-[20px] pt-10 xl:ml-7 md:ml-8 leading-[28px] lg:ml-6 sm:leading-[26px] lg:leading-[32px] xl:leading-[26px] text-[#C2BBB6] max-w-full md:max-w-full lg:max-w-md xl:max-w-lg">
-                        An industry-leading production company founded by people <br className="lg:hidden" />
-                        who believe in the power of nonfiction visual storytelling.
-                    </p>
-
-                    {/* ✅ DYNAMIC SLIDER */}
-                    <div
-                        className="relative w-full max-w-full h-40 md:h-[400px] lg:h-[280px] xl:h-[260px] xl:mt-29 overflow-hidden"
-                        onMouseEnter={() => setIsSliderHovered(true)}
-                        onMouseLeave={() => setIsSliderHovered(false)}
-                    >
-                        <Link
-                            key={currentIndex}
-                            to={currentSlide?.link || "/"}
-                            className="absolute inset-0 z-20"
-                            aria-label={currentSlide?.alt || "Slide link"}
-                        />
-
-                        <div
-                            className="transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform h-full"
-                            style={{ transform: `translateY(-${currentIndex * 100}%)` }}
-                        >
-                            {galleryImages.map((image) => (
-                                <div
-                                    key={image.id}
-                                    className="relative min-w-full h-full shrink-0 overflow-hidden"
-                                >
-                                    {image.type === "video" ? (
-                                        <video
-                                            src={image.src}
-                                            className="w-full h-full object-cover"
-                                            muted
-                                            loop
-                                            playsInline
-                                            autoPlay
-                                        />
-                                    ) : (
-                                        <img
-                                            src={image.src}
-                                            alt={image.alt}
-                                            className="w-full h-full object-cover block"
-                                        />
-                                    )}
-                                    <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 bg-gradient-to-t from-[#0b5f8e] via-[#1989c2]/2 to-transparent" />
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Slider Button */}
-                        <div
-                            className={`absolute bottom-3 right-3 sm:bottom-4 sm:right-4 lg:bottom-5 lg:right-5 xl:bottom-4 xl:right-6 text-white w-28 sm:w-32 md:w-36 lg:w-44 xl:w-48 h-12 sm:h-14 md:h-16 lg:h-18 xl:h-20 px-2 py-2 flex items-end justify-between transition-all duration-300 pointer-events-none z-10 ${
-                                isSliderHovered ? "bg-[#1989c2]" : "bg-black/60"
-                            }`}
-                        >
-                            <span className="text-xs sm:text-sm md:text-sm lg:text-base xl:text-lg font-medium">
-                                {currentSlide?.buttonText || "Now Streaming"}
-                            </span>
-                            <FiPlus className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 text-base sm:text-lg lg:text-xl xl:text-2xl" />
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===== FOOTER NAVIGATION ===== */}
-            {/* Shows from tablet (md) upwards — nav items visible on tablet too */}
-            <footer className="hidden md:flex fixed bottom-4 md:bottom-4 lg:bottom-8 xl:bottom-6 font-basis-web left-4 sm:left-8 md:left-14 lg:left-10 xl:left-14 right-4 sm:right-8 md:right-15 lg:right-10 xl:right-14 items-center pt-2">
-                <ul className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-24 lg:gap-28 xl:gap-24 lg:pl-8 xl:pl-10 m-0 p-0">
-                    {navItems.map((item) => (
-                        <li key={item.path} className="block">
-                            <Link
-                                to={item.path}
-                                className="text-blue-500 font-medium no-underline text-xs sm:text-sm lg:text-[17px] xl:text-[17px] leading-[17px] tracking-[0.5px] sm:tracking-[1px] hover:text-black transition-colors duration-300"
-                            >
-                                {item.label}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </footer>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
+      </div>
     );
+  }
+
+  return (
+    <main className="min-h-screen w-full bg-white">
+      {/* HERO SECTION – SAME AS BEFORE */}
+      <section className="flex w-full flex-col lg:flex-row">
+        {/* VIDEO SECTION – UNCHANGED */}
+        <div className="relative h-screen w-full overflow-hidden bg-black lg:h-[calc(100vh-72px)] lg:w-[71.5%]">
+          <video
+            src={heroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 md:h-40 bg-gradient-to-t from-[#265b7a] via-[#1989c2]/2 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-black/10" />
+
+          {/* Logo */}
+          <div className="absolute -bottom-2 left-20 z-20 w-[180px] sm:w-[220px] md:w-[280px] lg:w-[350px] xl:w-[380px]">
+            <img
+              src={bluechalkLogo}
+              alt="Blue Chalk"
+              className="block h-auto pt-2 w-full object-contain"
+            />
+          </div>
+
+          {/* What Lasts Box */}
+          <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+            What Lasts
+            <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+          </div>
+
+          {/* Mobile Menu Button – UNCHANGED */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            className="absolute right-5 top-5 z-50 flex h-11 w-11 items-center justify-center bg-white text-[24px] text-[#07354a] shadow-md md:right-7 md:top-7 lg:hidden"
+            aria-label="Open menu"
+          >
+            <FiMenu />
+          </button>
+
+          {/* Mobile Menu – UNCHANGED */}
+          {menuOpen && (
+            <>
+              <div
+                onClick={() => setMenuOpen(false)}
+                className="absolute inset-0 z-40 bg-black/30 lg:hidden"
+              />
+              <div className="absolute right-4 top-4 z-50 w-[220px] bg-white px-7 py-6 shadow-xl lg:hidden">
+                <div className="mb-7 flex items-center justify-between border-b border-gray-200 pb-4">
+                  <span className="text-[18px] font-medium text-[#07354a]">Menu</span>
+                  <button
+                    type="button"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex h-8 w-8 items-center justify-center text-[22px] text-[#07354a] transition hover:opacity-50"
+                    aria-label="Close menu"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+                <div className="flex flex-col gap-6">
+                  <Link
+                    to="/about"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    to="/work"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60"
+                  >
+                    Work
+                  </Link>
+                  <Link
+                    to="/news"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60"
+                  >
+                    News
+                  </Link>
+                  <Link
+                    to="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60"
+                  >
+                    Contact
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* RIGHT ASIDE – SLIDER WITH DYNAMIC IMAGES */}
+        <aside className="hidden w-full flex-col bg-white lg:flex lg:h-[calc(100vh-72px)] lg:w-[28.5%]">
+          {/* Description – UNCHANGED */}
+          <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-14">
+            <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c8b8a8] xl:text-[20px]">
+              An industry-leading production company founded by people who
+              believe in the power of nonfiction visual storytelling.
+            </p>
+          </div>
+
+          {/* Image Slider – DYNAMIC IMAGES */}
+          <div className="relative h-[58%] w-full overflow-hidden bg-gray-100">
+            {images.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Blue Chalk project ${index + 2}`}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+                  currentImage === index ? "opacity-100" : "opacity-0"
+                }`}
+                onError={(e) => {
+                  // If image fails, replace with fallback
+                  e.target.src = "https://placehold.co/600x400/e0e0e0/808080?text=No+Image";
+                }}
+              />
+            ))}
+            <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 md:h-40 bg-gradient-to-t from-[#265b7a] via-[#1989c2]/2 to-transparent pointer-events-none" />
+
+            {/* What Lasts Box – UNCHANGED */}
+            <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+              What Lasts
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      {/* DESKTOP NAVBAR – UNCHANGED */}
+      <nav className="hidden h-[72px] w-full items-center bg-white px-20 lg:flex">
+        <div className="flex items-center ml-4 gap-24 font-basis-web">
+          <Link
+            to="/about"
+            className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]"
+          >
+            About
+          </Link>
+          <Link
+            to="/work"
+            className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]"
+          >
+            Work
+          </Link>
+          <Link
+            to="/news"
+            className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]"
+          >
+            News
+          </Link>
+          <Link
+            to="/contact"
+            className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]"
+          >
+            Contact
+          </Link>
+        </div>
+      </nav>
+    </main>
+  );
 };
 
 export default Home;
