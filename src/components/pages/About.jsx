@@ -114,15 +114,27 @@ const About = () => {
         <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px]">
           About Us
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[20px] md:gap-y-0 md:gap-x-[80px]">
-          <div className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
-            <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">{about.aboutUsText}</p>
-            {/* Additional paragraphs if needed */}
-          </div>
-          <div className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
-            <p className="mb-[20px] sm:mb-[24px] md:mb-[28px]">{about.aboutUsRightText}</p>
-          </div>
-        </div>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[20px] md:gap-y-0 md:gap-x-[80px]">
+
+  {/* Left Side */}
+  <div className="text-[18px] leading-[1.55] text-[#152B3D]">
+    {about.aboutUsText.split('\n').map((para, idx) => (
+      <p key={idx} className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
+        {para}
+      </p>
+    ))}
+  </div>
+
+  {/* Right Side */}
+  <div className="text-[18px] leading-[1.55] whitespace-pre-wrap text-[#152B3D]">
+    {about.aboutUsRightText.split('\n').map((para, idx) => (
+      <p key={idx} className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
+        {para}
+      </p>
+    ))}
+  </div>
+
+</div>
 
         {/* ON ASSIGNMENT */}
         <div className="mt-[90px] md:mt-[65px] lg:mt-[85px] max-sm:mb-10">
@@ -176,16 +188,33 @@ const About = () => {
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[20px] sm:mb-[25px] md:mb-[30px]">
           Services
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-x-[30px] sm:gap-x-[50px] md:gap-x-[80px] gap-y-[0px] sm:gap-y-[0px] md:gap-y-[0px] max-sm:gap-6">
-          <div>
-            {about.services.map((service, idx) => (
-              <p key={idx} className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
-                {service}
-              </p>
-            ))}
-          </div>
-          {/* Right side – we can keep it empty or move services here as per design */}
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-[30px] sm:gap-x-[50px] md:gap-x-[80px]">
+
+  {/* Left Column */}
+  <div>
+    {about.services.slice(0, 3).map((service, idx) => (
+      <p
+        key={idx}
+        className="text-[18px] whitespace-pre-wrap leading-[1.55] text-[#152B3D]"
+      >
+        {service}
+      </p>
+    ))}
+  </div>
+
+  {/* Right Column */}
+  <div>
+    {about.services.slice(3).map((service, idx) => (
+      <p
+        key={idx}
+        className="text-[18px] whitespace-pre-wrap leading-[1.55] text-[#152B3D]"
+      >
+        {service}
+      </p>
+    ))}
+  </div>
+
+</div>
       </section>
 
       {/* CLIENTS & PARTNERS */}
