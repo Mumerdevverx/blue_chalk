@@ -87,7 +87,7 @@ const AllProjectwork = () => {
     if (project.overlayType === "atomic") {
       return (
         <div className="absolute top-1/2 font-basis-web left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-5 pointer-events-none">
-          <h2
+          {/* <h2
             className="text-white font-extrabold leading-tight"
             style={{
               fontSize: "clamp(2rem, 4.5vw, 4.5rem)",
@@ -96,7 +96,7 @@ const AllProjectwork = () => {
             }}
           >
             {project.title}
-          </h2>
+          </h2> */}
           <p
             className="text-white font-light opacity-90"
             style={{
@@ -342,11 +342,11 @@ const AllProjectwork = () => {
                     />
 
                     {/* ✅ Overlay only if showOverlay is true */}
-                    {project.showOverlay && renderOverlay(project)}
+                    {/* {project.showOverlay && renderOverlay(project)} */}
 
                     {/* ✅ Bottom-right button with dynamic buttonText */}
                     <div
-                      className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-43 h-12 sm:h-14 md:h-16 px-2 py-2 flex items-end justify-between transition-all duration-200 bg-black/60 group-hover:bg-[#1989c2]`}
+                      className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-47 h-12 sm:h-14 md:h-16 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/60 group-hover:bg-[#1989c2]`}
                     >
                       <span className="text-xs sm:text-sm md:text-sm font-medium">
                         {project.buttonText || "Watch Now"}

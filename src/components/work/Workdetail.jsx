@@ -40,27 +40,44 @@ const Workdetail = () => {
     fetchData();
   }, [slug]);
 
-  // ✅ Extract video iframe
+  // ✅ Extract video URL – supports YouTube iframe AND direct <video> tag
   const extractVideoFromContent = (html) => {
     if (!html) return null;
-    const match = html.match(/<iframe[^>]*src="([^"]*)"[^>]*><\/iframe>/);
+
+    // Try YouTube iframe
+    let match = html.match(/<iframe[^>]*src="([^"]*)"[^>]*><\/iframe>/);
     if (match) return match[1];
-    const match2 = html.match(/<div data-youtube-video="[^"]*"><iframe[^>]*src="([^"]*)"[^>]*><\/iframe><\/div>/);
-    if (match2) return match2[1];
+
+    // Try YouTube embed div
+    match = html.match(/<div data-youtube-video="[^"]*"><iframe[^>]*src="([^"]*)"[^>]*><\/iframe><\/div>/);
+    if (match) return match[1];
+
+    // ✅ Try direct <video> tag
+    match = html.match(/<video[^>]*src="([^"]*)"[^>]*>/);
+    if (match) return match[1];
+
     return null;
   };
 
-  // ✅ Remove video AND "Write something amazing..." from content
+  // ✅ Clean content – remove iframes and video tags
   const cleanContent = (html) => {
     if (!html) return '';
     let cleaned = html
       .replace(/<div data-youtube-video="[^"]*"><iframe[^>]*src="[^"]*"[^>]*><\/iframe><\/div>/, '')
       .replace(/<iframe[^>]*src="[^"]*"[^>]*><\/iframe>/, '')
-      .replace(/Write something amazing\.\.\./g, '')  // ✅ REMOVE placeholder text
+      .replace(/<video[^>]*src="[^"]*"[^>]*><\/video>/, '') // ✅ Remove video tags
+      .replace(/Write something amazing\.\.\./g, '')
       .trim();
     return cleaned;
   };
 
+  // ✅ Check if URL is direct video (MP4, WebM, etc.)
+  const isDirectVideo = (url) => {
+    if (!url) return false;
+    return /\.(mp4|webm|ogg|mov)$/i.test(url);
+  };
+
+  // ✅ Convert YouTube watch URL to embed
   const getEmbedUrl = (url) => {
     if (!url) return "";
     if (url.includes("embed")) return url;
@@ -70,6 +87,8 @@ const Workdetail = () => {
     }
     return url;
   };
+
+  const displayTitle = work?.buttonText || work?.title || "Untitled";
 
   if (loading) {
     return (
@@ -94,33 +113,58 @@ const Workdetail = () => {
   const cleanedContent = cleanContent(work.aboutContent);
   const finalVideoUrl = getEmbedUrl(videoUrl) || "";
 
-  // ✅ USE BUTTON TEXT AS TITLE (or fallback to title)
-  const displayTitle = work.buttonText || work.title || "Untitled";
-
   const getImageUrl = (url) => {
     if (!url) return 'https://placehold.co/400x300/e0e0e0/808080?text=No+Image';
     if (url.startsWith('http')) return url;
     return `http://localhost:5000${url}`;
   };
 
+  // ✅ Decide which player to render
+  const renderVideoPlayer = () => {
+    if (!videoUrl) {
+      return (
+        <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-200">
+          No video available
+        </div>
+      );
+    }
+
+    if (isDirectVideo(videoUrl)) {
+      // ✅ Direct MP4 video
+      return (
+        <video
+          controls
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ backgroundColor: '#000' }}
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    } else {
+      // ✅ YouTube/Vimeo embed
+      return (
+        <iframe
+          src={finalVideoUrl}
+          title="Video"
+          className="absolute top-0 left-0 w-full h-full"
+          frameBorder="0"
+          allowFullScreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        />
+      );
+    }
+  };
+
   return (
-    <div className="w-full lg:mt-[80px] md:mt-[115px]  mt-[100px]  lg:px-20 px-4">
-      {/* VIDEO */}
-      <div className="relative w-full aspect-video bg-gray-200">
-        {finalVideoUrl ? (
-          <iframe
-            src={finalVideoUrl}
-            title="Video"
-            className="absolute top-0 left-0 w-full h-full"
-            frameBorder="0"
-            allowFullScreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
-            No video available
-          </div>
-        )}
+    <div className="w-full lg:mt-[80px] md:mt-[115px] mt-[100px] lg:px-20 px-4">
+      {/* ✅ VIDEO PLAYER – at the top */}
+      <div className="relative w-full aspect-video bg-gray-200 overflow-hidden">
+        {renderVideoPlayer()}
       </div>
 
       {/* TWO-COLUMN LAYOUT */}
@@ -128,18 +172,13 @@ const Workdetail = () => {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
           {/* LEFT SIDE */}
           <div className="flex-1">
-            {/* ✅ TITLE – from buttonText */}
             <h1 className="text-[28px] md:text-[36px] lg:text-[40px] font-normal text-[#293339] leading-[1.2]">
               {displayTitle}
             </h1>
-
             <div className="border-b border-[#D9D9D9] mt-4"></div>
-
             <p className="text-[14px] md:text-[15px] text-[#9EA5BB] tracking-[2px] mt-3 uppercase">
               {work.subDescription || work.description}
             </p>
-
-            {/* ✅ CLEANED CONTENT (without video & placeholder text) */}
             <div className="mt-8">
               {cleanedContent ? (
                 <div
@@ -155,10 +194,7 @@ const Workdetail = () => {
           {/* RIGHT SIDE – Next Project */}
           <div className="lg:w-[280px] flex-shrink-0">
             {nextProject ? (
-              <Link
-                to={`/work/${nextProject.slug}`}
-                className="group block"
-              >
+              <Link to={`/work/${nextProject.slug}`} className="group block">
                 <div className="text-right">
                   <p className="text-[12px] text-[#C2BBB6] group-hover:text-[#3D93D2] tracking-[2.5px] transition-all duration-300 leading-tight uppercase">
                     NEXT PROJECT:
