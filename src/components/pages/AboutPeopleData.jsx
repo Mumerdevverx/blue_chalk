@@ -128,9 +128,11 @@ const AboutPeopleData = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-2 mt-4">
+                    <div 
+                     onClick={() => setSelectedIndex(null)}
+                    className="flex gap-2 mt-4 cursor-pointer">
                       <button
-                        onClick={() => setSelectedIndex(null)}
+                       
                         className="lg:mt-2.5 mt-2 text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#293339] transition-colors duration-200 hover:text-[#0089D0]"
                       >
                         CLOSE
