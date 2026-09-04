@@ -44,7 +44,7 @@ const News = () => {
 
   return (
     <div className="w-full bg-white mt-20 pt-[30px] pb-[60px] sm:pt-[40px] md:pt-[45px] md:pb-[80px]">
-      <div className="mx-auto w-full lg-flex-1 px-0 md:px-[50px] lg:px-25">
+      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-18">
         {/* TOP HEADINGS */}
         <div className="flex w-full items-center justify-between pb-[28px] max-sm:px-8">
           <div className="w-full lg:w-[73%]">
@@ -73,13 +73,15 @@ const News = () => {
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="h-[230px] md:h-[290px] lg:h-[267px] grayscale hover:grayscale-0 w-full object-cover"
+                      className="h-[230px] md:h-[290px] lg:h-[300px] grayscale hover:grayscale-0 w-full object-cover"
                       onError={(e) => {
                         e.target.src = "https://via.placeholder.com/400x300?text=No+Image";
                       }}
                     />
                   </div>
-                  <div className="group flex w-full flex-col justify-center lg:px-10 md:px-5 py-[30px] hover:text-[#1893DB] md:py-[30px] max-sm:px-8">
+                  <Link 
+                  to={`/news/${item.slug}`}
+                  className="group flex w-full flex-col justify-center lg:px-10 md:px-5 py-[30px] hover:text-[#1893DB] md:py-[30px] max-sm:px-8">
                     <h2 className="text-[24px] font-normal leading-[30px] text-[#152B3D] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[24px]">
                       {item.title}
                     </h2>
@@ -91,11 +93,11 @@ const News = () => {
                     </p>
                     <Link
   to={`/news/${item.slug}`}   // ✅ YEH SAHI HAI
-  className="mt-2 text-[#1893DB] font-medium text-[16px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
+  className="mt-2 hover:text-[#1893DB] font-medium text-[16px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
 >
   Read More →
 </Link>
-                  </div>
+                  </Link>
                 </div>
               ))
             )}

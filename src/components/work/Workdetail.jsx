@@ -182,7 +182,7 @@ const Workdetail = () => {
             <div className="mt-8">
               {cleanedContent ? (
                 <div
-                  className="text-gray-800 text-base leading-relaxed prose max-w-none"
+                  className="text-gray-800 text-base whitespace-pre-wrap leading-relaxed prose max-w-none"
                   dangerouslySetInnerHTML={{ __html: cleanedContent }}
                 />
               ) : (

@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./landingpage/Home";
 import Layout from "./layout/Layout";
 import About from "./pages/About";
+import Aboutpartner from "./pages/aboutpartner";
 import Contact from "./pages/Contact";
 import News from "./pages/News";
 import NewsBlogs from "./pages/NewsBlogs";
@@ -12,6 +13,7 @@ import Workdetail from "./work/Workdetail";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 import Awardpage from "./pages/Awardpage";
+
 
 const Allroutes = () => {
   return (
@@ -22,6 +24,7 @@ const Allroutes = () => {
       {/* Layout Pages */}
       <Route element={<Layout />}>
         <Route path="/about" element={<About />} />
+         <Route path="/aboutpartner" element={<Aboutpartner />} /> 
 
         {/* WORK */}
         <Route path="/work" element={<AllProjectwork />} />          {/* ✅ Only one list route */}

@@ -3,6 +3,7 @@ import peoples from "../../assets/peoples.jpg";
 import aboutvideo from "../../assets/aboutvideo.mp4";
 import AboutAwards from "./AboutAwards";
 import AboutPeopleData from "./AboutPeopleData";
+import { Link } from "react-router-dom";
 
 // ✅ Helper for image URL
 const getImageUrl = (url) => {
@@ -254,18 +255,42 @@ const About = () => {
       <AboutPeopleData />
 
       {/* CAREERS */}
-      <section className="w-full max-w-[1200px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
-        <h2 className="text-[36px] md:text-[32px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
-          Careers
-        </h2>
-        <div className="max-w-full md:max-w-[550px] text-[16px] md:text-[16px] lg:text-[16px] leading-[1.5] text-[#8C9BA8]">
-          {about.careersText.split('\n').map((para, idx) => (
-            <p key={idx} className="mb-[25px] sm:mb-[35px] md:mb-[45px]">
-              {para}
-            </p>
-          ))}
-        </div>
-      </section>
+     {/* ================= CAREERS ================= */}
+<section className="w-full max-w-[1200px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
+  <h2 className="text-[36px] md:text-[32px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
+    Careers
+  </h2>
+
+  <div className="max-w-full md:max-w-[550px] text-[16px] md:text-[16px] lg:text-[16px] leading-[1.5] text-[#8C9BA8]">
+    {/* ✅ Helper function to render careers text with link */}
+    {(() => {
+      const text = about.careersText || fallbackAbout.careersText;
+      const parts = text.split('creative partners interest form');
+      
+      if (parts.length === 1) {
+        // If phrase not found, render as plain text
+        return (
+          <p className="mb-[25px] sm:mb-[35px] md:mb-[45px]">
+            {text}
+          </p>
+        );
+      }
+      
+      return (
+        <p className="mb-[25px] sm:mb-[35px] md:mb-[45px]">
+          {parts[0]}
+          <Link
+            to="/aboutpartner"
+            className="text-[#0089D0] hover:underline underline-offset-2 transition-colors duration-200"
+          >
+            creative partners interest form
+          </Link>
+          {parts[1]}
+        </p>
+      );
+    })()}
+  </div>
+</section>
     </div>
   );
 };
