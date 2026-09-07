@@ -1,0 +1,116 @@
+/* =========================
+   LOADER
+========================= */
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================
+   HORIZONTAL
+========================= */
+
+.loader-horizontal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 2px;
+  background: #0089D0;
+  transform: translate(-50%, -50%);
+
+  animation: horizontalCycle 1s
+    cubic-bezier(0.65, 0, 0.35, 1)
+    0s
+    3
+    both;
+}
+
+
+/* =========================
+   VERTICAL
+========================= */
+
+.loader-vertical {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 0;
+  background: #0089D0;
+  transform: translate(-50%, -50%);
+
+  animation: verticalCycle 1s
+    cubic-bezier(0.65, 0, 0.35, 1)
+    0s
+    3
+    both;
+}
+
+
+/* =========================
+   HORIZONTAL ANIMATION
+========================= */
+
+@keyframes horizontalCycle {
+  0% {
+    width: 0;
+    opacity: 1;
+  }
+
+  43% {
+    width: 180px;
+    opacity: 1;
+  }
+
+  57% {
+    width: 180px;
+    opacity: 0;
+  }
+
+  100% {
+    width: 0;
+    opacity: 0;
+  }
+}
+
+
+/* =========================
+   VERTICAL ANIMATION
+========================= */
+
+@keyframes verticalCycle {
+
+  /* Completely hidden */
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+
+  /* Wait for horizontal */
+  57% {
+    height: 0;
+    opacity: 0;
+  }
+
+  /* Start */
+  58% {
+    height: 0;
+    opacity: 1;
+  }
+
+  /* Smoothly expand */
+  100% {
+    height: 100px;
+    opacity: 1;
+  }
+}
