@@ -191,7 +191,7 @@ const Workdetail = () => {
             <div className="mt-8">
               {cleanedContent ? (
                 <div
-                  className="text-gray-800 text-base whitespace-pre-wrap leading-relaxed prose max-w-none"
+                  className="work-content text-base leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: cleanedContent }}
                 />
               ) : (
@@ -237,7 +237,7 @@ const Workdetail = () => {
       
     </div>
     {/* ✅ RELATED WORK SECTION */}
-      <div className="w-full bg-[#BFC2C4] py-15 px-0 lg:px-20 mt-8">
+      <div className="w-full bg-[#BFC2C4] py-20 px-0 lg:px-20 mt-8">
         {/* Header Row */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-[24px] md:text-[32px] font-normal text-white">
