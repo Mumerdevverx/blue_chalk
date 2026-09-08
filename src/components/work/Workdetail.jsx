@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { FiPlus } from "react-icons/fi";
 
 const Workdetail = () => {
   const { slug } = useParams();
   const [work, setWork] = useState(null);
   const [allProjects, setAllProjects] = useState([]);
   const [nextProject, setNextProject] = useState(null);
+  const [relatedProjects, setRelatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchData = async () => {
       try {
         const workRes = await fetch(`http://localhost:5000/api/work/slug/${slug}`);
@@ -29,6 +32,11 @@ const Workdetail = () => {
           if (currentIndex !== -1 && currentIndex < allData.data.length - 1) {
             setNextProject(allData.data[currentIndex + 1]);
           }
+          // Related: same category first, then others, excluding current
+          const others = allData.data.filter(p => p.slug !== slug);
+          const sameCategory = others.filter(p => p.category === workData.data.category);
+          const different = others.filter(p => p.category !== workData.data.category);
+          setRelatedProjects([...sameCategory, ...different].slice(0, 3));
         }
         setLoading(false);
       } catch (error) {
@@ -161,6 +169,7 @@ const Workdetail = () => {
   };
 
   return (
+    <>
     <div className="w-full lg:mt-[80px] md:mt-[115px] mt-[100px] lg:px-20 px-4">
       {/* ✅ VIDEO PLAYER – at the top */}
       <div className="relative w-full aspect-video bg-gray-200 overflow-hidden">
@@ -224,7 +233,58 @@ const Workdetail = () => {
           </div>
         </div>
       </div>
+
+      
     </div>
+    {/* ✅ RELATED WORK SECTION */}
+      <div className="w-full bg-[#BFC2C4] py-15 px-0 lg:px-20 mt-8">
+        {/* Header Row */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-[24px] md:text-[32px] font-normal text-white">
+            Related Work
+          </h2>
+          <Link
+            to="/work"
+            className="text-[#1893D2] text-[12px] tracking-[2px] uppercase font-semibold hover:opacity-70 transition-opacity duration-200"
+          >
+            ALL WORK +
+          </Link>
+        </div>
+
+        {/* 3 Cards Grid */}
+        {relatedProjects.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5">
+            {relatedProjects.map((project, index) => (
+              <Link
+                key={project._id || index}
+                to={`/work/${project.slug}`}
+                className="group relative block overflow-hidden"
+              >
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-400">
+                  <img
+                    src={getImageUrl(project.image)}
+                    alt={project.title || "Related Work"}
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                    onError={(e) => {
+                      e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
+                    }}
+                  />
+                  {/* ✅ Blue overlay button bottom-left – same as AllProjectwork */}
+                  <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-40 h-20 px-3 py-3 flex items-end justify-between transition-all duration-300">
+                    <span className="text-[12px] font-medium leading-tight">
+                      {project.buttonText || project.title || "Watch Now"}
+                    </span>
+                    <FiPlus className="absolute top-2 right-2 text-base" />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-[#888] text-sm">No related projects found.</p>
+        )}
+      </div>
+    </>
   );
 };
 
