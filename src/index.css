@@ -114,3 +114,6 @@
     opacity: 1;
   }
 }
+.work-content p {
+  margin-bottom: 1em;
+}
