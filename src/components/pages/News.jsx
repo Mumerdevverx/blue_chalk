@@ -12,7 +12,11 @@ const News = () => {
         const response = await fetch("http://localhost:5000/api/news");
         const data = await response.json();
         if (data.success) {
-          setNews(data.data);
+          // Sort by _id ascending — first stored blog appears first
+          const sorted = [...data.data].sort((a, b) =>
+            a._id < b._id ? -1 : a._id > b._id ? 1 : 0
+          );
+          setNews(sorted);
         } else {
           setError("Failed to load news");
         }
