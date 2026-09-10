@@ -80,9 +80,15 @@ const Home = () => {
                 imageUrl = `http://localhost:5000${imageUrl}`;
               }
 
+              // Support both workSlug and blogId (whether string or object)
+              const resolvedSlug =
+                item.workSlug ||
+                (typeof item.blogId === "object" ? item.blogId?.slug : item.blogId) ||
+                "";
+
               return {
                 url: imageUrl,
-                workSlug: item.workSlug || "",
+                workSlug: resolvedSlug,
               };
             });
 
@@ -275,6 +281,7 @@ const Home = () => {
           <div className="relative h-[58%] w-full overflow-hidden bg-gray-100">
 
             {images.map((image, index) => {
+              const isActive = currentImage === index;
 
               const imageContent = (
                 <img
@@ -282,8 +289,7 @@ const Home = () => {
                   alt={`Blue Chalk project ${index + 2}`}
                   className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
                   style={{
-                    opacity:
-                      currentImage === index ? 1 : 0,
+                    opacity: isActive ? 1 : 0,
                   }}
                   onError={(e) => {
                     e.target.src =
@@ -294,14 +300,18 @@ const Home = () => {
 
               // ==========================================
               // IF WORK SLUG EXISTS
-              // IMAGE WILL BE CLICKABLE
+              // IMAGE WILL BE CLICKABLE ONLY WHEN ACTIVE
               // ==========================================
               if (image.workSlug) {
                 return (
                   <Link
                     key={index}
                     to={`/work/${image.workSlug}`}
-                    className="absolute inset-0 block cursor-pointer"
+                    className={`absolute inset-0 block transition-opacity duration-700 ease-in-out ${
+                      isActive
+                        ? "z-10 pointer-events-auto cursor-pointer"
+                        : "z-0 pointer-events-none"
+                    }`}
                     aria-label={`View ${image.workSlug}`}
                   >
                     {imageContent}
@@ -316,7 +326,11 @@ const Home = () => {
               return (
                 <div
                   key={index}
-                  className="absolute inset-0 block"
+                  className={`absolute inset-0 block transition-opacity duration-700 ease-in-out ${
+                    isActive
+                      ? "z-10 pointer-events-auto"
+                      : "z-0 pointer-events-none"
+                  }`}
                 >
                   {imageContent}
                 </div>
