@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import peoples from "../../assets/peoples.jpg";
-import aboutvideo from "../../assets/aboutvideo.mp4";
+const aboutvideo = "/videos/aboutvideo.mp4";
 import AboutAwards from "./AboutAwards";
 import AboutPeopleData from "./AboutPeopleData";
 import { Link } from "react-router-dom";

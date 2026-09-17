@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiMenu, FiX, FiPlus } from "react-icons/fi";
 
-import heroVideo from "../../assets/landingimg/herovideo.mp4";
+const heroVideo = "/videos/herovideo.mp4";
 import bluechalkLogo from "../../assets/landingimg/bluechalk.avif";
 
 // ==========================================
