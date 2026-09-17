@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import peoples from "../../assets/peoples.jpg";
-const aboutvideo = "/videos/aboutvideo.mp4";
 import AboutAwards from "./AboutAwards";
 import AboutPeopleData from "./AboutPeopleData";
 import { Link } from "react-router-dom";
+
+const aboutvideo = "/videos/aboutvideo.mp4";
 
 // ✅ Helper for image URL
 const getImageUrl = (url) => {
