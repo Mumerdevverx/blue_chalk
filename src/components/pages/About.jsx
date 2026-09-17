@@ -3,6 +3,7 @@ import peoples from "../../assets/peoples.jpg";
 import AboutAwards from "./AboutAwards";
 import AboutPeopleData from "./AboutPeopleData";
 import { Link } from "react-router-dom";
+import API_BASE_URL from "../../config/api";
 
 const aboutvideo = "/videos/aboutvideo.mp4";
 
@@ -10,7 +11,7 @@ const aboutvideo = "/videos/aboutvideo.mp4";
 const getImageUrl = (url) => {
   if (!url) return 'https://via.placeholder.com/600x400?text=No+Image';
   if (url.startsWith('http')) return url;
-  return `http://localhost:5000${url}`;
+  return `${API_BASE_URL}${url}`;
 };
 
 const About = () => {
@@ -39,9 +40,9 @@ const About = () => {
     const fetchData = async () => {
       try {
         const [aboutRes, galleryRes, clientsRes] = await Promise.all([
-          fetch('http://localhost:5000/api/about'),
-          fetch('http://localhost:5000/api/gallery'),
-          fetch('http://localhost:5000/api/clients')
+          fetch(`${API_BASE_URL}/api/about`),
+          fetch(`${API_BASE_URL}/api/gallery`),
+          fetch(`${API_BASE_URL}/api/clients`)
         ]);
         const aboutJson = await aboutRes.json();
         const galleryJson = await galleryRes.json();

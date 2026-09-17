@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import closeicon from "../../assets/about/team/closeicon.svg";
+import API_BASE_URL from "../../config/api";
 
 // Fallback static team
 const fallbackMembers = [
@@ -18,7 +19,7 @@ const fallbackMembers = [
 const getImageUrl = (url) => {
   if (!url) return 'https://via.placeholder.com/270x270?text=Team+Member';
   if (url.startsWith('http')) return url;
-  return `http://localhost:5000${url}`;
+  return `${API_BASE_URL}${url}`;
 };
 
 const AboutPeopleData = () => {
@@ -29,7 +30,7 @@ const AboutPeopleData = () => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/team');
+        const res = await fetch(`${API_BASE_URL}/api/team`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
           setMembers(data.data);

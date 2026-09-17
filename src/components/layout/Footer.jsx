@@ -5,6 +5,7 @@ import instagram from "../../assets/footerlogo/instagram.svg";
 import mail from "../../assets/footerlogo/mail.svg";
 import phone from "../../assets/footerlogo/phone.svg";
 import whitetwitter from "../../assets/footerlogo/whitetwitter.svg";
+import API_BASE_URL from "../../config/api";
 
 // ✅ FALLBACK DATA (agar API fail ho)
 const fallbackFooter = {
@@ -38,7 +39,7 @@ const Footer = () => {
   useEffect(() => {
     const fetchFooter = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/footer");
+        const response = await fetch(`${API_BASE_URL}/api/footer`);
         const data = await response.json();
         if (data.success) {
           setFooterData(data.data);

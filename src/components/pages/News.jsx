@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import API_BASE_URL from "../../config/api";
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -9,7 +10,7 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/news");
+        const response = await fetch(`${API_BASE_URL}/api/news`);
         const data = await response.json();
         if (data.success) {
           // Sort by _id ascending — first stored blog appears first

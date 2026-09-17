@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import awardOne from "../../assets/about/award/awardOne.jpg";
 import awardTwo from "../../assets/about/award/awardTwo.jpg";
 import awardThree from "../../assets/about/award/awardThree.jpg";
+import API_BASE_URL from "../../config/api";
 
 // Fallback static awards (same as original)
 const fallbackAwards = [
@@ -17,7 +18,7 @@ const fallbackAwards = [
 const getImageUrl = (url) => {
   if (!url) return 'https://via.placeholder.com/50x50?text=No+Image';
   if (url.startsWith('http')) return url;
-  return `http://localhost:5000${url}`;
+  return `${API_BASE_URL}${url}`;
 };
 
 const AboutAwards = () => {
@@ -27,7 +28,7 @@ const AboutAwards = () => {
   useEffect(() => {
     const fetchAwards = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/awards');
+        const res = await fetch(`${API_BASE_URL}/api/awards`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
           setAwards(data.data);

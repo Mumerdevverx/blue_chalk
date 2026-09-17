@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
+import API_BASE_URL from "../../config/api";
 
 const Workdetail = () => {
   const { slug } = useParams();
@@ -15,7 +16,7 @@ const Workdetail = () => {
     window.scrollTo(0, 0);
     const fetchData = async () => {
       try {
-        const workRes = await fetch(`http://localhost:5000/api/work/slug/${slug}`);
+        const workRes = await fetch(`${API_BASE_URL}/api/work/slug/${slug}`);
         const workData = await workRes.json();
         if (!workData.success) {
           setError(workData.message || "Work not found");
@@ -24,7 +25,7 @@ const Workdetail = () => {
         }
         setWork(workData.data);
 
-        const allRes = await fetch("http://localhost:5000/api/work");
+        const allRes = await fetch(`${API_BASE_URL}/api/work`);
         const allData = await allRes.json();
         if (allData.success) {
           setAllProjects(allData.data);
@@ -124,7 +125,7 @@ const Workdetail = () => {
   const getImageUrl = (url) => {
     if (!url) return 'https://placehold.co/400x300/e0e0e0/808080?text=No+Image';
     if (url.startsWith('http')) return url;
-    return `http://localhost:5000${url}`;
+    return `${API_BASE_URL}${url}`;
   };
 
   // ✅ Decide which player to render

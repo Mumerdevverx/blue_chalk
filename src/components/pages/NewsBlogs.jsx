@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import backarrow from "../../assets/newsImages/backarrow.svg";
+import API_BASE_URL from "../../config/api";
 
 const NewsBlogs = () => {
   const { slug } = useParams();
@@ -12,7 +13,7 @@ const NewsBlogs = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/news/slug/${slug}`);
+        const response = await fetch(`${API_BASE_URL}/api/news/slug/${slug}`);
         const data = await response.json();
         if (data.success) {
           setNews(data.data);

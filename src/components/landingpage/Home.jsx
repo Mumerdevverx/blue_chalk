@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiMenu, FiX, FiPlus } from "react-icons/fi";
+import bluechalkLogo from "../../assets/landingimg/bluechalk.avif";
+import API_BASE_URL from "../../config/api";
 
 const heroVideo = "/videos/herovideo.mp4";
-import bluechalkLogo from "../../assets/landingimg/bluechalk.avif";
 
 // ==========================================
 // FALLBACK IMAGES
@@ -58,7 +59,7 @@ const Home = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/home");
+        const response = await fetch(`${API_BASE_URL}/api/home`);
 
         const data = await response.json();
 
@@ -77,7 +78,7 @@ const Home = () => {
 
               // Relative upload path
               if (imageUrl && imageUrl.startsWith("/uploads")) {
-                imageUrl = `http://localhost:5000${imageUrl}`;
+                imageUrl = `${API_BASE_URL}${imageUrl}`;
               }
 
               // Support both workSlug and blogId (whether string or object)

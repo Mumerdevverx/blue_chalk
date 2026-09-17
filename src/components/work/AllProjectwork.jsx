@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import API_BASE_URL from "../../config/api";
 
 const AllProjectwork = () => {
   const [allProjects, setAllProjects] = useState([]);
@@ -33,7 +34,7 @@ const AllProjectwork = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/work");
+        const response = await fetch(`${API_BASE_URL}/api/work`);
         const data = await response.json();
         if (data.success) {
           setAllProjects(data.data);
@@ -77,7 +78,7 @@ const AllProjectwork = () => {
   const getImageUrl = (url) => {
     if (!url) return 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
     if (url.startsWith('http')) return url;
-    return `http://localhost:5000${url}`;
+    return `${API_BASE_URL}${url}`;
   };
 
   // Render overlay based on type (only if showOverlay is true)

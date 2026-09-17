@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import awardpage from "../../assets/about/award/awardpage.png";
+import API_BASE_URL from "../../config/api";
 
 const getImageUrl = (url) => {
   if (!url) return "https://via.placeholder.com/600x400?text=No+Image";
   if (url.startsWith("http")) return url;
-  return `http://localhost:5000${url}`;
+  return `${API_BASE_URL}${url}`;
 };
 
 const Awardpage = () => {
@@ -17,7 +18,7 @@ const Awardpage = () => {
     const fetchAward = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/awards/slug/${slug}`
+          `${API_BASE_URL}/api/awards/slug/${slug}`
         );
 
         const data = await res.json();
