@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import API_BASE_URL from "../../config/api";
+import API_BASE_URL, { resolveNewsImageUrl } from "../../config/api";
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -76,7 +76,7 @@ const News = () => {
                 >
                   <div className="w-full shrink-0 md:w-[40%]">
                     <img
-                      src={item.image}
+                      src={resolveNewsImageUrl(item.image)}
                       alt={item.title}
                       className="h-[230px] md:h-[290px] lg:h-[300px] grayscale hover:grayscale-0 w-full object-cover"
                       onError={(e) => {

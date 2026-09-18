@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import backarrow from "../../assets/newsImages/backarrow.svg";
-import API_BASE_URL from "../../config/api";
+import API_BASE_URL, { resolveNewsImageUrl } from "../../config/api";
 
 const NewsBlogs = () => {
   const { slug } = useParams();
@@ -57,7 +57,7 @@ const NewsBlogs = () => {
       {/* Image */}
       <div className="mb-8">
         <img
-          src={news.image}
+          src={resolveNewsImageUrl(news.image)}
           alt={news.title}
           className="w-full h-[620px] object-cover"
           onError={(e) => {
