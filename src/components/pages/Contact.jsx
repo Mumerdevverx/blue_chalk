@@ -24,7 +24,16 @@ const Contact = () => {
 
   // Helper to get office data by name
   const getOffice = (name) => {
-    return contacts.find((c) => c.officeName.toLowerCase() === name) || null;
+    return (
+      contacts.find((contact) => {
+        const officeName = String(contact.officeName || "")
+          .trim()
+          .toLowerCase();
+        const targetName = name.trim().toLowerCase();
+
+        return officeName === targetName || officeName.includes(targetName);
+      }) || null
+    );
   };
 
   const brooklyn = getOffice("brooklyn");
