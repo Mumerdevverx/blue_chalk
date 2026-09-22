@@ -9,22 +9,71 @@ const getImageUrl = (url) => {
   return `${API_BASE_URL}${url}`;
 };
 
+const sortAwards = (list) => {
+  return [...list].sort((first, second) => {
+    const firstOrder = Number(first.order);
+    const secondOrder = Number(second.order);
+
+    if (Number.isFinite(firstOrder) && Number.isFinite(secondOrder)) {
+      return firstOrder - secondOrder;
+    }
+
+    return new Date(first.createdAt) - new Date(second.createdAt);
+  });
+};
+
 const Awardpage = () => {
   const { slug } = useParams();
   const [award, setAward] = useState(null);
+  const [nextAward, setNextAward] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchAward = async () => {
       try {
-        const res = await fetch(
-          `${API_BASE_URL}/api/awards/slug/${slug}`
-        );
+        // Fetch all awards to match admin panel order
+        const allRes = await fetch(`${API_BASE_URL}/api/awards`);
+        const allData = await allRes.json();
+        let sorted = [];
 
-        const data = await res.json();
+        if (allData.success && Array.isArray(allData.data) && allData.data.length > 0) {
+          sorted = sortAwards(allData.data);
+        }
 
-        if (data.success) {
-          setAward(data.data);
+        let selectedAward = null;
+
+        if (slug) {
+          // If slug is provided in URL, find matching award
+          selectedAward = sorted.find((a) => a.slug === slug);
+          if (!selectedAward) {
+            const res = await fetch(`${API_BASE_URL}/api/awards/slug/${slug}`);
+            const data = await res.json();
+            if (data.success && data.data) {
+              selectedAward = data.data;
+            }
+          }
+        } else {
+          // If no slug is provided (e.g. /awardpage), show the FIRST award just like admin panel
+          if (sorted.length > 0) {
+            selectedAward = sorted[0];
+          }
+        }
+
+        if (selectedAward) {
+          setAward(selectedAward);
+
+          // Find next award in sorted order
+          if (sorted.length > 0) {
+            const currentIndex = sorted.findIndex(
+              (a) => a.slug === selectedAward.slug || a._id === selectedAward._id
+            );
+            if (currentIndex !== -1 && currentIndex < sorted.length - 1) {
+              setNextAward(sorted[currentIndex + 1]);
+            } else if (sorted.length > 1) {
+              setNextAward(sorted[0]);
+            }
+          }
         } else {
           setAward({
             title: "Award Not Found",
@@ -215,24 +264,44 @@ const Awardpage = () => {
           Back to About Us
         </Link>
 
-        {/* More About */}
-        <Link
-          to={`/awardpage/${award.slug}`}
-          className="
-            text-[14px]
-            sm:text-[15px]
-            text-gray-400
-            hover:underline
-            transition-all
-            duration-200
-            flex
-            items-center
-            gap-2
-            break-words
-          "
-        >
-          More about {award.title}
-        </Link>
+        {/* Next Award / More About */}
+        {nextAward ? (
+          <Link
+            to={`/awardpage/${nextAward.slug}`}
+            className="
+              text-[14px]
+              sm:text-[15px]
+              text-[#0089D0]
+              hover:underline
+              transition-all
+              duration-200
+              flex
+              items-center
+              gap-2
+              break-words
+            "
+          >
+            Next Award: {nextAward.title} &rarr;
+          </Link>
+        ) : (
+          <Link
+            to={`/awardpage/${award.slug}`}
+            className="
+              text-[14px]
+              sm:text-[15px]
+              text-gray-400
+              hover:underline
+              transition-all
+              duration-200
+              flex
+              items-center
+              gap-2
+              break-words
+            "
+          >
+            More about {award.title}
+          </Link>
+        )}
       </div>
     </section>
   );

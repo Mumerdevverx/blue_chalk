@@ -31,7 +31,17 @@ const AboutAwards = () => {
         const res = await fetch(`${API_BASE_URL}/api/awards`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
-          setAwards(data.data);
+          const sorted = [...data.data].sort((first, second) => {
+            const firstOrder = Number(first.order);
+            const secondOrder = Number(second.order);
+
+            if (Number.isFinite(firstOrder) && Number.isFinite(secondOrder)) {
+              return firstOrder - secondOrder;
+            }
+
+            return new Date(first.createdAt) - new Date(second.createdAt);
+          });
+          setAwards(sorted);
         } else {
           setAwards(fallbackAwards);
         }
