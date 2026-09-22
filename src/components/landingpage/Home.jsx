@@ -28,8 +28,11 @@ const Home = () => {
   const [images, setImages] = useState(fallbackImages);
   const [loading, setLoading] = useState(true);
 
-  // ✅ NEW: hero video state (falls back to local file)
+  // ✅ Hero video state (falls back to local file)
   const [heroVideo, setHeroVideo] = useState(FALLBACK_HERO_VIDEO);
+  const [heroVideoSlug, setHeroVideoSlug] = useState("");
+  const [heroVideoTitle, setHeroVideoTitle] = useState("What Lasts");
+  const [heroVideoLink, setHeroVideoLink] = useState("");
 
   // ==========================================
   // FETCH HOME ITEMS FROM API
@@ -68,6 +71,20 @@ const Home = () => {
               setHeroVideo(videoUrl);
               console.log("🎬 Hero video set:", videoUrl);
             }
+
+            const resolvedSlug =
+              latestVideo.workSlug ||
+              (typeof latestVideo.blogId === "object" ? latestVideo.blogId?.slug : latestVideo.blogId) ||
+              "";
+            setHeroVideoSlug(resolvedSlug);
+
+            const resolvedTitle =
+              latestVideo.buttonText ||
+              (latestVideo.title && latestVideo.title.toLowerCase() !== "home" ? latestVideo.title : "") ||
+              "What Lasts";
+            setHeroVideoTitle(resolvedTitle);
+
+            setHeroVideoLink(latestVideo.link || "");
           }
 
           // ---------- ✅ Handle IMAGES ----------
@@ -88,7 +105,17 @@ const Home = () => {
                 (typeof item.blogId === "object" ? item.blogId?.slug : item.blogId) ||
                 "";
 
-              return { url: imageUrl, workSlug: resolvedSlug };
+              const resolvedTitle =
+                item.buttonText ||
+                (item.title && item.title.toLowerCase() !== "home" ? item.title : "") ||
+                "What Lasts";
+
+              return { 
+                url: imageUrl, 
+                workSlug: resolvedSlug,
+                title: resolvedTitle,
+                link: item.link || ""
+              };
             });
 
             console.log("🖼️ Home Images:", imageData);
@@ -155,10 +182,30 @@ const Home = () => {
             />
           </div>
 
-          <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
-            What Lasts
-            <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
-          </div>
+          {heroVideoSlug ? (
+            <Link
+              to={`/work/${heroVideoSlug}`}
+              className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+            >
+              <span className="truncate pr-4">{heroVideoTitle}</span>
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+            </Link>
+          ) : heroVideoLink ? (
+            <a
+              href={heroVideoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+            >
+              <span className="truncate pr-4">{heroVideoTitle}</span>
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+            </a>
+          ) : (
+            <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+              <span className="truncate pr-4">{heroVideoTitle}</span>
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+            </div>
+          )}
 
           <button
             type="button"
@@ -251,10 +298,30 @@ const Home = () => {
 
             <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 md:h-40 bg-gradient-to-t from-[#265b7a] via-[#1989c2]/2 to-transparent pointer-events-none" />
 
-            <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
-              What Lasts
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
-            </div>
+            {images[currentImage]?.workSlug ? (
+              <Link
+                to={`/work/${images[currentImage].workSlug}`}
+                className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              >
+                <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
+                <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+              </Link>
+            ) : images[currentImage]?.link ? (
+              <a
+                href={images[currentImage].link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              >
+                <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
+                <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+              </a>
+            ) : (
+              <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+                <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
+                <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+              </div>
+            )}
           </div>
         </aside>
       </section>
