@@ -7,6 +7,10 @@
   background-color: #ffffff;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   font-family: 'Basis Grotesque Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
