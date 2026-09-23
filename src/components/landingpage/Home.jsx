@@ -34,6 +34,10 @@ const Home = () => {
   const [heroVideoTitle, setHeroVideoTitle] = useState("What Lasts");
   const [heroVideoLink, setHeroVideoLink] = useState("");
 
+  const showNextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % images.length);
+  };
+
   // ==========================================
   // FETCH HOME ITEMS FROM API
   // ==========================================
@@ -132,14 +136,13 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // ==========================================
-  // IMAGE SLIDER AUTO CHANGE
-  // ==========================================
   useEffect(() => {
-    if (images.length === 0) return;
+    if (images.length < 2) return;
+
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
     }, 3500);
+
     return () => clearInterval(interval);
   }, [images]);
 
@@ -188,7 +191,7 @@ const Home = () => {
               className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </Link>
           ) : heroVideoLink ? (
             <a
@@ -198,7 +201,7 @@ const Home = () => {
               className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </a>
           ) : (
             <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
@@ -254,14 +257,16 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="relative h-[58%] w-full overflow-hidden bg-gray-100">
+          <div className="relative h-[58%] w-full overflow-hidden ">
             {images.map((image, index) => {
               const isActive = currentImage === index;
               const imageContent = (
                 <img
                   src={image.url}
                   alt={`Blue Chalk project ${index + 2}`}
-                  className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
+                  className={`absolute top-11 inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+                    isActive ? "home-slide-up" : ""
+                  }`}
                   style={{ opacity: isActive ? 1 : 0 }}
                   onError={(e) => {
                     e.target.src = "https://placehold.co/600x400/e0e0e0/808080?text=No+Image";
@@ -304,7 +309,18 @@ const Home = () => {
                 className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
               >
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
-                <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    showNextImage();
+                  }}
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl"
+                  aria-label="Show next image"
+                >
+                  <FiPlus />
+                </button>
               </Link>
             ) : images[currentImage]?.link ? (
               <a
@@ -314,12 +330,30 @@ const Home = () => {
                 className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
               >
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
-                <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl transition-transform duration-300 group-hover:rotate-45" />
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    showNextImage();
+                  }}
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl"
+                  aria-label="Show next image"
+                >
+                  <FiPlus />
+                </button>
               </a>
             ) : (
               <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
-                <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+                <button
+                  type="button"
+                  onClick={showNextImage}
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl"
+                  aria-label="Show next image"
+                >
+                  <FiPlus />
+                </button>
               </div>
             )}
           </div>

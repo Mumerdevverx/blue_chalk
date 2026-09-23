@@ -66,3 +66,18 @@ body {
   font-style: normal;
   font-display: swap;
 }
+
+@keyframes home-slide-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.home-slide-up {
+  animation: home-slide-up 700ms ease-out;
+}
