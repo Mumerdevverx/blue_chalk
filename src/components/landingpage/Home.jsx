@@ -257,6 +257,7 @@ const Home = () => {
             </p>
           </div>
 
+
           <div className="relative h-[58%] w-full overflow-hidden ">
             {images.map((image, index) => {
               const isActive = currentImage === index;
