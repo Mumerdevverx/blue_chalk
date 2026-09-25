@@ -364,7 +364,7 @@ const Home = () => {
       <nav className="hidden h-[72px] w-full items-center bg-white px-20 lg:flex">
         <div className="flex items-center ml-4 gap-24 font-basis-web">
           <Link to="/about" className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]">About</Link>
-          <Link to="/work" className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]">Work</Link>
+          <Link to="/work" className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]">Workumer</Link>
           <Link to="/news" className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]">News</Link>
           <Link to="/contact" className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60 leading-[17px]">Contact</Link>
         </div>
