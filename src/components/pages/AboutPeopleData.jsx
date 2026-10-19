@@ -33,7 +33,34 @@ const AboutPeopleData = () => {
         const res = await fetch(`${API_BASE_URL}/api/team`);
         const data = await res.json();
         if (data.success && data.data.length > 0) {
-          setMembers(data.data);
+          const sortedMembers = [...data.data].sort((first, second) => {
+            const priority = (name) => {
+              const normalizedName = name?.trim().toLowerCase();
+              if (normalizedName === "greg moyer") return 0;
+              if (normalizedName === "pam huling") return 1;
+              return 2;
+            };
+            const priorityDifference = priority(first.name) - priority(second.name);
+            if (priorityDifference !== 0) {
+              return priorityDifference;
+            }
+
+            const firstOrder = Number(first.order);
+            const secondOrder = Number(second.order);
+            const firstHasOrder = Number.isFinite(firstOrder);
+            const secondHasOrder = Number.isFinite(secondOrder);
+
+            if (firstHasOrder && secondHasOrder) {
+              return firstOrder - secondOrder;
+            }
+
+            if (firstHasOrder !== secondHasOrder) {
+              return firstHasOrder ? -1 : 1;
+            }
+
+            return 0;
+          });
+          setMembers(sortedMembers);
         } else {
           setMembers(fallbackMembers);
         }
