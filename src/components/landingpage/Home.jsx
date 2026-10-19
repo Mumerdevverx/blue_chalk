@@ -33,7 +33,6 @@ const Home = () => {
   const [heroVideoSlug, setHeroVideoSlug] = useState("");
   const [heroVideoTitle, setHeroVideoTitle] = useState("What Lasts");
   const [heroVideoLink, setHeroVideoLink] = useState("");
-
   const showNextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
   };
@@ -161,7 +160,7 @@ const Home = () => {
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
-        <div className="relative h-screen w-full overflow-hidden bg-black lg:h-[calc(100vh-72px)] lg:w-[71.5%]">
+        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-48px)] lg:h-[calc(100vh-72px)] lg:w-[71.5%]">
 
           {/* ✅ Uses API video if available, else local fallback */}
           <video
@@ -188,7 +187,7 @@ const Home = () => {
           {heroVideoSlug ? (
             <Link
               to={`/work/${heroVideoSlug}`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
@@ -198,13 +197,13 @@ const Home = () => {
               href={heroVideoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </a>
           ) : (
-            <div className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+            <div className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </div>
@@ -213,7 +212,7 @@ const Home = () => {
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            className="absolute right-5 top-5 z-50 flex h-11 w-11 items-center justify-center bg-white text-[24px] text-[#07354a] shadow-md md:right-7 md:top-7 lg:hidden"
+            className="absolute right-5 top-5 z-50 hidden h-11 w-11 items-center justify-center bg-white text-[24px] text-[#07354a] shadow-md sm:flex md:right-7 md:top-7 lg:hidden"
             aria-label="Open menu"
           >
             <FiMenu />
@@ -223,9 +222,9 @@ const Home = () => {
             <>
               <div
                 onClick={() => setMenuOpen(false)}
-                className="absolute inset-0 z-40 bg-black/30 lg:hidden"
+                className="fixed inset-0 z-40 bg-black/30 lg:hidden"
               />
-              <div className="absolute right-4 top-4 z-50 w-[220px] bg-white px-7 py-6 shadow-xl lg:hidden">
+              <div className="fixed right-4 bottom-4 z-50 w-[220px] bg-white px-7 py-6 shadow-xl lg:hidden">
                 <div className="mb-7 flex items-center justify-between border-b border-gray-200 pb-4">
                   <span className="text-[18px] font-medium text-[#07354a]">Menu</span>
                   <button
@@ -246,6 +245,17 @@ const Home = () => {
               </div>
             </>
           )}
+        </div>
+
+        <div className="hidden h-12 w-full items-center justify-end border-t border-gray-200 bg-white px-4 max-sm:flex">
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            className="flex items-center  px-4 py-2 text-xl text-blue-700 transition-colors hover:bg-[#006fae]"
+            aria-label="Open menu"
+          >
+            <span>Menu</span>
+          </button>
         </div>
 
         {/* RIGHT ASIDE - IMAGE SLIDER */}
