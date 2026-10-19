@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiMenu, FiX, FiPlus } from "react-icons/fi";
+import { FiMenu, FiPlus } from "react-icons/fi";
 import bluechalkLogo from "../../assets/landingimg/bluechalk.avif";
 import API_BASE_URL from "../../config/api";
 
@@ -224,23 +224,12 @@ const Home = () => {
                 onClick={() => setMenuOpen(false)}
                 className="fixed inset-0 z-40 bg-black/30 lg:hidden"
               />
-              <div className="fixed right-4 bottom-4 z-50 w-[220px] bg-white px-7 py-6 shadow-xl lg:hidden">
-                <div className="mb-7 flex items-center justify-between border-b border-gray-200 pb-4">
-                  <span className="text-[18px] font-medium text-[#07354a]">Menu</span>
-                  <button
-                    type="button"
-                    onClick={() => setMenuOpen(false)}
-                    className="flex h-8 w-8 items-center justify-center text-[22px] text-[#07354a] transition hover:opacity-50"
-                    aria-label="Close menu"
-                  >
-                    <FiX />
-                  </button>
-                </div>
-                <div className="flex flex-col gap-6">
-                  <Link to="/about" onClick={() => setMenuOpen(false)} className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">About</Link>
-                  <Link to="/work" onClick={() => setMenuOpen(false)} className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Work</Link>
-                  <Link to="/news" onClick={() => setMenuOpen(false)} className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">News</Link>
-                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Contact</Link>
+              <div className="fixed right-4 bottom-4 z-50 w-[180px] bg-white px-4 py-5 shadow-xl max-sm:right-2 max-sm:bottom-[64px] max-sm:max-h-[calc(100dvh-88px)] max-sm:w-[min(100px,calc(100vw-16px))] max-sm:overflow-y-auto lg:hidden">
+                <div className="flex flex-col items-end gap-6 text-right">
+                  <Link to="/about" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">About</Link>
+                  <Link to="/work" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Work</Link>
+                  <Link to="/news" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">News</Link>
+                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Contact</Link>
                 </div>
               </div>
             </>
