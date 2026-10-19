@@ -335,7 +335,17 @@ const AllProjectwork = () => {
                     <img
                       src={getImageUrl(project.image)}
                       alt={project.title || 'Work'}
-                      className="w-full h-full object-cover block transition-transform duration-300 grayscale group-hover:grayscale-0"
+                      className="absolute inset-0 w-full h-full object-cover block grayscale"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found';
+                      }}
+                    />
+                    <img
+                      src={getImageUrl(project.hoverImage || project.image)}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found';
