@@ -73,19 +73,19 @@ const AboutPeopleData = () => {
               <div key={member._id || index} className="text-center">
                 <div
                   onClick={() => handleToggle(index)}
-                  className="group w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[270px] xl:h-[270px] rounded-full overflow-hidden cursor-pointer mx-auto transition-transform duration-300"
+                  className="group relative w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[270px] xl:h-[270px] rounded-full overflow-hidden cursor-pointer mx-auto transition-transform duration-400"
                 >
                   <img
                     src={imageSrc}
                     alt={member.name}
-                    className="w-full h-full object-cover group-hover:hidden"
+                    className="absolute inset-0 z-0 w-full h-full object-cover will-change-transform transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none group-hover:-translate-x-full"
                     style={{ filter: "sepia(0.5) hue-rotate(180deg) saturate(5) opacity(0.6)" }}
                     loading="lazy"
                   />
                   <img
                     src={hoverSrc}
                     alt={member.name}
-                    className="w-full h-full object-cover hidden group-hover:block grayscale"
+                    className="absolute inset-0 z-10 -translate-x-full w-full h-full object-cover grayscale will-change-transform transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none group-hover:translate-x-0"
                     loading="lazy"
                   />
                 </div>
