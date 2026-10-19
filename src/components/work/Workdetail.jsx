@@ -248,7 +248,7 @@ const Workdetail = () => {
             to="/work"
             className="text-[#1893D2] text-[12px] tracking-[2px] uppercase font-semibold hover:opacity-70 transition-opacity duration-200"
           >
-            ALL WORK +
+            ALL WORK + 
           </Link>
         </div>
 
@@ -265,13 +265,22 @@ const Workdetail = () => {
                   <img
                     src={getImageUrl(project.image)}
                     alt={project.title || "Related Work"}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                    className="absolute inset-0 w-full h-full object-cover grayscale"
+                    onError={(e) => {
+                      e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
+                    }}
+                  />
+                  <img
+                    src={getImageUrl(project.hoverImage || project.image)}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
                     onError={(e) => {
                       e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
                     }}
                   />
                   {/* ✅ Blue overlay button bottom-left – same as AllProjectwork */}
-                  <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-40 h-20 px-3 py-3 flex items-end justify-between transition-all duration-300">
+                  <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-40 h-[140px] group-hover:h-[350px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
                     <span className="text-[12px] font-medium leading-tight">
                       {project.buttonText || project.title || "Watch Now"}
                     </span>
