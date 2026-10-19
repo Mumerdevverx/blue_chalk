@@ -105,14 +105,14 @@ const AboutPeopleData = () => {
                   <img
                     src={imageSrc}
                     alt={member.name}
-                    className="absolute inset-0 z-0 w-full h-full object-cover will-change-transform transition-transform duration-400 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none group-hover:-translate-x-full"
+                    className="absolute inset-0 z-0 w-full h-full object-cover will-change-transform transition-transform duration-1000 ease-in-out motion-reduce:transition-none group-hover:-translate-x-full"
                     style={{ filter: "sepia(0.5) hue-rotate(180deg) saturate(5) opacity(0.6)" }}
                     loading="lazy"
                   />
                   <img
                     src={hoverSrc}
                     alt={member.name}
-                    className="absolute top-0  z-10 -translate-x-full w-[110%] h-full object-cover grayscale will-change-transform transition-all duration-[455ms] ease-in-out motion-reduce:transition-none group-hover:translate-x-0"
+                    className="absolute inset-0 z-10 w-full h-full object-cover grayscale opacity-0 translate-x-0 scale-[1.02] transition-[opacity,transform] duration-700 ease-in-out group-hover:translate-x-[1%] group-hover:scale-[1.04] group-hover:opacity-100 motion-reduce:transition-none"
                     loading="lazy"
                   />
                 </div>
