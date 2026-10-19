@@ -160,7 +160,7 @@ const Home = () => {
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
-        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-48px)] lg:h-[calc(100vh-72px)] lg:w-[71.5%]">
+        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-72px)] lg:w-[71.5%]">
 
           {/* ✅ Uses API video if available, else local fallback */}
           <video
@@ -187,7 +187,7 @@ const Home = () => {
           {heroVideoSlug ? (
             <Link
               to={`/work/${heroVideoSlug}`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
@@ -197,13 +197,13 @@ const Home = () => {
               href={heroVideoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </a>
           ) : (
-            <div className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+            <div className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </div>
@@ -247,7 +247,7 @@ const Home = () => {
           )}
         </div>
 
-        <div className="hidden h-12 w-full items-center justify-end border-t border-gray-200 bg-white px-4 max-sm:flex">
+        <div className="hidden h-16 w-full items-center justify-end border-t border-gray-200 bg-white px-4 max-sm:flex">
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
