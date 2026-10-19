@@ -100,19 +100,19 @@ const AboutPeopleData = () => {
               <div key={member._id || index} className="text-center">
                 <div
                   onClick={() => handleToggle(index)}
-                  className="group relative w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[270px] xl:h-[270px] rounded-full overflow-hidden cursor-pointer mx-auto transition-transform duration-400"
+                  className="group relative w-[160px] h-[160px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px] lg:w-[220px] lg:h-[220px] xl:w-[270px] xl:h-[270px] rounded-full overflow-hidden cursor-pointer mx-auto"
                 >
                   <img
                     src={imageSrc}
                     alt={member.name}
-                    className="absolute inset-0 z-0 w-full h-full object-cover will-change-transform transition-transform duration-1000 ease-in-out motion-reduce:transition-none group-hover:-translate-x-full"
+                    className="absolute inset-0 z-0 w-full h-full object-cover"
                     style={{ filter: "sepia(0.5) hue-rotate(180deg) saturate(5) opacity(0.6)" }}
                     loading="lazy"
                   />
                   <img
                     src={hoverSrc}
                     alt={member.name}
-                    className="absolute inset-0 z-10 w-full h-full object-cover grayscale opacity-0 translate-x-0 scale-[1.02] transition-[opacity,transform] duration-700 ease-in-out group-hover:translate-x-[1%] group-hover:scale-[1.04] group-hover:opacity-100 motion-reduce:transition-none"
+                    className="absolute inset-0 z-10 w-full h-full object-cover grayscale opacity-0 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out"
                     loading="lazy"
                   />
                 </div>
