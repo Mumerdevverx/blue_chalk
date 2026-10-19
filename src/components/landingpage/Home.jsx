@@ -176,7 +176,7 @@ const Home = () => {
           <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 md:h-40 bg-gradient-to-t from-[#265b7a] via-[#1989c2]/2 to-transparent pointer-events-none" />
           <div className="absolute inset-0 bg-black/10" />
 
-          <div className="absolute -bottom-1 left-4 z-20 w-[min(38vw,180px)] sm:left-6 sm:w-[220px] md:left-7 md:w-[280px] lg:left-20 lg:w-[350px] xl:w-[380px]">
+          <div className="absolute -bottom-1 left-4 z-20 w-[min(52vw,220px)] sm:left-6 sm:w-[220px] md:left-7 md:w-[280px] lg:left-20 lg:w-[350px] xl:w-[380px]">
             <img
               src={bluechalkLogo}
               alt="Blue Chalk"
