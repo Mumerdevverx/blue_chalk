@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 
 const PageLoader = () => {
-  const location = useLocation();
   const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
-    const currentPage = location.pathname;
+    const currentPage = window.location.pathname;
 
     const visitedPages =
       JSON.parse(sessionStorage.getItem("visitedPages")) || [];
@@ -31,7 +29,7 @@ const PageLoader = () => {
     }
 
     setShowLoader(false);
-  }, [location.pathname]);
+  }, []);
 
   if (!showLoader) return null;
 

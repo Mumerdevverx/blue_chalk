@@ -117,3 +117,26 @@
 .work-content p {
   margin-bottom: 1em;
 }
+
+.route-transition {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.route-transition-exit {
+  animation: route-exit 800ms cubic-bezier(0.76, 0, 0.24, 1) both;
+  will-change: transform;
+}
+
+@keyframes route-exit {
+  to {
+    transform: translate3d(0, -100vh, 0);
+    transform: translate3d(0, -100dvh, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-transition-exit {
+    animation-duration: 1ms;
+  }
+}

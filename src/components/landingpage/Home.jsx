@@ -26,7 +26,6 @@ const Home = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const [images, setImages] = useState(fallbackImages);
-  const [loading, setLoading] = useState(true);
 
   // ✅ Hero video state (falls back to local file)
   const [heroVideo, setHeroVideo] = useState(FALLBACK_HERO_VIDEO);
@@ -127,8 +126,6 @@ const Home = () => {
         }
       } catch (error) {
         console.error("Error fetching home items:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -144,14 +141,6 @@ const Home = () => {
 
     return () => clearInterval(interval);
   }, [images]);
-
-  if (loading && images === fallbackImages) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
 
   return (
     <main className="min-h-screen w-full bg-white">
