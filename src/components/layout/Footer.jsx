@@ -34,6 +34,7 @@ const fallbackFooter = {
 const Footer = () => {
   const [footerData, setFooterData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isEmailHovered, setIsEmailHovered] = useState(false);
 
   // ✅ FETCH FOOTER DATA FROM API
   useEffect(() => {
@@ -59,7 +60,7 @@ const Footer = () => {
   // ✅ LOADING STATE
   if (loading) {
     return (
-      <footer className="w-full bg-[#263238] text-[#bdbdbd] py-10 text-center">
+      <footer className="w-full bg-[#293339] text-[#bdbdbd] py-10 text-center">
         <p className="text-[#C2BBB6]">Loading footer...</p>
       </footer>
     );
@@ -69,7 +70,7 @@ const Footer = () => {
   const data = footerData || fallbackFooter;
 
   return (
-    <footer className="w-full bg-[#263238] text-[#bdbdbd]">
+    <footer className="w-full bg-[#293339] text-[#bdbdbd]">
       <div className="max-w-[1170px] lg:ml-18 min-h-[270px] lg:px-7 px-7 py-[40px] md:px-14 flex flex-col md:flex-row justify-between">
         {/* Left Side */}
         <div className="mb-0 md:mb-0">
@@ -89,11 +90,19 @@ const Footer = () => {
           </div>
 
           {/* ✅ DYNAMIC EMAIL */}
-          <div className="flex items-center lg:mt-[24px] max-sm:mt-2 gap-3">
-            <img src={mail} alt="Email" className="w-[16px] h-[16px]" />
+          <div
+            className="inline-flex flex-nowrap items-center pb-0.5 lg:mt-[24px] max-sm:mt-2 gap-3"
+            onMouseEnter={() => setIsEmailHovered(true)}
+            onMouseLeave={() => setIsEmailHovered(false)}
+            style={{
+              borderBottom: `1px solid ${isEmailHovered ? "#188EB5" : "transparent"}`,
+              transition: "border-color 200ms ease",
+            }}
+          >
+            <img src={mail} alt="Email" className="w-[16px] h-[16px] shrink-0" />
             <a
               href={`mailto:${data.email}`}
-              className="text-[#049bd7] text-[16px] hover:underline"
+              className="whitespace-nowrap text-[#049bd7] text-[16px]"
             >
               {data.email}
             </a>
