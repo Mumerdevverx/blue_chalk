@@ -149,7 +149,7 @@ const Home = () => {
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
-        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-85px)] lg:w-[74%]">
+        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-70px)] lg:w-[75%]">
 
           {/* ✅ Uses API video if available, else local fallback */}
           <video
@@ -237,7 +237,7 @@ const Home = () => {
         </div>
 
         {/* RIGHT ASIDE - IMAGE SLIDER */}
-        <aside className="hidden w-full flex-col bg-white lg:flex lg:h-[calc(100vh-85px)] lg:w-[28.5%]">
+        <aside className="hidden w-full flex-col bg-white lg:flex lg:h-[calc(100vh-70px)] lg:w-[28.5%]">
           <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-11.5">
             <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c2bbb6] xl:text-[20px]">
               <span className="whitespace-nowrap">An industry-leading production</span>{" "}
@@ -334,7 +334,7 @@ const Home = () => {
                 </button>
               </a>
             ) : (
-              <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+              <div className="absolute bottom-5 right-2 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
                 <button
                   type="button"
