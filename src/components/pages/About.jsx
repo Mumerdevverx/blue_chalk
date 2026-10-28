@@ -291,6 +291,10 @@ const About = () => {
         </p>
       );
     })()}
+
+    <p className="mt-[32px]">
+      Blue Chalk Media is an equal opportunity employer committed to an inclusive workplace. We do not tolerate sexual harassment or discrimination based on race, color, religion, gender identity, age, national origin, veteran status or disability. We believe that our differences make us stronger and that working together with respect for each individual is essential to the success of our company as a whole.
+    </p>
   </div>
 </section>
     </div>
