@@ -56,7 +56,7 @@ body {
 /* SemiBold - 600 */
 @font-face {
   font-family: 'Basis Grotesque Web';
-  src: url('/fonts/BasisGrotesqueArabicPro-Semibold.ttf') format('truetype');
+  src: url('/fonts/BasisGrotesqueArabicPro-semibold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
