@@ -349,7 +349,7 @@ const Home = () => {
         </aside>
       </section>
 
-      <nav className="hidden h-[42px] w-full items-center bg-white px-20 lg:flex">
+      <nav className="hidden h-[72px] w-full items-center bg-white px-20 lg:flex">
         <div className="flex items-center ml-4 gap-25 font-basis-web">
           <Link to="/about" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">About</Link>
           <Link to="/work" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">Work</Link>
