@@ -240,8 +240,9 @@ const Home = () => {
         <aside className="hidden w-full flex-col bg-white lg:flex lg:h-[calc(100vh-85px)] lg:w-[28.5%]">
           <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-11.5">
             <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c2bbb6] xl:text-[20px]">
-              An industry-leading production company founded by people who
-              believe in the power of nonfiction visual storytelling.
+              <span className="whitespace-nowrap">An industry-leading production</span>{" "}
+              company founded by people who believe in the power of nonfiction
+              visual storytelling.
             </p>
           </div>
 
