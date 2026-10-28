@@ -149,7 +149,7 @@ const Home = () => {
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
-        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-72px)] lg:w-[71.5%]">
+        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-85px)] lg:w-[74%]">
 
           {/* ✅ Uses API video if available, else local fallback */}
           <video
@@ -176,7 +176,7 @@ const Home = () => {
           {heroVideoSlug ? (
             <Link
               to={`/work/${heroVideoSlug}`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-semibold text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
@@ -192,9 +192,9 @@ const Home = () => {
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </a>
           ) : (
-            <div className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+            <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-[#14303F] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
               <span className="truncate pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-sm xl:text-sm" />
             </div>
           )}
 
@@ -237,9 +237,9 @@ const Home = () => {
         </div>
 
         {/* RIGHT ASIDE - IMAGE SLIDER */}
-        <aside className="hidden w-full flex-col bg-white lg:flex lg:h-[calc(100vh-72px)] lg:w-[28.5%]">
-          <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-14">
-            <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c8b8a8] xl:text-[20px]">
+        <aside className="hidden w-full flex-col bg-white lg:flex lg:h-[calc(100vh-85px)] lg:w-[28.5%]">
+          <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-11.5">
+            <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c2bbb6] xl:text-[20px]">
               An industry-leading production company founded by people who
               believe in the power of nonfiction visual storytelling.
             </p>
@@ -349,12 +349,12 @@ const Home = () => {
         </aside>
       </section>
 
-      <nav className="hidden h-[72px] w-full items-center bg-white px-20 lg:flex">
-        <div className="flex items-center ml-4 gap-24 font-basis-web">
-          <Link to="/about" className="text-[17px] font-semibold text-[#1497d4] transition hover:opacity-60 leading-[17px]">About</Link>
-          <Link to="/work" className="text-[17px] font-semibold text-[#1497d4] transition hover:opacity-60 leading-[17px]">Work</Link>
-          <Link to="/news" className="text-[17px] font-semibold text-[#1497d4] transition hover:opacity-60 leading-[17px]">News</Link>
-          <Link to="/contact" className="text-[17px] font-semibold text-[#1497d4] transition hover:opacity-60 leading-[17px]">Contact</Link>
+      <nav className="hidden h-[42px] w-full items-center bg-white px-20 lg:flex">
+        <div className="flex items-center ml-4 gap-25 font-basis-web">
+          <Link to="/about" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">About</Link>
+          <Link to="/work" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">Work</Link>
+          <Link to="/news" className="text-[17px] ml-1.5 font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">News</Link>
+          <Link to="/contact" className="text-[17px] ml-1.5 font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">Contact</Link>
         </div>
       </nav>
     </main>
