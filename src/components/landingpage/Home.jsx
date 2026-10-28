@@ -192,7 +192,7 @@ const Home = () => {
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </a>
           ) : (
-            <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-[#14303F] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+            <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3  bg-black/20 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-sm xl:text-sm" />
             </div>
@@ -334,12 +334,12 @@ const Home = () => {
                 </button>
               </a>
             ) : (
-              <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+              <div className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
                 <button
                   type="button"
                   onClick={showNextImage}
-                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl"
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm"
                   aria-label="Show next image"
                 >
                   <FiPlus />
