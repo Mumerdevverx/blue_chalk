@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import Home from "./landingpage/Home";
@@ -23,24 +23,30 @@ const Allroutes = () => {
   const displayedLocationKey = `${displayedLocation.pathname}${displayedLocation.search}${displayedLocation.hash}`;
 
   useEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [displayedLocationKey]);
+
+  useEffect(() => {
     if (locationKey === displayedLocationKey) return undefined;
 
-    if (displayedLocation.pathname !== "/") {
-      window.scrollTo(0, 0);
-      setDisplayedLocation(location);
-      setTransitionStage("idle");
-      return undefined;
-    }
+    setDisplayedLocation(location);
+    setTransitionStage("enter");
 
-    setTransitionStage("exit");
     const timer = setTimeout(() => {
-      window.scrollTo(0, 0);
-      setDisplayedLocation(location);
       setTransitionStage("idle");
-    }, 800);
+    }, 400);
 
     return () => clearTimeout(timer);
-  }, [displayedLocationKey, location, locationKey]);
+  }, [displayedLocation.pathname, displayedLocationKey, location, locationKey]);
 
   return (
     <div className={`route-transition route-transition-${transitionStage}`}>
