@@ -35,6 +35,7 @@ const Footer = () => {
   const [footerData, setFooterData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEmailHovered, setIsEmailHovered] = useState(false);
+  const [hoveredSocial, setHoveredSocial] = useState(null);
 
   // ✅ FETCH FOOTER DATA FROM API
   useEffect(() => {
@@ -70,8 +71,8 @@ const Footer = () => {
   const data = footerData || fallbackFooter;
 
   return (
-    <footer className="w-full bg-[#293339] text-[#bdbdbd]">
-      <div className="max-w-[1170px] lg:ml-18 min-h-[270px] lg:px-7 px-7 py-[40px] md:px-14 flex flex-col md:flex-row justify-between">
+    <footer className="w-full bg-[#293339] ">
+      <div className="max-w-[1170px] lg:ml-14 min-h-[270px] lg:px-7 px-7 py-[40px] md:px-14 flex flex-col md:flex-row justify-between">
         {/* Left Side */}
         <div className="mb-0 md:mb-0">
           {/* ✅ DYNAMIC ADDRESS */}
@@ -86,7 +87,7 @@ const Footer = () => {
           <div className="flex items-center mt-[32px] gap-3">
             <img src={phone} alt="Phone" className="w-[16px] h-[16px]" />
             <span className="text-[16px] text-[#C2BBB6]">{data.phone}</span>
-            <img src={whitetwitter} alt="Phone" className="w-[16px] h-[16px]" />
+            <img src={whitetwitter} alt="Phone" className="w-[16px] h-[16px] ml-4" />
           </div>
 
           {/* ✅ DYNAMIC EMAIL */}
@@ -115,14 +116,14 @@ const Footer = () => {
           <div className="text-[14px] max-sm:w-[70%] text-[#777f83] flex flex-wrap items-center">
             <a
               href={data.footerLinks?.privacyPolicy || "/privacy-policy"}
-              className="hover:text-[#4d8baa] hover:underline"
+              className="hover:text-[#1893d2] hover:underline"
             >
               Privacy Policy
             </a>
             <span className="mx-2">|</span>
             <a
               href={data.footerLinks?.termsOfUse || "/terms-of-use"}
-              className="hover:text-[#4d8baa] hover:underline"
+              className="hover:text-[#1893d2] hover:underline"
             >
               Terms of Use
             </a>
@@ -137,11 +138,18 @@ const Footer = () => {
                 href={data.socialLinks.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoveredSocial("twitter")}
+                onMouseLeave={() => setHoveredSocial(null)}
+                style={{
+                  borderBottom: `1px solid ${hoveredSocial === "twitter" ? "#049bd7" : "transparent"}`,
+                  paddingBottom: "2px",
+                  transition: "border-color 200ms ease",
+                }}
               >
                 <img
                   src={bluetwitter}
                   alt="Twitter"
-                  className="w-[16px] h-[16px] hover:opacity-80 transition"
+                  className="w-[16px] h-[16px]"
                 />
               </a>
             )}
@@ -150,11 +158,18 @@ const Footer = () => {
                 href={data.socialLinks.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoveredSocial("facebook")}
+                onMouseLeave={() => setHoveredSocial(null)}
+                style={{
+                  borderBottom: `1px solid ${hoveredSocial === "facebook" ? "#049bd7" : "transparent"}`,
+                  paddingBottom: "2px",
+                  transition: "border-color 200ms ease",
+                }}
               >
                 <img
                   src={facebook}
                   alt="Facebook"
-                  className="w-[16px] h-[16px] hover:opacity-80 transition"
+                  className="w-[16px] h-[16px]"
                 />
               </a>
             )}
@@ -163,11 +178,18 @@ const Footer = () => {
                 href={data.socialLinks.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoveredSocial("instagram")}
+                onMouseLeave={() => setHoveredSocial(null)}
+                style={{
+                  borderBottom: `1px solid ${hoveredSocial === "instagram" ? "#049bd7" : "transparent"}`,
+                  paddingBottom: "2px",
+                  transition: "border-color 200ms ease",
+                }}
               >
                 <img
                   src={instagram}
                   alt="Instagram"
-                  className="w-[16px] h-[16px] hover:opacity-80 transition"
+                  className="w-[16px] h-[16px]"
                 />
               </a>
             )}
@@ -176,11 +198,18 @@ const Footer = () => {
                 href={data.socialLinks.emailLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                onMouseEnter={() => setHoveredSocial("email")}
+                onMouseLeave={() => setHoveredSocial(null)}
+                style={{
+                  borderBottom: `1px solid ${hoveredSocial === "email" ? "#049bd7" : "transparent"}`,
+                  paddingBottom: "2px",
+                  transition: "border-color 200ms ease",
+                }}
               >
                 <img
                   src={mail}
                   alt="Email"
-                  className="w-[16px] h-[16px] hover:opacity-80 transition"
+                  className="w-[16px] h-[16px]"
                 />
               </a>
             )}
