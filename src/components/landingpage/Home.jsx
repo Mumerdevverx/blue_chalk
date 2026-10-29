@@ -24,6 +24,7 @@ const fallbackImages = [
 const Home = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isImageHovered, setIsImageHovered] = useState(false);
 
   const [images, setImages] = useState(fallbackImages);
 
@@ -149,7 +150,7 @@ const Home = () => {
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
-        <div className="relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-70px)] lg:w-[75%]">
+        <div className="group relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-70px)] lg:w-[75%]">
 
           {/* ✅ Uses API video if available, else local fallback */}
           <video
@@ -176,7 +177,7 @@ const Home = () => {
           {heroVideoSlug ? (
             <Link
               to={`/work/${heroVideoSlug}`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-semibold text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-semibold text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
@@ -186,13 +187,13 @@ const Home = () => {
               href={heroVideoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
             </a>
           ) : (
-            <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3  bg-black/20 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+            <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3  bg-black/20 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-sm xl:text-sm" />
             </div>
@@ -247,7 +248,11 @@ const Home = () => {
           </div>
 
 
-          <div className="relative h-[58%] w-full overflow-hidden ">
+          <div
+            className="relative h-[58%] w-full overflow-hidden"
+            onMouseEnter={() => setIsImageHovered(true)}
+            onMouseLeave={() => setIsImageHovered(false)}
+          >
             {images.map((image, index) => {
               const isActive = currentImage === index;
               const imageContent = (
@@ -296,7 +301,9 @@ const Home = () => {
             {images[currentImage]?.workSlug ? (
               <Link
                 to={`/work/${images[currentImage].workSlug}`}
-                className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
+                  isImageHovered ? "bg-[#0089D0]" : "bg-black/60"
+                }`}
               >
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
                 <button
@@ -317,7 +324,9 @@ const Home = () => {
                 href={images[currentImage].link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/60 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer group"
+                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
+                  isImageHovered ? "bg-[#0089D0]" : "bg-black/60"
+                }`}
               >
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
                 <button
