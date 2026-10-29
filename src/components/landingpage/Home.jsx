@@ -177,20 +177,20 @@ const Home = () => {
           {heroVideoSlug ? (
             <Link
               to={`/work/${heroVideoSlug}`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-semibold text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-semibold text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm" />
             </Link>
           ) : heroVideoLink ? (
             <a
               href={heroVideoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/60 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm" />
             </a>
           ) : (
             <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3  bg-black/20 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
@@ -301,11 +301,11 @@ const Home = () => {
             {images[currentImage]?.workSlug ? (
               <Link
                 to={`/work/${images[currentImage].workSlug}`}
-                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
-                  isImageHovered ? "bg-[#0089D0]" : "bg-black/60"
+                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-Regular text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
+                  isImageHovered ? "bg-[#0089D0]" : "bg-black/30"
                 }`}
               >
-                <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
+                <span className="truncate pr-4">Now streaming</span>
                 <button
                   type="button"
                   onClick={(event) => {
@@ -313,7 +313,7 @@ const Home = () => {
                     event.stopPropagation();
                     showNextImage();
                   }}
-                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl"
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm"
                   aria-label="Show next image"
                 >
                   <FiPlus />
@@ -324,11 +324,11 @@ const Home = () => {
                 href={images[currentImage].link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
-                  isImageHovered ? "bg-[#0089D0]" : "bg-black/60"
+                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-Regular text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
+                  isImageHovered ? "bg-[#0089D0]" : "bg-black/30"
                 }`}
               >
-                <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
+                <span className="truncate pr-4">Now streaming</span>
                 <button
                   type="button"
                   onClick={(event) => {
@@ -343,7 +343,7 @@ const Home = () => {
                 </button>
               </a>
             ) : (
-              <div className="absolute bottom-5 right-2 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+              <div className="absolute bottom-5 right-2 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-[#E8EAEC] sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
                 <button
                   type="button"
