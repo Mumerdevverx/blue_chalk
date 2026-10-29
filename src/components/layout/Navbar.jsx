@@ -54,32 +54,35 @@ const Navbar = () => {
   }`;
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white z-50">
-      <div className="max-w-[1220px] mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-0 flex items-center">
+    <nav className="fixed top-0 left-0 w-full font-semibold bg-white z-50">
+      <div className="max-w-[1220px] mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-6 flex items-center">
         {/* Logo */}
         <Link to="/" onClick={closeMenu} className="shrink-0">
           <img
             src={logonav}
             alt="Blue Chalk"
-            className="lg:w-[90px] md:w-[80px] w-[75px] ml-2 h-auto"
+            className="lg:w-[79px] md:w-[80px] w-[75px] ml-2 h-auto"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex leading-[17px]  items-center ml-[70px]  lg:ml-[120px] xl:ml-[165px] gap-[35px] md:gap-[60px] lg:gap-[105px]">
+        <div className="hidden md:flex leading-[17px] font-semibold  items-center ml-[70px]  lg:ml-[120px] xl:ml-[165px] gap-[35px] md:gap-[60px] lg:gap-[105px]">
           <Link to="/about" className={getLinkClass("/about")}>
             About
           </Link>
 
-          <Link to="/work" className={getLinkClass("/work")}>
+          <Link
+            to="/work"
+            className={`${getLinkClass("/work")} relative -left-2 hover:text-black`}
+          >
             Work
           </Link>
 
-          <Link to="/news" className={getLinkClass("/news")}>
+          <Link to="/news" className={`${getLinkClass("/news")} relative -left-1.5 hover:text-black`}>
             News
           </Link>
 
-          <Link to="/contact" className={getLinkClass("/contact")}>
+          <Link to="/contact" className={`${getLinkClass("/contact")} relative -left-2 hover:text-black`}>
             Contact
           </Link>
         </div>

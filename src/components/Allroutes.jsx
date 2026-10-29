@@ -38,15 +38,25 @@ const Allroutes = () => {
   useEffect(() => {
     if (locationKey === displayedLocationKey) return undefined;
 
-    setDisplayedLocation(location);
-    setTransitionStage("enter");
+    setTransitionStage("exit");
+
+    const timer = setTimeout(() => {
+      setDisplayedLocation(location);
+      setTransitionStage("enter");
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [displayedLocationKey, location, locationKey]);
+
+  useEffect(() => {
+    if (transitionStage !== "enter") return undefined;
 
     const timer = setTimeout(() => {
       setTransitionStage("idle");
-    }, 400);
+    }, 550);
 
     return () => clearTimeout(timer);
-  }, [displayedLocation.pathname, displayedLocationKey, location, locationKey]);
+  }, [transitionStage]);
 
   return (
     <div className={`route-transition route-transition-${transitionStage}`}>
