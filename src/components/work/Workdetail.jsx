@@ -252,7 +252,7 @@ const Workdetail = () => {
                     <img
                       src={getImageUrl(nextProject.image)}
                       alt={nextProject.title}
-                      className="w-24 h-20 object-cover rounded-md grayscale group-hover:grayscale-0 transition-all duration-300"
+                      className="w-25 h-15 object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                       onError={(e) => {
                         e.target.src = 'https://placehold.co/100x80/e0e0e0/808080?text=No+Image';
                       }}

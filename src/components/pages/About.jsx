@@ -66,6 +66,9 @@ const About = () => {
   const about = aboutData || fallbackAbout;
   const images = galleryImages.length > 0 ? galleryImages : [];
   const logos = clientLogos.length > 0 ? clientLogos : [];
+  const servicesText = Array.isArray(about.services)
+    ? about.services.join('\n')
+    : about.services || "";
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -187,42 +190,20 @@ const About = () => {
       </div>
 
       {/* SERVICES */}
-      <section className="w-full max-w-[1200px] mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px] lg:px-0 md:px-13 px-7">
-        <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[20px] sm:mb-[25px] md:mb-[30px]">
+      <section className="w-full max-w-[1160px] mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px] lg:px-0 md:px-13 px-7">
+        <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[30px]">
           Services
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-[30px] sm:gap-x-[50px] md:gap-x-[80px]">
-
-  {/* Left Column */}
-  <div>
-    {about.services.slice(0, 3).map((service, idx) => (
-      <p
-        key={idx}
-        className="text-[18px] whitespace-pre-wrap leading-[1.55] text-[#152B3D]"
-      >
-        {service}
-      </p>
-    ))}
-  </div>
-
-  {/* Right Column */}
-  <div>
-    {about.services.slice(3).map((service, idx) => (
-      <p
-        key={idx}
-        className="text-[18px] whitespace-pre-wrap leading-[1.55] text-[#152B3D]"
-      >
-        {service}
-      </p>
-    ))}
-  </div>
-
-</div>
+        <div className="overflow-x-auto">
+          <div className="whitespace-pre text-[18px] leading-[1.55] text-[#293339]">
+            {servicesText}
+          </div>
+        </div>
       </section>
 
       {/* CLIENTS & PARTNERS */}
       <section className="w-full mx-auto lg:px-25 mt-[50px] sm:mt-[60px] md:mt-[80px] md:px-13 px-7">
-        <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[30px] sm:mb-[40px] md:mb-[50px]">
+        <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[30px] sm:mb-[40px] md:mb-[50px]">
           Blue Chalk Clients & Partners
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-4 lg:gap-10">
