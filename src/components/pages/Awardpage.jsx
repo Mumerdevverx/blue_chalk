@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import awardpage from "../../assets/about/award/awardpage.png";
 import API_BASE_URL from "../../config/api";
 
+const formatAwardDescription = (description) =>
+  description.replace(/<p>\s*(\d{4})\s*<\/p>/g, '<p class="award-year">$1</p>');
+
 const getImageUrl = (url) => {
   if (!url) return "https://via.placeholder.com/600x400?text=No+Image";
   if (url.startsWith("http")) return url;
@@ -226,7 +229,10 @@ const Awardpage = () => {
       {/* Description */}
    {award.description && (
   <div className="text-[#293339] text-[15px] sm:text-[16px] leading-[1.7] prose max-w-none">
-    <div dangerouslySetInnerHTML={{ __html: award.description }} />
+    <div
+      className="award-description"
+      dangerouslySetInnerHTML={{ __html: formatAwardDescription(award.description) }}
+    />
   </div>
 )}
 
