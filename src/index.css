@@ -142,6 +142,10 @@
   color: #1893d2 !important;
 }
 
+.award-description .award-year {
+  color: #c2bbb6;
+}
+
 .route-transition {
   min-height: 100vh;
   min-height: 100dvh;
