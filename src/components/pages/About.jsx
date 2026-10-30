@@ -87,18 +87,18 @@ const About = () => {
       {/* VIDEO */}
       <div className="w-full flex items-center justify-center lg:px-0 md:px-13 px-7">
         <div
-          className="relative w-full max-w-[1200px] overflow-hidden cursor-pointer"
+          className="relative w-full max-w-[1155px] overflow-hidden cursor-pointer md:aspect-[1.9/1]"
           onClick={!isPlaying ? handlePlay : undefined}
         >
           {!isPlaying && (
-            <img src={peoples} alt="About" className="w-full h-auto object-contain" />
+            <img src={peoples} alt="About" className="w-full h-auto md:h-full object-cover" />
           )}
           <video
             ref={videoRef}
             src={about.videoUrl || aboutvideo}
             controls={isPlaying}
             playsInline
-            className={`w-full h-auto object-contain ${isPlaying ? "block" : "hidden"}`}
+            className={`w-full h-auto md:h-full object-cover ${isPlaying ? "block" : "hidden"}`}
           />
           {!isPlaying && (
             <div className="absolute inset-0 flex items-center justify-center">
