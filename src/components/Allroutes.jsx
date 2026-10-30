@@ -32,11 +32,37 @@ const Allroutes = () => {
   }, []);
 
   useLayoutEffect(() => {
+    if (location.hash && displayedLocationKey === locationKey) {
+      let attempts = 0;
+      let timer;
+      const scrollToCareers = () => {
+        const target = document.getElementById(location.hash.slice(1));
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top, behavior: "auto" });
+          return;
+        }
+        if (attempts < 30) {
+          attempts += 1;
+          timer = window.setTimeout(scrollToCareers, 100);
+        }
+      };
+
+      timer = window.setTimeout(scrollToCareers, 0);
+      return () => window.clearTimeout(timer);
+    }
+
     window.scrollTo(0, 0);
   }, [displayedLocationKey]);
 
   useEffect(() => {
     if (locationKey === displayedLocationKey) return undefined;
+
+    if (location.hash === "#careers") {
+      setDisplayedLocation(location);
+      setTransitionStage("idle");
+      return undefined;
+    }
 
     setTransitionStage("exit");
 

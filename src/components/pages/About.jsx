@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import peoples from "../../assets/peoples.jpg";
 import AboutAwards from "./AboutAwards";
 import AboutPeopleData from "./AboutPeopleData";
@@ -69,6 +69,18 @@ const About = () => {
   const servicesText = Array.isArray(about.services)
     ? about.services.join('\n')
     : about.services || "";
+
+  useLayoutEffect(() => {
+    if (!loading && window.location.hash === "#careers") {
+      const careersSection = document.getElementById("careers");
+      if (careersSection) {
+        window.scrollTo({
+          top: careersSection.getBoundingClientRect().top + window.scrollY,
+          behavior: "auto",
+        });
+      }
+    }
+  }, [loading]);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -239,7 +251,7 @@ const About = () => {
 
       {/* CAREERS */}
      {/* ================= CAREERS ================= */}
-<section className="w-full max-w-[1155px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
+<section id="careers" className="w-full max-w-[1155px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
   <h2 className="text-[36px] md:text-[32px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
     Careers
   </h2>
@@ -265,6 +277,9 @@ const About = () => {
           {parts[0]}
           <Link
             to="/aboutpartner"
+            onClick={() => {
+              window.history.replaceState(window.history.state, "", "/about#careers");
+            }}
             className="text-[#0089D0] hover:underline underline-offset-2 transition-colors duration-200"
           >
             creative partners interest form
