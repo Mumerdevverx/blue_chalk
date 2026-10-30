@@ -117,11 +117,11 @@ const AboutPeopleData = () => {
                   />
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 mt-3 sm:mt-4 px-2">
-                  <h3 className="text-[18px] md:text-[24px] lg:text-[24px] md:leading-[24px] leading-[18px] text-[#0089D0] font-normal">
+                <div className="flex flex-wrap items-center justify-center gap-1 text-[#44A7D8] hover:text-[#078ed1] sm:gap-2 mt-3 sm:mt-4 px-2">
+                  <h3 className="text-[18px] md:text-[24px] lg:text-[24px] md:leading-[24px] leading-[18px]   font-normal">
                     {member.name}
                   </h3>
-                  <p className="text-[13px] sm:text-[14px] md:text-[16px] lg:text-[18px] text-[#0089D0] font-normal">
+                  <p className="text-[13px] sm:text-[14px] md:text-[16px] lg:text-[24px] font-normal">
                     {member.pronouns}
                   </p>
                 </div>
