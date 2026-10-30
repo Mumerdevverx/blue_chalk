@@ -130,8 +130,8 @@ const AboutPeopleData = () => {
                 </p>
 
                 {selectedIndex === index && (
-                  <div className="mt-4 text-left px-2 sm:px-3 md:px-4">
-                    <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D]">
+                  <div className="mt-4 w-[calc(100%+16px)] sm:w-[calc(100%+24px)] md:w-[calc(100%+32px)] text-left">
+                    <p className="text-[16px] md:text-[16px] lg:text-[16px] leading-[1.55] text-[#152B3D]">
                       {member.description}
                     </p>
                     <div className="mt-4">
