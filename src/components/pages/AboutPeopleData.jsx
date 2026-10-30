@@ -117,7 +117,7 @@ const AboutPeopleData = () => {
                   />
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center gap-1 text-[#44A7D8] hover:text-[#078ed1] sm:gap-2 mt-3 sm:mt-4 px-2">
+                <div className="relative -left-2 flex w-[calc(100%+16px)] flex-wrap items-center justify-center gap-1 text-[#44A7D8] hover:text-[#078ed1] sm:gap-2 mt-3 sm:mt-4 px-2">
                   <h3 className="text-[18px] md:text-[24px] lg:text-[24px] md:leading-[24px] leading-[18px]   font-normal">
                     {member.name}
                   </h3>
