@@ -117,7 +117,7 @@ const About = () => {
       </div>
 
       {/* ABOUT US */}
-      <section className="w-full max-w-[1200px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-0 md:px-13 px-7">
+      <section className="w-full max-w-[1150px] mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-0 md:px-13 px-7">
         <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px]">
           About Us
         </h1>
@@ -125,14 +125,14 @@ const About = () => {
 
   {/* Left Side */}
   <div
-    className="about-rich-text whitespace-pre-line text-[18px] leading-[1.55] text-[#152B3D]"
+    className="about-rich-text whitespace-pre-line text-[18px] leading-[1.55] text-[#293339]"
     dangerouslySetInnerHTML={renderRichText(about.aboutUsText)}
   >
   </div>
 
   {/* Right Side */}
   <div
-    className="about-rich-text whitespace-pre-line text-[18px] leading-[1.55] text-[#152B3D]"
+    className="about-rich-text whitespace-pre-line text-[18px] leading-[1.55] text-[#293339]"
     dangerouslySetInnerHTML={renderRichText(about.aboutUsRightText)}
   >
   </div>
@@ -140,15 +140,15 @@ const About = () => {
 </div>
 
         {/* ON ASSIGNMENT */}
-        <div className="mt-[90px] md:mt-[65px] lg:mt-[85px] max-sm:mb-10">
-          <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-bgw-400 text-[#152B3D] mb-[15px] sm:mb-[20px] md:mb-[25px]">
+        <div className="mt-[90px] md:mt-[65px] lg:mt-[65px] max-sm:mb-10">
+          <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-bgw-400 text-[#293339] mb-[15px] sm:mb-[20px] md:mb-[25px]">
             {about.onAssignmentTitle}
           </h2>
-          <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D] font-bgw-400">
+          <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#293339] font-bgw-400">
             {about.onAssignmentText.split('\n')[0]}
           </p>
           {about.onAssignmentText.split('\n').length > 1 && (
-            <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#152B3D] font-bgw-400">
+            <p className="text-[18px] md:text-[18px] lg:text-[18px] leading-[1.55] text-[#293339] font-bgw-400">
               {about.onAssignmentText.split('\n')[1]}
             </p>
           )}
@@ -156,7 +156,7 @@ const About = () => {
       </section>
 
       {/* 9 IMAGE GALLERY */}
-      <div className="w-full mt-[30px] sm:mt-[40px] md:mt-[50px] overflow-hidden">
+      <div className="w-full mt-[30px] sm:mt-[40px] md:mt-[40px] overflow-hidden">
         <div className="flex flex-wrap sm:flex-nowrap w-full h-[200px] sm:h-[280px] md:h-[380px]">
           {images.length > 0 ? (
             images.map((img, index) => (
