@@ -202,11 +202,11 @@ const About = () => {
       </section>
 
       {/* CLIENTS & PARTNERS */}
-      <section className="w-full mx-auto lg:px-25 mt-[50px] sm:mt-[60px] md:mt-[80px] md:px-13 px-7">
-        <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[30px] sm:mb-[40px] md:mb-[50px]">
+      <section className="w-full mx-auto lg:px-24 mt-[50px] sm:mt-[60px] md:mt-[60px] md:px-13 px-7">
+        <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[30px] sm:mb-[40px] md:mb-[30px]">
           Blue Chalk Clients & Partners
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-4 lg:gap-10">
+        <div className="relative -left-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-4 lg:gap-14">
           {logos.length > 0 ? (
             logos.map((logo, index) => (
               <div
@@ -239,15 +239,16 @@ const About = () => {
 
       {/* CAREERS */}
      {/* ================= CAREERS ================= */}
-<section className="w-full max-w-[1200px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
+<section className="w-full max-w-[1155px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-0 md:px-13 px-7">
   <h2 className="text-[36px] md:text-[32px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
     Careers
   </h2>
 
-  <div className="max-w-full md:max-w-[550px] text-[16px] md:text-[16px] lg:text-[16px] leading-[1.5] text-[#8C9BA8]">
+  <div className="max-w-full md:max-w-[545px] text-[16px] md:text-[16px] lg:text-[16px] leading-[1.5] text-[#9ea2a3]">
     {/* ✅ Helper function to render careers text with link */}
     {(() => {
-      const text = about.careersText || fallbackAbout.careersText;
+      const rawText = about.careersText || fallbackAbout.careersText;
+      const text = rawText.split('Blue Chalk Media is an equal opportunity employer')[0].trim();
       const parts = text.split('creative partners interest form');
       
       if (parts.length === 1) {
@@ -276,6 +277,7 @@ const About = () => {
     <p className="mt-[32px]">
       Blue Chalk Media is an equal opportunity employer committed to an inclusive workplace. We do not tolerate sexual harassment or discrimination based on race, color, religion, gender identity, age, national origin, veteran status or disability. We believe that our differences make us stronger and that working together with respect for each individual is essential to the success of our company as a whole.
     </p>
+
   </div>
 </section>
     </div>

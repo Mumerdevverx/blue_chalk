@@ -72,7 +72,7 @@ const Footer = () => {
 
   return (
     <footer className="w-full bg-[#293339] ">
-      <div className="max-w-[1170px] lg:ml-14 min-h-[270px] lg:px-7 px-7 py-[40px] md:px-14 flex flex-col md:flex-row justify-between">
+      <div className="max-w-[1170px] lg:ml-18 min-h-[270px] lg:px-7 px-7 py-[40px] md:px-14 flex flex-col md:flex-row justify-between">
         {/* Left Side */}
         <div className="mb-0 md:mb-0">
           {/* ✅ DYNAMIC ADDRESS */}

@@ -87,9 +87,9 @@ const AboutPeopleData = () => {
 
   return (
     <div className="bg-[#F5F4F2] py-[40px] sm:py-[50px] md:py-[60px]">
-      <section className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
+      <section className="w-full max-w-[1150px] mx-auto px-4 sm:px-6 md:px-12 lg:px-0">
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] max-sm:pl-4 md:pl-4 lg:pl-0 mb-[40px] md:mb-[60px] lg:mb-[50px]">
-          Meet the Teams
+          Meet the Team
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 md:gap-x-10 lg:gap-x-12 gap-y-[40px] sm:gap-y-[50px] md:gap-y-[60px]">
@@ -140,17 +140,17 @@ const AboutPeopleData = () => {
                       </p>
                       <div className="flex flex-wrap gap-3 sm:gap-4 mt-3">
                         {member.linkedin && (
-                          <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="w-[25px] h-[25px] bg-[#0089D0] rounded-xs flex items-center justify-center hover:bg-[#0379b5] transition-colors duration-200">
+                          <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="w-[25px] h-[25px] bg-[#0c9ce4] rounded-xs flex items-center justify-center hover:bg-[#56b9eb] transition-colors duration-200">
                             <svg className="w-[14px] h-[14px]" viewBox="0 0 24 24" fill="white"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" /></svg>
                           </a>
                         )}
                         {member.twitter && (
-                          <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="w-[25px] h-[25px] bg-[#0089D0] rounded-xs flex items-center justify-center hover:bg-[#0379b5] transition-colors duration-200">
+                          <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="w-[25px] h-[25px] bg-[#1199DE] rounded-xs flex items-center justify-center hover:bg-[#56b9eb] transition-colors duration-200">
                             <svg className="w-[14px] h-[14px] fill-white" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" /></svg>
                           </a>
                         )}
                         {member.email && (
-                          <a href={`mailto:${member.email}`} className="w-[25px] h-[25px] bg-[#0089D0] rounded-xs flex items-center justify-center hover:bg-[#0379b5] transition-colors duration-200">
+                          <a href={`mailto:${member.email}`} className="w-[25px] h-[25px] bg-[#1199DE] rounded-xs flex items-center justify-center hover:bg-[#56b9eb] transition-colors duration-200">
                             <svg className="w-[14px] h-[14px] fill-white" viewBox="0 0 24 24"><path d="M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z" /></svg>
                           </a>
                         )}

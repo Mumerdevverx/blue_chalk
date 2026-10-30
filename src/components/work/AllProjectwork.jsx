@@ -272,10 +272,10 @@ const AllProjectwork = () => {
               </div>
 
               {isBrandOpen && (
-                <div className="flex flex-col items-start w-full pl-0 animate-[slideDown_0.3s_ease]">
+                <div className="flex flex-col items-start w-full  pl-0 animate-[slideDown_0.3s_ease]">
                   <button
                     onClick={() => portfolioFilter.filter("Entertainment")}
-                    className={`lg:text-[36px] md:text-4xl leading-[43px] text-xl py-1.5 cursor-pointer transition-all duration-300 w-full text-left ${
+                    className={`lg:text-[36px] md:text-4xl leading-[43px] text-xl py-1.5 cursor-pointer transition-all duration-300 w-full whitespace-nowrap text-left ${
                       activeFilter === "Entertainment"
                         ? "text-[#1893D2]"
                         : "text-[#C2BBB6] hover:text-[#1893D2]"
@@ -285,13 +285,13 @@ const AllProjectwork = () => {
                   </button>
                   <button
                     onClick={() => portfolioFilter.filter("Social Impact")}
-                    className={`lg:text-[36px] md:text-4xl leading-[43px] text-xl py-1.5 cursor-pointer transition-all duration-300 w-full text-left ${
+                    className={`lg:text-[36px] md:text-4xl leading-[43px] text-xl py-1.5 cursor-pointer transition-all duration-300 w-full whitespace-nowrap text-left ${
                       activeFilter === "Social Impact"
                         ? "text-[#1893D2]"
                         : "text-[#C2BBB6] hover:text-[#1893D2]"
                     }`}
                   >
-                    SocialImpact
+                    Social Impact
                   </button>
                   <button
                     onClick={() => portfolioFilter.filter("Documentary")}
