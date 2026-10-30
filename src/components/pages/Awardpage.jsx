@@ -174,7 +174,7 @@ const Awardpage = () => {
                 md:text-[36px]
                 leading-[1.2]
                 font-normal
-                text-[#293339]
+                text-[#C2BBB6]
                 transition-colors
               "
             >
