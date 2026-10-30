@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import API_BASE_URL from "../../config/api";
 
 const Workdetail = () => {
   const { slug } = useParams();
+  const location = useLocation();
+  const videoRef = useRef(null);
   const [work, setWork] = useState(null);
   const [allProjects, setAllProjects] = useState([]);
   const [nextProject, setNextProject] = useState(null);
   const [relatedProjects, setRelatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isVideoStarted, setIsVideoStarted] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -89,7 +92,11 @@ const Workdetail = () => {
   // ✅ Convert YouTube watch URL to embed
   const getEmbedUrl = (url) => {
     if (!url) return "";
-    if (url.includes("embed")) return url;
+    if (url.includes("embed")) {
+      return url
+        .replace(/[?&]autoplay=1(&|$)/i, (match, separator) => separator === "&" ? "?" : "")
+        .replace(/[?&]autoplay=true(&|$)/i, (match, separator) => separator === "&" ? "?" : "");
+    }
     if (url.includes("watch?v=")) {
       const videoId = new URLSearchParams(new URL(url).search).get("v");
       return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
@@ -121,11 +128,21 @@ const Workdetail = () => {
   const videoUrl = extractVideoFromContent(work.aboutContent);
   const cleanedContent = cleanContent(work.aboutContent);
   const finalVideoUrl = getEmbedUrl(videoUrl) || "";
+  const posterUrl = location.state?.thumbnail || getImageUrl(work.image || work.imageUrl || work.mediaUrl);
 
-  const getImageUrl = (url) => {
+  function getImageUrl(url) {
     if (!url) return 'https://placehold.co/400x300/e0e0e0/808080?text=No+Image';
     if (url.startsWith('http')) return url;
     return `${API_BASE_URL}${url}`;
+  }
+
+  const startVideo = () => {
+    setIsVideoStarted(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch((playError) => {
+        console.error("Unable to start work video:", playError);
+      });
+    }
   };
 
   // ✅ Decide which player to render
@@ -142,11 +159,13 @@ const Workdetail = () => {
       // ✅ Direct MP4 video
       return (
         <video
+          ref={videoRef}
+          poster={posterUrl}
           controls
-          autoPlay
           muted
           loop
           playsInline
+          onPlay={() => setIsVideoStarted(true)}
           className="w-full h-full object-cover"
           style={{ backgroundColor: '#000' }}
         >
@@ -158,7 +177,7 @@ const Workdetail = () => {
       // ✅ YouTube/Vimeo embed
       return (
         <iframe
-          src={finalVideoUrl}
+          src={isVideoStarted ? `${finalVideoUrl}${finalVideoUrl.includes("?") ? "&" : "?"}autoplay=1` : finalVideoUrl}
           title="Video"
           className="absolute top-0 left-0 w-full h-full"
           frameBorder="0"
@@ -175,6 +194,23 @@ const Workdetail = () => {
       {/* ✅ VIDEO PLAYER – at the top */}
       <div className="relative w-full aspect-video bg-gray-200 overflow-hidden">
         {renderVideoPlayer()}
+        {videoUrl && !isVideoStarted && (
+          <button
+            type="button"
+            onClick={startVideo}
+            className="group absolute inset-0 z-10 flex items-center justify-center"
+            aria-label="Play video"
+          >
+            <img
+              src={posterUrl}
+              alt=""
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            />
+            <span className="group/play relative z-10 flex h-16 w-16 items-center justify-center">
+              <span className="h-0 w-0 border-y-[20px] border-y-transparent border-l-[34px] border-l-white transition-colors duration-300 group-hover/play:border-l-[#0089D0]" />
+            </span>
+          </button>
+        )}
       </div>
 
       {/* TWO-COLUMN LAYOUT */}

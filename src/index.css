@@ -118,6 +118,30 @@
   margin-bottom: 1em;
 }
 
+.about-rich-text p {
+  margin-bottom: 20px;
+}
+
+.about-rich-text a {
+  color: #1893d2 !important;
+  text-decoration: none;
+  text-underline-offset: 2px;
+  transition: text-decoration 200ms ease;
+}
+
+.about-rich-text a span {
+  color: #1893d2 !important;
+}
+
+.about-rich-text a:hover {
+  color: #1893d2 !important;
+  text-decoration: underline;
+}
+
+.about-rich-text a:hover span {
+  color: #1893d2 !important;
+}
+
 .route-transition {
   min-height: 100vh;
   min-height: 100dvh;

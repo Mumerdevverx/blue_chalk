@@ -14,6 +14,10 @@ const getImageUrl = (url) => {
   return `${API_BASE_URL}${url}`;
 };
 
+const renderRichText = (content) => ({
+  __html: content || "",
+});
+
 const About = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -120,21 +124,17 @@ const About = () => {
        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-[20px] md:gap-y-0 md:gap-x-[80px]">
 
   {/* Left Side */}
-  <div className="text-[18px] leading-[1.55] text-[#152B3D]">
-    {about.aboutUsText.split('\n').map((para, idx) => (
-      <p key={idx} className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
-        {para}
-      </p>
-    ))}
+  <div
+    className="about-rich-text whitespace-pre-line text-[18px] leading-[1.55] text-[#152B3D]"
+    dangerouslySetInnerHTML={renderRichText(about.aboutUsText)}
+  >
   </div>
 
   {/* Right Side */}
-  <div className="text-[18px] leading-[1.55] whitespace-pre-wrap text-[#152B3D]">
-    {about.aboutUsRightText.split('\n').map((para, idx) => (
-      <p key={idx} className="mb-[20px] sm:mb-[24px] md:mb-[28px]">
-        {para}
-      </p>
-    ))}
+  <div
+    className="about-rich-text whitespace-pre-line text-[18px] leading-[1.55] text-[#152B3D]"
+    dangerouslySetInnerHTML={renderRichText(about.aboutUsRightText)}
+  >
   </div>
 
 </div>

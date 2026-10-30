@@ -138,7 +138,7 @@ const Home = () => {
 
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 3500);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [images]);
@@ -164,7 +164,7 @@ const Home = () => {
           />
 
           <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 md:h-40 bg-gradient-to-t from-[#265b7a] via-[#1989c2]/2 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-black/10" />
+          <div className="pointer-events-none absolute inset-0 bg-black/10" />
 
           <div className="absolute -bottom-1 left-4 z-20 w-[min(52vw,220px)] sm:left-6 sm:w-[220px] md:left-7 md:w-[280px] lg:left-20 lg:w-[350px] xl:w-[380px]">
             <img
@@ -177,9 +177,9 @@ const Home = () => {
           {heroVideoSlug ? (
             <Link
               to={`/work/${heroVideoSlug}`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-semibold text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px]  text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
-              <span className="truncate pr-4">{heroVideoTitle}</span>
+              <span className="truncate font-regular ml-2 pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm" />
             </Link>
           ) : heroVideoLink ? (
@@ -187,7 +187,7 @@ const Home = () => {
               href={heroVideoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-regular text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm" />
@@ -274,6 +274,7 @@ const Home = () => {
                   <Link
                     key={index}
                     to={`/work/${image.workSlug}`}
+                    state={{ thumbnail: image.url }}
                     className={`absolute inset-0 block transition-opacity duration-700 ease-in-out ${
                       isActive ? "z-10 pointer-events-auto cursor-pointer" : "z-0 pointer-events-none"
                     }`}
@@ -301,6 +302,7 @@ const Home = () => {
             {images[currentImage]?.workSlug ? (
               <Link
                 to={`/work/${images[currentImage].workSlug}`}
+                state={{ thumbnail: images[currentImage].url }}
                 className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-Regular text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
                   isImageHovered ? "bg-[#0089D0]" : "bg-black/30"
                 }`}
