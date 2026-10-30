@@ -77,10 +77,10 @@ const AboutAwards = () => {
             key={award._id || index}
             className="border-t border-[#D9D9D9] pt-2.5 flex items-center justify-between min-h-[60px] sm:min-h-[65px] md:min-h-[70px] transition-colors duration-200 px-2 sm:px-3 md:px-0"
           >
-            <h3 className="text-[18px] md:text-[18px] font-bold text-[#c2bbb6] flex-1 pr-2">
+            <h3 className="text-[18px] md:text-[18px] font-bold text-[#C2BBB6] flex-1 pr-2">
               <Link
                 to={`/awardpage/${award.slug}`}
-                className="hover:border-b border-[#0089D0] transition-all duration-200 pb-0.5"
+                className="text-[#0089D0] hover:border-b border-[#0089D0] transition-all duration-200 pb-0.5"
               >
                 {award.title}
               </Link>
