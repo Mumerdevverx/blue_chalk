@@ -72,17 +72,19 @@ const News = () => {
               news.map((item) => (
                 <div
                   key={item._id}
-                  className="flex w-full flex-col border-t border-[#eeeeee] md:flex-row"
+                  className="group flex w-full flex-col border-t border-[#eeeeee] md:flex-row"
                 >
                   <div className="w-full shrink-0 md:w-[40%]">
-                    <img
-                      src={resolveNewsImageUrl(item.image)}
-                      alt={item.title}
-                      className="h-[230px] md:h-[290px] lg:h-[300px] grayscale hover:grayscale-0 w-full"
-                      onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/400x300?text=No+Image";
-                      }}
-                    />
+                    <Link to={`/news/${item.slug}`} className="block">
+                      <img
+                        src={resolveNewsImageUrl(item.image)}
+                        alt={item.title}
+                        className="h-[230px] md:h-[290px] lg:h-[300px] w-full grayscale transition duration-300 group-hover:grayscale-0"
+                        onError={(e) => {
+                          e.target.src = "https://via.placeholder.com/400x300?text=No+Image";
+                        }}
+                      />
+                    </Link>
                   </div>
                   <Link 
                   to={`/news/${item.slug}`}
