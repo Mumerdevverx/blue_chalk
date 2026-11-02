@@ -21,6 +21,19 @@ const getImageUrl = (url) => {
   return `${API_BASE_URL}${url}`;
 };
 
+const moveDigitalAwardToPosition = (list) => {
+  const digitalAwardIndex = list.findIndex(
+    (award) => award.title?.trim().toLowerCase() === "digital.com"
+  );
+
+  if (digitalAwardIndex === -1) return list;
+
+  const reorderedAwards = [...list];
+  const [digitalAward] = reorderedAwards.splice(digitalAwardIndex, 1);
+  reorderedAwards.splice(10, 0, digitalAward);
+  return reorderedAwards;
+};
+
 const AboutAwards = () => {
   const [awards, setAwards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +54,7 @@ const AboutAwards = () => {
 
             return new Date(first.createdAt) - new Date(second.createdAt);
           });
-          setAwards(sorted);
+          setAwards(moveDigitalAwardToPosition(sorted));
         } else {
           setAwards(fallbackAwards);
         }
