@@ -49,11 +49,11 @@ const News = () => {
 
   return (
     <div className="w-full bg-white mt-20 pt-[30px] pb-[60px] sm:pt-[40px] md:pt-[45px] md:pb-[80px]">
-      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-18">
+      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-5">
         {/* TOP HEADINGS */}
         <div className="flex w-full items-center justify-between pb-[28px] max-sm:px-8">
           <div className="w-full lg:w-[73%]">
-            <h1 className="text-[36px] md:text-[36px] font-normal leading-[43px] text-[#152B3D]">
+            <h1 className="text-[36px] ml-20 md:text-[36px] font-normal leading-[43px] text-[#152B3D]">
               News
             </h1>
           </div>
@@ -78,7 +78,7 @@ const News = () => {
                     <img
                       src={resolveNewsImageUrl(item.image)}
                       alt={item.title}
-                      className="h-[230px] md:h-[290px] lg:h-[300px] grayscale hover:grayscale-0 w-full object-cover"
+                      className="h-[230px] md:h-[290px] lg:h-[300px] grayscale hover:grayscale-0 w-full"
                       onError={(e) => {
                         e.target.src = "https://via.placeholder.com/400x300?text=No+Image";
                       }}
