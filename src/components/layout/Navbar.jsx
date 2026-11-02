@@ -32,13 +32,12 @@ const Navbar = () => {
 
   // Prevent scroll when menu is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = isOpen ? "hidden" : "";
+
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
@@ -54,7 +53,7 @@ const Navbar = () => {
   }`;
 
   return (
-    <nav className="fixed top-0 left-0 w-full font-semibold bg-white z-50">
+    <nav className="fixed inset-x-0 top-0 font-semibold bg-white z-50">
       <div className="max-w-[1220px] mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-6 flex items-center">
         {/* Logo */}
         <Link to="/" onClick={closeMenu} className="shrink-0">
