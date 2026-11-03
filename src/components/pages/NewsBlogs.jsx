@@ -9,6 +9,7 @@ const NewsBlogs = () => {
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isBackHovered, setIsBackHovered] = useState(false);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -53,13 +54,13 @@ const NewsBlogs = () => {
   }
 
   return (
-    <div className="lg:px-22 md:px-13 px-7 max-sm:mt-18">
+    <div className="lg:px-20 lg:ml-4 md:px-13 px-7 max-sm:mt-18">
       {/* Image */}
       <div className="mb-8">
         <img
           src={resolveNewsImageUrl(news.image)}
           alt={news.title}
-          className="w-full h-[620px] object-cover"
+          className="w-full h-[730px] object-cover"
           onError={(e) => {
             e.target.src = "https://via.placeholder.com/1200x620?text=No+Image";
           }}
@@ -69,10 +70,16 @@ const NewsBlogs = () => {
       <div className="flex md:flex-row flex-col place-items-baseline gap-6 md:gap-14 mb-10">
         <button
           onClick={() => navigate("/news")}
-          className="news-link flex items-center gap-2 cursor-pointer min-w-fit"
+          className="flex items-center gap-2 cursor-pointer min-w-fit"
+          onMouseEnter={() => setIsBackHovered(true)}
+          onMouseLeave={() => setIsBackHovered(false)}
+          style={{
+            color: isBackHovered ? "#BEC0C4" : "#1893d2",
+            textDecoration: isBackHovered ? "underline" : "none",
+          }}
         >
           <img src={backarrow} alt="Back arrow" className="w-5 h-5" />
-          <span className="text-[13px] font-normal leading-[28px]">
+          <span className="text-[13px]  font-normal leading-[28px]">
             Back to all News
           </span>
         </button>
