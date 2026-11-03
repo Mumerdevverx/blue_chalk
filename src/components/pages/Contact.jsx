@@ -4,6 +4,55 @@ import API_BASE_URL from "../../config/api";
 const Contact = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  useEffect(() => {
+    if (!newsletterMessage) return undefined;
+
+    const timeoutId = window.setTimeout(() => {
+      setNewsletterMessage("");
+    }, 4000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [newsletterMessage]);
+
+  const handleNewsletterSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const visibleInputs = [...form.querySelectorAll("input")].filter(
+      (input) => input.offsetParent !== null
+    );
+    const name = visibleInputs
+      .find((input) => input.placeholder === "Name*")
+      ?.value.trim();
+    const email = visibleInputs
+      .find((input) => input.placeholder === "Email*")
+      ?.value.trim();
+
+    if (!name) {
+      setNewsletterMessage(
+        "Please include an '@' in the email address. 'Email' is missing an '@'."
+      );
+      return;
+    }
+
+    if (!email) {
+      setNewsletterMessage(
+        "Please include an '@' in the email address. 'Email' is missing an '@'."
+      );
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setNewsletterMessage(
+        "Please include an '@' in the email address. 'Email' is missing an '@'."
+      );
+      return;
+    }
+
+    setNewsletterMessage("Thank you! Your newsletter request has been received.");
+    form.reset();
+  };
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -213,39 +262,48 @@ const Contact = () => {
               </p>
             </div>
             <div className="lg:w-1/2 xl:w-3/4 w-full mt-6 lg:mt-0">
-              <form>
+              <form onSubmit={handleNewsletterSubmit} noValidate>
                 {/* Mobile only: 2-column layout */}
                 <div className="block md:hidden flex flex-col border border-[#e8e8e8] bg-white">
                   <div className="grid grid-cols-2 border-b border-[#e8e8e8]">
                     <input
                       type="text"
                       placeholder="Name*"
-                      className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] outline-none text-sm sm:text-base border-r border-[#e8e8e8]"
+                      className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] placeholder:opacity-100 outline-none text-sm sm:text-base border-r border-[#e8e8e8] focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                     />
                     <input
-                      type="email"
+                      type="text"
+                      inputMode="email"
                       placeholder="Email*"
-                      className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] outline-none text-sm sm:text-base"
+                      className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] placeholder:opacity-100 outline-none text-sm sm:text-base focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                     />
                   </div>
                   <div className="grid grid-cols-2">
                     <input
                       type="text"
                       placeholder="Title (optional)"
-                      className="w-full h-[40px] px-4 sm:px-5 text-[#7F7F7F] outline-none text-sm sm:text-base border-r border-[#e8e8e8]"
+                      className="w-full h-[40px] px-4 sm:px-5 text-[#7F7F7F] placeholder:opacity-100 outline-none text-sm sm:text-base border-r border-[#e8e8e8] focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                     />
                     <input
                       type="text"
                       placeholder="Company (optional)"
-                      className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] outline-none text-sm sm:text-base"
+                      className="w-full h-[40px] px-4 sm:px-5 text-[#363639] placeholder-[#363639] placeholder:opacity-100 outline-none text-sm sm:text-base focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                     />
                   </div>
-                  <button
-                    type="submit"
-                    className="bg-[#1f93d1] text-white uppercase font-semibold hover:bg-[#167bb0] transition h-[46px] w-full text-[11px] leading-[11px]"
-                  >
-                    Subscribe
-                  </button>
+                  <div className="relative">
+                    <button
+                      type="submit"
+                      className="bg-[#1f93d1] border border-[#1f93d1] text-white uppercase font-semibold hover:bg-white hover:text-[#1f93d1] transition h-[46px] w-full text-[11px] leading-[11px]"
+                    >
+                      Subscribe
+                    </button>
+                    {newsletterMessage && (
+                      <div className="absolute bottom-full right-0 z-[100] mb-3 flex w-[calc(100vw-40px)] max-w-md items-start gap-3 whitespace-normal break-words rounded-md border border-gray-300 bg-white px-5 py-4 text-sm text-black shadow-lg" role="status" aria-live="polite">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-[#f26522] font-bold text-white" aria-hidden="true">!</span>
+                        <span>{newsletterMessage}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Tablet & Desktop: 3-column layout */}
@@ -254,36 +312,45 @@ const Contact = () => {
                     <input
                       type="text"
                       placeholder="Name*"
-                      className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639]"
+                      className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639] placeholder:opacity-100 focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                     />
                     <div className="border-t border-[#e8e8e8]">
                       <input
                         type="text"
                         placeholder="Title (optional)"
-                        className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#7F7F7F]"
+                        className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#7F7F7F] placeholder:opacity-100 focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                       />
                     </div>
                   </div>
                   <div className="border-b md:border-b-0 md:border-r border-[#e8e8e8]">
                     <input
-                      type="email"
+                      type="text"
+                      inputMode="email"
                       placeholder="Email*"
-                      className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639]"
+                      className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#363639] placeholder-[#363639] placeholder:opacity-100 focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                     />
                     <div className="border-t border-[#e8e8e8]">
                       <input
                         type="text"
                         placeholder="Company (optional)"
-                        className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#7F7F7F]"
+                        className="w-full lg:h-[46px] h-[38px] px-5 outline-none text-sm sm:text-base text-[#7F7F7F] placeholder:opacity-100 focus:bg-[#f8fbfd] focus:ring-1 focus:ring-[#1f93d1]"
                       />
                     </div>
                   </div>
-                  <button
-                    type="submit"
-                    className="bg-[#1f93d1] text-white uppercase font-semibold md:text-[11px] transition lg:h-[92px] h-[84px] w-full lg:w-[310px] md:w-[230px] px-6 sm:px-8 text-sm sm:text-base leading-[11px] hover:bg-white hover:text-[#1f93d1] hover:border hover:border-[#1f93d1]"
-                  >
-                    Subscribe
-                  </button>
+                  <div className="relative">
+                    <button
+                      type="submit"
+                      className="bg-[#1f93d1] text-white uppercase font-semibold md:text-[11px] transition lg:h-[92px] h-[84px] w-full lg:w-[310px] md:w-[230px] px-6 sm:px-8 text-sm sm:text-base leading-[11px] hover:bg-white hover:text-[#1f93d1] hover:border hover:border-[#1f93d1]"
+                    >
+                      Subscribe
+                    </button>
+                    {newsletterMessage && (
+                      <div className="absolute bottom-full right-0 z-[100] mb-3 flex w-[calc(100vw-40px)] max-w-md items-start gap-3 whitespace-normal break-words rounded-md border border-gray-300 bg-white px-5 py-4 text-sm text-black shadow-lg" role="status" aria-live="polite">
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-[#f26522] font-bold text-white" aria-hidden="true">!</span>
+                        <span>{newsletterMessage}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </form>
             </div>
