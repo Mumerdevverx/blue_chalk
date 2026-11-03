@@ -44,7 +44,7 @@ const NewsBlogs = () => {
         <p className="text-gray-500 text-lg">{error || "News not found"}</p>
         <button
           onClick={() => navigate("/news")}
-          className="text-[#1893DB] hover:underline mt-4"
+          className="news-link mt-4"
         >
           ← Back to all News
         </button>
@@ -69,10 +69,10 @@ const NewsBlogs = () => {
       <div className="flex md:flex-row flex-col place-items-baseline gap-6 md:gap-14 mb-10">
         <button
           onClick={() => navigate("/news")}
-          className="flex items-center gap-2 text-[#1893DB] cursor-pointer hover:opacity-80 transition-opacity min-w-fit"
+          className="news-link flex items-center gap-2 cursor-pointer min-w-fit"
         >
           <img src={backarrow} alt="Back arrow" className="w-5 h-5" />
-          <span className="text-[13px] font-normal leading-[28px] hover:text-[#94999C]">
+          <span className="text-[13px] font-normal leading-[28px]">
             Back to all News
           </span>
         </button>
@@ -89,7 +89,7 @@ const NewsBlogs = () => {
           <div className="mt-10 md:mt-10 lg:mr-52">
             {news.content ? (
               <div
-                className="text-[#293339] text-[16px] md:text-[16px] font-normal leading-[30px]"
+                className="news-rich-text text-[#293339] text-[16px] md:text-[16px] font-normal leading-[30px]"
                 dangerouslySetInnerHTML={{ __html: news.content }}
               />
             ) : (
