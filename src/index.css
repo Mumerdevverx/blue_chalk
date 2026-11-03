@@ -156,6 +156,18 @@
   text-decoration: underline;
 }
 
+.news-rich-text {
+  white-space: pre-line;
+}
+
+.news-rich-text p {
+  margin: 0 0 20px;
+}
+
+.news-rich-text p:last-child {
+  margin-bottom: 0;
+}
+
 .news-link {
   color: #1893d2 !important;
   text-decoration: none;

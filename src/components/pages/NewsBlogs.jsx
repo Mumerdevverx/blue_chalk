@@ -90,6 +90,10 @@ const NewsBlogs = () => {
             {news.content ? (
               <div
                 className="news-rich-text text-[#293339] text-[16px] md:text-[16px] font-normal leading-[30px]"
+                style={{
+                  whiteSpace: "pre-line",
+                  lineHeight: "30px",
+                }}
                 dangerouslySetInnerHTML={{ __html: news.content }}
               />
             ) : (
