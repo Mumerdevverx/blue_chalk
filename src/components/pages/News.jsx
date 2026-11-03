@@ -91,7 +91,7 @@ const News = () => {
 
   return (
     <div className="w-full bg-white mt-20 pt-[30px] pb-[60px] sm:pt-[40px] md:pt-[45px] md:pb-[80px]">
-      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-5">
+      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-1">
         {/* TOP HEADINGS */}
         <div className="flex w-full items-center justify-between pb-[28px] max-sm:px-8">
           <div className="w-full lg:w-[73%]">
@@ -100,14 +100,14 @@ const News = () => {
             </h1>
           </div>
           <div className="hidden w-[27%] lg:block">
-            <h1 className="text-[28px] font-normal ml-8 lg:pt-4 leading-[43px] text-[#c5c0bd] sm:text-[30px] md:text-[36px]">
+            <h1 className="text-[28px] font-normal  lg:pt-4 leading-[43px] text-[#c5c0bd] sm:text-[30px] md:text-[36px]">
               Work With Us
             </h1>
           </div>
         </div>
 
         <div className="flex w-full flex-col lg:flex-row">
-          <div className="w-full lg:w-[73%]">
+          <div className="w-full lg:w-[71%]">
             {news.length === 0 ? (
               <p className="text-center text-gray-500 py-10">No news articles found.</p>
             ) : (
@@ -130,7 +130,7 @@ const News = () => {
                   </div>
                   <Link 
                   to={`/news/${item.slug}`}
-                  className="group flex w-full flex-col justify-center lg:px-10 md:px-5 py-[30px] hover:text-[#1893DB] md:py-[30px] max-sm:px-8">
+                  className="group flex w-[55%] flex-col justify-center lg:px-10 md:px-5 py-[30px] hover:text-[#1893DB] md:py-[30px] max-sm:px-8">
                     <h2 className="text-[24px] font-normal leading-[30px] text-[#152B3D] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[24px]">
                       {item.title}
                     </h2>
