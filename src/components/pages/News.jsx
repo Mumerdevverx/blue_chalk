@@ -142,7 +142,7 @@ const News = () => {
                     </p>
                     <Link
   to={`/news/${item.slug}`}   // ✅ YEH SAHI HAI
-  className="mt-2 text-[#a5a5a5] hover:text-[#1893DB] group-hover:text-[#1893DB] font-medium text-[16px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
+  className="mt-2 text-[#C6C2C2] hover:text-[#1893DB] group-hover:text-[#1893DB] font-medium text-[16px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
 >
   Read More →
 </Link>
