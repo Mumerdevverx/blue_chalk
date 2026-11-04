@@ -5,6 +5,7 @@ const Contact = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newsletterMessage, setNewsletterMessage] = useState("");
+  const [hoveredMap, setHoveredMap] = useState(null);
 
   useEffect(() => {
     if (!newsletterMessage) return undefined;
@@ -108,15 +109,38 @@ const Contact = () => {
       <div className="flex flex-col font-basis-web md:grid md:grid-cols-2">
         {/* LEFT SIDE: Brooklyn Map */}
         <div className="w-full">
-          <div className="h-[300px] sm:h-[400px] md:h-[450px] bg-gray-200 relative overflow-hidden">
-            <div className="map-wrapper w-full h-full grayscale hover:grayscale-0 transition-all duration-700">
+          <div
+            className="aspect-square lg:aspect-auto lg:h-[450px] w-full bg-gray-200 relative overflow-hidden"
+            onMouseEnter={() => setHoveredMap("brooklyn")}
+            onMouseLeave={() => setHoveredMap(null)}
+          >
+            <div className="map-wrapper w-full h-full">
               <iframe
                 src={brooklyn?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3028.1234567890!2d-73.9876543!3d40.1234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316bb7a1b7%3A0x1234567890abcdef!2s68%20Jay%20St%20%23201%2C%20Brooklyn%2C%20NY%2011201!5e0!3m2!1sen!2sus!4v1234567890"}
                 className="w-full h-full"
+                style={{
+                  filter: hoveredMap === "brooklyn"
+                    ? "saturate(1.7) contrast(1.18) brightness(1.04)"
+                    : "none",
+                  transition: "filter 500ms ease",
+                }}
                 loading="lazy"
                 title="Brooklyn Office Map"
               />
             </div>
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                zIndex: 1,
+                backgroundColor: "#1A73E8",
+                mixBlendMode: "color",
+                opacity: hoveredMap === "brooklyn" ? 0.85 : 0,
+                pointerEvents: "none",
+                transition: "opacity 500ms ease",
+              }}
+            />
           </div>
 
           {/* Brooklyn Address */}
@@ -187,15 +211,38 @@ const Contact = () => {
 
         {/* RIGHT SIDE: Portland Map */}
         <div className="w-full">
-          <div className="h-[300px] sm:h-[400px] md:h-[450px] bg-gray-300 relative overflow-hidden">
-            <div className="map-wrapper w-full h-full grayscale hover:grayscale-0 transition-all duration-700">
+          <div
+            className="aspect-square lg:aspect-auto lg:h-[450px] w-full bg-gray-300 relative overflow-hidden"
+            onMouseEnter={() => setHoveredMap("portland")}
+            onMouseLeave={() => setHoveredMap(null)}
+          >
+            <div className="map-wrapper w-full h-full">
               <iframe
                 src={portland?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2795.1234567890!2d-122.6543210!3d45.5598765!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5495a0a123456789%3A0x9876543210abcdef!2s1737%20NE%20Alberta%20St%20%23207%2C%20Portland%2C%20OR%2097211!5e0!3m2!1sen!2sus!4v1234567890"}
                 className="w-full h-full"
+                style={{
+                  filter: hoveredMap === "portland"
+                    ? "saturate(1.7) contrast(1.18) brightness(1.04)"
+                    : "none",
+                  transition: "filter 500ms ease",
+                }}
                 loading="lazy"
                 title="Portland Office Map"
               />
             </div>
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                zIndex: 1,
+                backgroundColor: "#1A73E8",
+                mixBlendMode: "color",
+                opacity: hoveredMap === "portland" ? 0.85 : 0,
+                pointerEvents: "none",
+                transition: "opacity 500ms ease",
+              }}
+            />
           </div>
 
           {/* Portland Address */}
