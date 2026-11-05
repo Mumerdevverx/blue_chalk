@@ -357,9 +357,9 @@ const AllProjectwork = () => {
 
                     {/* ✅ Bottom-right button with dynamic buttonText */}
                     <div
-                      className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-47 h-12 sm:h-14 md:h-16 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/60 group-hover:bg-[#1989c2]`}
+                      className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-20 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]`}
                     >
-                      <span className="text-xs sm:text-sm md:text-sm font-medium">
+                      <span className="text-xs sm:text-sm md:text-sm font-medium ml-3">
                         {project.buttonText || "Watch Now"}
                       </span>
                       <FiPlus className="absolute top-1 right-1 sm:top-2 sm:right-2 text-base sm:text-lg" />
