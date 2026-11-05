@@ -177,9 +177,9 @@ const Home = () => {
           {heroVideoSlug ? (
             <Link
               to={`/work/${heroVideoSlug}`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px]  text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px]  text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[69px] max-sm:w-[182px] max-sm:bg-black/30 max-sm:hover:bg-[#1893D2]sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
-              <span className="truncate font-regular ml-2 pr-4">{heroVideoTitle}</span>
+              <span className="truncate font-regular ml-2 pt-2 pr-4">{heroVideoTitle}</span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm" />
             </Link>
           ) : heroVideoLink ? (
@@ -212,29 +212,31 @@ const Home = () => {
             <>
               <div
                 onClick={() => setMenuOpen(false)}
-                className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+                className="fixed inset-0 z-40  lg:hidden"
               />
-              <div className="fixed right-4 bottom-4 z-50 w-[180px] bg-white px-4 py-5 shadow-xl max-sm:right-2 max-sm:bottom-[64px] max-sm:max-h-[calc(100dvh-88px)] max-sm:w-[min(100px,calc(100vw-16px))] max-sm:overflow-y-auto lg:hidden">
-                <div className="flex flex-col items-end gap-6 text-right">
-                  <Link to="/about" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">About</Link>
-                  <Link to="/work" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Work</Link>
-                  <Link to="/news" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">News</Link>
-                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Contact</Link>
+              <div className="fixed right-4 bottom-4 z-50 w-45 bg-white py-6 text-center max-sm:right-0 max-sm:bottom-16 max-sm:max-h-[calc(100dvh-88px)] max-sm:w-[min(100px,calc(100vw-16px))] max-sm:overflow-y-auto lg:hidden">
+                <div className="flex flex-col text-center gap-14.5 ">
+                  <Link to="/about" onClick={() => setMenuOpen(false)} className="w-full  text-[17px] leading-4.25 font-semibold text-[#1893D2] transition hover:opacity-60">About</Link>
+                  <Link to="/work" onClick={() => setMenuOpen(false)} className="w-full  text-[17px] leading-4.25 font-semibold text-[#1893D2] transition hover:opacity-60">Work</Link>
+                  <Link to="/news" onClick={() => setMenuOpen(false)} className="w-full text-[17px] leading-4.25 font-semibold text-[#1893D2] transition hover:opacity-60">News</Link>
+                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="w-full text-[17px] leading-4.25 font-semibold text-[#1893D2] transition hover:opacity-60">Contact</Link>
                 </div>
               </div>
             </>
           )}
         </div>
 
-        <div className="hidden h-16 w-full items-center justify-end border-t border-gray-200 bg-white px-4 max-sm:flex">
+        <div className="hidden h-17 w-full items-center justify-end  bg-white px-4 max-sm:flex">
           <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            className="flex items-center  px-4 py-2 text-xl text-blue-700 transition-colors hover:bg-[#006fae]"
-            aria-label="Open menu"
-          >
-            <span>Menu</span>
-          </button>
+  type="button"
+  onClick={() => setMenuOpen(true)}
+  className={`flex items-center pt-5 text-[17px] leading-[17px] px-2 py-3 text-xl font-semibold transition-colors hover:bg-[#969B9E] ${
+    menuOpen ? "text-[#AFB3B5]" : "text-[#1893D2]"
+  }`}
+  aria-label="Open menu"
+>
+  <span>Menu</span>
+</button>
         </div>
 
         {/* RIGHT ASIDE - IMAGE SLIDER */}

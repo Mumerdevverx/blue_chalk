@@ -45,12 +45,12 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
- const getLinkClass = (path) =>
-  `text-[16px] lg:text-[17px] font-basis transition-colors ${
-    location.pathname === path
-      ? "text-black"
-      : "text-[#0089D0] hover:text-[#006fae]"
-  }`;
+  const getLinkClass = (path) =>
+    `text-[16px] lg:text-[17px] font-basis transition-colors ${
+      location.pathname === path
+        ? "text-black"
+        : "text-[#0089D0] hover:text-[#006fae]"
+    }`;
 
   return (
     <nav className="fixed inset-x-0 top-0 font-semibold bg-white z-50">
@@ -77,11 +77,17 @@ const Navbar = () => {
             Work
           </Link>
 
-          <Link to="/news" className={`${getLinkClass("/news")} relative -left-1.5 hover:text-black`}>
+          <Link
+            to="/news"
+            className={`${getLinkClass("/news")} relative -left-1.5 hover:text-black`}
+          >
             News
           </Link>
 
-          <Link to="/contact" className={`${getLinkClass("/contact")} relative -left-2 hover:text-black`}>
+          <Link
+            to="/contact"
+            className={`${getLinkClass("/contact")} relative -left-2 hover:text-black`}
+          >
             Contact
           </Link>
         </div>
@@ -90,39 +96,42 @@ const Navbar = () => {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden ml-auto w-[42px] h-[42px] flex items-center justify-center text-[#0089D0] text-[30px] leading-none"
+          className={`md:hidden ml-auto mr-1.5 flex items-center font-semibold justify-center text-[17px] leading-[17px] transition-colors ${
+            isOpen ? "text-[#AFB3B5]" : "text-[#0089D0]"
+          }`}
           aria-label="Toggle navigation"
           aria-expanded={isOpen}
         >
-          {isOpen ? "×" : "☰"}
+          Menu
         </button>
       </div>
 
       {/* Mobile Navigation - Top to Bottom with Half Screen */}
       <div
-        className={`md:hidden fixed top-0 left-0 w-full bg-white shadow-lg z-[100] transition-transform duration-400 ease-in-out ${
-          isOpen ? "translate-y-0" : "-translate-y-full"
+        className={`md:hidden fixed top-17 right-0 w-[25%] min-w-[100px] max-w-[320px] bg-white  z-[100] transition-transform duration-300 ease-in-out  ${
+          isOpen ? "translate-x-0" : "translate-x-full"
         }`}
-        style={{ height: "45vh", maxHeight: "400px" }}
+        style={{ height: "auto", minHeight: "33vh", maxHeight: "400px" }}
       >
-        {/* Close button */}
-        <div className="flex justify-end p-4">
-          <button
-            type="button"
-            onClick={closeMenu}
-            className="text-[#0089D0] text-[30px] leading-none w-[42px] h-[42px] flex items-center justify-center"
-            aria-label="Close menu"
-          >
-            ×
-          </button>
-        </div>
+        {/* Close button (Agar zaroorat ho to uncomment kar lena) */}
+        {/* <div className="flex justify-end p-4">
+    <button
+      type="button"
+      onClick={closeMenu}
+      className="text-[#0089D0] text-[30px] leading-none w-[42px] h-[42px] flex items-center justify-center"
+      aria-label="Close menu"
+    >
+      ×
+    </button>
+  </div> */}
 
         {/* Menu Links - Centered */}
-        <div className="flex flex-col items-center justify-center h-[calc(100%-70px)] px-20">
+        {/* Yahan px-20 ki jagah px-3 kiya hai taake 25% width mein fit ho sake */}
+        <div className="flex flex-col items-center justify-center gap-6 pt-2.5 h-full px-3 py-1">
           <Link
             to="/about"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`py-3.5 text-[17px] leading-[17px] font-semibold  w-full text-center ${
               location.pathname === "/about" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -132,7 +141,7 @@ const Navbar = () => {
           <Link
             to="/work"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`py-3.5 text-[17px] leading-[17px] font-semibold  w-full text-center ${
               location.pathname === "/work" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -142,7 +151,7 @@ const Navbar = () => {
           <Link
             to="/news"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`py-3.5  text-[17px] leading-[17px] font-semibold w-full text-center ${
               location.pathname === "/news" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -152,7 +161,7 @@ const Navbar = () => {
           <Link
             to="/contact"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`py-3.5 text-[17px] leading-[17px] font-semibold w-full text-center ${
               location.pathname === "/contact" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -162,12 +171,12 @@ const Navbar = () => {
       </div>
 
       {/* Overlay for background */}
-      <div
+      {/* <div
         className={`md:hidden fixed inset-0 bg-black/50 z-[90] transition-opacity duration-300 ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={closeMenu}
-      />
+      /> */}
     </nav>
   );
 };
