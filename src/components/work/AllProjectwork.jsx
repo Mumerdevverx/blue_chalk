@@ -3,6 +3,14 @@ import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import API_BASE_URL from "../../config/api";
 
+const workCategories = new Set([
+  "featured",
+  "branded",
+  "entertainment",
+  "social impact",
+  "documentary",
+]);
+
 const AllProjectwork = () => {
   const [allProjects, setAllProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,10 +59,16 @@ const AllProjectwork = () => {
   // ✅ Filter projects when filter changes
   useEffect(() => {
     if (allProjects.length === 0) return;
+    const isWorkCategory = (project) =>
+      workCategories.has(String(project.category || "").trim().toLowerCase());
     const filtered =
       activeFilter === "All Projects"
-        ? allProjects
-        : allProjects.filter((p) => p.category === activeFilter);
+        ? allProjects.filter(isWorkCategory)
+        : allProjects.filter(
+            (project) =>
+              String(project.category || "").trim().toLowerCase() ===
+              activeFilter.toLowerCase()
+          );
     setFilteredProjects(filtered);
   }, [activeFilter, allProjects]);
 
