@@ -357,8 +357,15 @@ const AllProjectwork = () => {
 
                     {/* ✅ Bottom-right button with dynamic buttonText */}
                     <div
-                      className={`absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-20 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]`}
+                      className={`absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-20 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]`}
                     >
+                      {index === 0 && (
+                        <h6 className="absolute -top-1 left-0 bg-[#4b5559] px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[2px] after:absolute after:left-full after:top-0 after:border-b-[14px] after:border-l-[7px] after:border-b-transparent after:border-l-[#4b5559]">
+                          {project.category?.toLowerCase() === "featured"
+                            ? "DOCUMENTARY"
+                            : (project.category || "Uncategorized").toUpperCase()}
+                        </h6>
+                      )}
                       <span className="text-xs sm:text-sm md:text-sm font-medium ml-3">
                         {project.buttonText || "Watch Now"}
                       </span>
