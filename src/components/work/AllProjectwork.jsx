@@ -310,7 +310,10 @@ const AllProjectwork = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid w-full grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3">
+        <div
+          key={activeFilter}
+          className="grid w-full grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3"
+        >
           {filteredProjects.map((project, index) => {
             const isFilteredView = !isAllProjects;
             let gridClass = "md:col-span-1";
@@ -335,7 +338,7 @@ const AllProjectwork = () => {
                     <img
                       src={getImageUrl(project.image)}
                       alt={project.title || 'Work'}
-                      className="absolute inset-0 block h-full w-full object-cover grayscale transition-[filter] duration-700 ease-in-out group-hover:grayscale-0"
+                      className="absolute inset-0 block h-full w-full object-cover grayscale animate-[projectImageEnter_1400ms_cubic-bezier(0.22,1,0.36,1)] transition-[filter] duration-700 ease-in-out group-hover:grayscale-0"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found';
@@ -390,6 +393,17 @@ const AllProjectwork = () => {
           @keyframes slideDown {
             from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
+          }
+
+          @keyframes projectImageEnter {
+            from {
+              transform: scale(1.1);
+              opacity: 0.7;
+            }
+            to {
+              transform: scale(1);
+              opacity: 1;
+            }
           }
         `}
       </style>
