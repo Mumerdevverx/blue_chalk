@@ -6,6 +6,48 @@ const News = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+
+  useEffect(() => {
+    if (!newsletterMessage) return undefined;
+
+    const timeoutId = window.setTimeout(() => {
+      setNewsletterMessage("");
+    }, 4000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [newsletterMessage]);
+
+  const handleNewsletterSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const name = form.elements.name.value.trim();
+    const email = form.elements.email.value.trim();
+
+    if (!name) {
+      setNewsletterMessage(
+        "Please include an '@' in the email address. 'Email' is missing an '@'."
+      );
+      return;
+    }
+
+    if (!email) {
+      setNewsletterMessage(
+        "Please include an '@' in the email address. 'Email' is missing an '@'."
+      );
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setNewsletterMessage(
+        "Please include an '@' in the email address. 'Email' is missing an '@'."
+      );
+      return;
+    }
+
+    setNewsletterMessage("Thank you! Your newsletter request has been received.");
+    form.reset();
+  };
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -49,7 +91,7 @@ const News = () => {
 
   return (
     <div className="w-full bg-white mt-20 pt-[30px] pb-[60px] sm:pt-[40px] md:pt-[45px] md:pb-[80px]">
-      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-5">
+      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-1">
         {/* TOP HEADINGS */}
         <div className="flex w-full items-center justify-between pb-[28px] max-sm:px-8">
           <div className="w-full lg:w-[73%]">
@@ -58,14 +100,14 @@ const News = () => {
             </h1>
           </div>
           <div className="hidden w-[27%] lg:block">
-            <h1 className="text-[28px] font-normal ml-8 lg:pt-4 leading-[43px] text-[#c5c0bd] sm:text-[30px] md:text-[36px]">
+            <h1 className="text-[28px] font-normal  lg:pt-4 leading-[43px] text-[#c5c0bd] sm:text-[30px] md:text-[36px]">
               Work With Us
             </h1>
           </div>
         </div>
 
         <div className="flex w-full flex-col lg:flex-row">
-          <div className="w-full lg:w-[73%]">
+          <div className="w-full lg:w-[71%]">
             {news.length === 0 ? (
               <p className="text-center text-gray-500 py-10">No news articles found.</p>
             ) : (
@@ -88,7 +130,7 @@ const News = () => {
                   </div>
                   <Link 
                   to={`/news/${item.slug}`}
-                  className="group flex w-full flex-col justify-center lg:px-10 md:px-5 py-[30px] hover:text-[#1893DB] md:py-[30px] max-sm:px-8">
+                  className="group flex w-[55%] flex-col justify-center lg:px-10 md:px-5 py-[30px] hover:text-[#1893DB] md:py-[30px] max-sm:px-8">
                     <h2 className="text-[24px] font-normal leading-[30px] text-[#152B3D] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[24px]">
                       {item.title}
                     </h2>
@@ -100,7 +142,7 @@ const News = () => {
                     </p>
                     <Link
   to={`/news/${item.slug}`}   // ✅ YEH SAHI HAI
-  className="mt-2 text-[#a5a5a5] hover:text-[#1893DB] group-hover:text-[#1893DB] font-medium text-[16px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
+  className="mt-2 text-[#C6C2C2] hover:text-[#1893DB] group-hover:text-[#1893DB] font-medium text-[16px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
 >
   Read More →
 </Link>
@@ -137,33 +179,55 @@ const News = () => {
                 Subscribe to our newsletter to keep up to date on new projects
                 from Blue Chalk Media.
               </p>
-              <form className="mt-[20px] w-full">
+              <form className="mt-[20px] w-full" onSubmit={handleNewsletterSubmit} noValidate>
                 <input
                   type="text"
+                  name="name"
                   placeholder="Name*"
-                  className="h-[38px] w-full border-b border-white bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D]"
+                  className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
                 />
                 <input
-                  type="email"
+                  type="text"
+                  inputMode="email"
+                  name="email"
                   placeholder="Email*"
-                  className="h-[38px] w-full border-b border-white bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D]"
+                  className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
                 />
                 <input
                   type="text"
+                  name="title"
                   placeholder="Title (optional)"
-                  className="h-[38px] w-full border-b border-white bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa]"
+                  className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
                 />
                 <input
                   type="text"
+                  name="company"
                   placeholder="Company (optional)"
-                  className="h-[38px] w-full bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa]"
+                  className="h-[38px] w-full bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
                 />
-                <button
-                  type="submit"
-                  className="h-[40px] w-full bg-[#0089D0] text-[11px] leading-[11px] font-semibold tracking-[1px] text-white transition duration-200 hover:bg-white hover:text-[#0089D0] hover:border border-[#0089D0]"
-                >
-                  SUBSCRIBE
-                </button>
+                <div className="relative">
+                  <button
+                    type="submit"
+                    className="h-[40px] w-full border border-[#0089D0] bg-[#0089D0] text-[11px] leading-[11px] font-semibold tracking-[1px] text-white transition duration-200 hover:bg-white hover:text-[#0089D0]"
+                  >
+                    SUBSCRIBE
+                  </button>
+                  {newsletterMessage && (
+                    <div
+                      className="absolute bottom-full right-0 z-[100] mb-3 flex w-[calc(100vw-40px)] max-w-md items-start gap-3 whitespace-normal break-words rounded-md border border-gray-300 bg-white px-5 py-4 text-sm text-black shadow-lg"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <span
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-[#f26522] font-bold text-white"
+                        aria-hidden="true"
+                      >
+                        !
+                      </span>
+                      <span>{newsletterMessage}</span>
+                    </div>
+                  )}
+                </div>
               </form>
             </div>
           </div>
