@@ -191,7 +191,7 @@ const AllProjectwork = () => {
   }
 
   return (
-    <div className="max-w-[1440px]">
+    <div className="w-full max-w-none">
       {/* Navigation Bar */}
       <nav className="flex justify-between items-start py-6 border-gray-100 mb-8 flex-wrap gap-4">
         <div className="flex gap-4 md:gap-10 items-start flex-wrap">
@@ -310,7 +310,7 @@ const AllProjectwork = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-1">
+        <div className="grid w-full grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3">
           {filteredProjects.map((project, index) => {
             const isFilteredView = !isAllProjects;
             let gridClass = "md:col-span-1";
@@ -335,7 +335,7 @@ const AllProjectwork = () => {
                     <img
                       src={getImageUrl(project.image)}
                       alt={project.title || 'Work'}
-                      className="absolute inset-0 w-full h-full object-cover block grayscale"
+                      className="absolute inset-0 block h-full w-full object-cover grayscale transition-[filter] duration-700 ease-in-out group-hover:grayscale-0"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found';
