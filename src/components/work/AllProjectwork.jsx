@@ -234,7 +234,7 @@ const AllProjectwork = () => {
                 className={`lg:text-[36px] md:text-4xl text-xl py-0.5 cursor-pointer transition-all duration-300 w-full text-left whitespace-nowrap ${
                   activeFilter === "All Projects"
                     ? "text-[#1893D2]"
-                    : "text-[#877A71] hover:text-[#1893D2]"
+                    : "text-[#C2BBB6] hover:text-[#1893D2]"
                 }`}
               >
                 All Projects
