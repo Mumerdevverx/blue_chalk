@@ -312,7 +312,7 @@ const AllProjectwork = () => {
         {/* Projects Grid */}
         <div
           key={activeFilter}
-          className="grid w-full grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3"
+          className="grid w-full grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3"
         >
           {filteredProjects.map((project, index) => {
             const isFilteredView = !isAllProjects;
