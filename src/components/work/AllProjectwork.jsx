@@ -3,13 +3,21 @@ import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import API_BASE_URL from "../../config/api";
 
-const workCategories = new Set([
-  "featured",
-  "branded",
-  "entertainment",
-  "social impact",
-  "documentary",
-]);
+const getProjectOrder = (project) => {
+  const order = Number(project.order);
+  return Number.isFinite(order) ? order : Number.POSITIVE_INFINITY;
+};
+
+const sortProjectsByAdminOrder = (projects) =>
+  projects
+    .map((project, index) => ({ project, index }))
+    .sort((first, second) => {
+      const orderDifference =
+        getProjectOrder(first.project) - getProjectOrder(second.project);
+
+      return orderDifference || first.index - second.index;
+    })
+    .map(({ project }) => project);
 
 const AllProjectwork = () => {
   const [allProjects, setAllProjects] = useState([]);
@@ -17,21 +25,14 @@ const AllProjectwork = () => {
   const [activeFilter, setActiveFilter] = useState("All Projects");
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [filteredProjects, setFilteredProjects] = useState([]);
+  const [invalidImageProjects, setInvalidImageProjects] = useState(new Set());
   const portfolioRef = useRef(null);
-  const [isLgScreen, setIsLgScreen] = useState(false);
 
   // ✅ Screen size detection
   useEffect(() => {
     const checkScreenSize = () => {
       const isLg = window.innerWidth >= 1024;
-      setIsLgScreen(isLg);
-      if (isLg) {
-        setActiveFilter("Featured");
-        setIsBrandOpen(true);
-      } else {
-        setActiveFilter("All Projects");
-        setIsBrandOpen(false);
-      }
+      setIsBrandOpen(isLg);
     };
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
@@ -45,7 +46,10 @@ const AllProjectwork = () => {
         const response = await fetch(`${API_BASE_URL}/api/work`);
         const data = await response.json();
         if (data.success) {
-          setAllProjects(data.data);
+          const projectsWithImages = data.data.filter((project) =>
+            String(project.image || "").trim()
+          );
+          setAllProjects(sortProjectsByAdminOrder(projectsWithImages));
         }
         setLoading(false);
       } catch (error) {
@@ -59,18 +63,19 @@ const AllProjectwork = () => {
   // ✅ Filter projects when filter changes
   useEffect(() => {
     if (allProjects.length === 0) return;
-    const isWorkCategory = (project) =>
-      workCategories.has(String(project.category || "").trim().toLowerCase());
     const filtered =
       activeFilter === "All Projects"
-        ? allProjects.filter(isWorkCategory)
+        ? allProjects.filter(
+            (project) => !invalidImageProjects.has(project._id || project.slug)
+          )
         : allProjects.filter(
             (project) =>
               String(project.category || "").trim().toLowerCase() ===
-              activeFilter.toLowerCase()
+                activeFilter.toLowerCase() &&
+              !invalidImageProjects.has(project._id || project.slug)
           );
     setFilteredProjects(filtered);
-  }, [activeFilter, allProjects]);
+  }, [activeFilter, allProjects, invalidImageProjects]);
 
   // Portfolio Filter object
   const portfolioFilter = {
@@ -93,6 +98,14 @@ const AllProjectwork = () => {
     if (!url) return 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
     if (url.startsWith('http')) return url;
     return `${API_BASE_URL}${url}`;
+  };
+
+  const removeInvalidImageProject = (project) => {
+    const projectKey = project._id || project.slug;
+    setInvalidImageProjects((current) => {
+      if (current.has(projectKey)) return current;
+      return new Set([...current, projectKey]);
+    });
   };
 
   // Render overlay based on type (only if showOverlay is true)
@@ -354,8 +367,7 @@ const AllProjectwork = () => {
                       alt={project.title || 'Work'}
                       className="absolute inset-0 block h-full w-full object-cover grayscale animate-[projectImageEnter_1400ms_cubic-bezier(0.22,1,0.36,1)] transition-[filter] duration-700 ease-in-out group-hover:grayscale-0"
                       onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found';
+                        removeInvalidImageProject(project);
                       }}
                     />
                     <img
@@ -364,8 +376,7 @@ const AllProjectwork = () => {
                       aria-hidden="true"
                       className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
                       onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=Image+Not+Found';
+                        e.currentTarget.style.display = "none";
                       }}
                     />
 
