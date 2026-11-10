@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { FiPlus } from "react-icons/fi";
+import { FiArrowRight, FiPlus } from "react-icons/fi";
 import API_BASE_URL from "../../config/api";
 
 const Workdetail = () => {
@@ -106,6 +106,46 @@ const Workdetail = () => {
 
   const displayTitle = work?.buttonText || work?.title || "Untitled";
 
+  const getImageUrl = (url) => {
+    if (typeof url !== "string" || !url.trim()) return "";
+    if (/^https?:\/\//i.test(url)) return url;
+    return `${API_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+  };
+
+  const getYouTubeThumbnail = (url) => {
+    if (!url || !/(youtube\.com|youtu\.be)/i.test(url)) return "";
+
+    let videoId = url.match(/\/embed\/([^?&#/]+)/i)?.[1];
+    if (!videoId && url.includes("youtu.be/")) {
+      videoId = url.split("youtu.be/")[1]?.split(/[?&#]/)[0];
+    }
+    if (!videoId) {
+      try {
+        videoId = new URLSearchParams(new URL(url).search).get("v");
+      } catch {
+        return "";
+      }
+    }
+
+    return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
+  };
+
+  const getPosterUrl = (project, video) => {
+    const projectThumbnail =
+      project?.thumbnail ||
+      project?.thumbnailUrl ||
+      project?.image ||
+      project?.imageUrl ||
+      project?.mediaUrl ||
+      project?.hoverImage;
+
+    return (
+      getImageUrl(projectThumbnail) ||
+      getYouTubeThumbnail(video) ||
+      "https://placehold.co/1200x675/e0e0e0/808080?text=No+Preview"
+    );
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -128,13 +168,8 @@ const Workdetail = () => {
   const videoUrl = extractVideoFromContent(work.aboutContent);
   const cleanedContent = cleanContent(work.aboutContent);
   const finalVideoUrl = getEmbedUrl(videoUrl) || "";
-  const posterUrl = location.state?.thumbnail || getImageUrl(work.image || work.imageUrl || work.mediaUrl);
-
-  function getImageUrl(url) {
-    if (!url) return 'https://placehold.co/400x300/e0e0e0/808080?text=No+Image';
-    if (url.startsWith('http')) return url;
-    return `${API_BASE_URL}${url}`;
-  }
+  const posterUrl =
+    getImageUrl(location.state?.thumbnail) || getPosterUrl(work, finalVideoUrl);
 
   const startVideo = () => {
     setIsVideoStarted(true);
@@ -242,11 +277,15 @@ const Workdetail = () => {
             {nextProject ? (
               <Link to={`/work/${nextProject.slug}`} className="group block">
                 <div className="text-right">
-                  <p className="text-[12px] text-[#C2BBB6] group-hover:text-[#3D93D2] tracking-[2.5px] transition-all duration-300 leading-tight uppercase">
-                    NEXT PROJECT:
-                  </p>
-                  <p className="text-[12px] text-[#C2BBB6] group-hover:text-[#3D93D2] tracking-[2.5px] transition-all duration-300 leading-tight mt-1">
-                    {nextProject.buttonText || nextProject.title}
+                  <p className="flex items-center justify-between gap-3 text-[14px] leading-tight tracking-[1px] text-[#C2BBB6] transition-colors duration-300 group-hover:text-[#1893D2]">
+                    <span>
+                      <span className="tracking-[2.5px] uppercase">NEXT PROJECT:</span>{" "}
+                      {nextProject.buttonText || nextProject.title}
+                    </span>
+                    <FiArrowRight
+                      aria-hidden="true"
+                      className="shrink-0 text-[#C2BBB6] transition-colors duration-300 group-hover:text-[#1893D2]"
+                    />
                   </p>
                   <div className="mt-2 flex justify-end">
                     <img
