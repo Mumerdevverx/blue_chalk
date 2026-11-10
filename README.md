@@ -126,7 +126,13 @@ The frontend communicates with a backend server (default: `http://localhost:5000
    npm install
    ```
 
-3. Start the development server:
+3. Configure the Mapbox map token in an ignored `.env` file:
+   ```env
+   VITE_MAPBOX_ACCESS_TOKEN=your_mapbox_public_token
+   ```
+   Use a public Mapbox token restricted to the domains that host the site. Vite exposes `VITE_` variables in the browser bundle, so do not put secret tokens in them.
+
+4. Start the development server:
    ```bash
    npm run dev
    ```
