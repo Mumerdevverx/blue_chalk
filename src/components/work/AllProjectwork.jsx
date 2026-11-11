@@ -4,6 +4,14 @@ import { Link } from "react-router-dom";
 import API_BASE_URL from "../../config/api";
 
 const getProjectOrder = (project) => {
+  if (
+    project.order === null ||
+    project.order === undefined ||
+    (typeof project.order === "string" && project.order.trim() === "")
+  ) {
+    return Number.POSITIVE_INFINITY;
+  }
+
   const order = Number(project.order);
   return Number.isFinite(order) ? order : Number.POSITIVE_INFINITY;
 };
@@ -96,8 +104,7 @@ const AllProjectwork = () => {
   // ✅ Helper to get full image URL
   const getImageUrl = (url) => {
     if (!url) return 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
-    if (url.startsWith('http')) return url;
-    return `${API_BASE_URL}${url}`;
+    return new URL(url, `${API_BASE_URL}/`).href;
   };
 
   const removeInvalidImageProject = (project) => {
