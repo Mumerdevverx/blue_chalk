@@ -286,7 +286,7 @@ const Workdetail = () => {
             <div className="mt-8">
               {cleanedContent ? (
                 <div
-                  className="work-content text-base leading-relaxed"
+                  className="work-content text-[17px] leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: cleanedContent }}
                 />
               ) : (
