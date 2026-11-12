@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FiArrowRight, FiPlus } from "react-icons/fi";
 import API_BASE_URL from "../../config/api";
+import { getWorkNameSlug } from "../../utils/workSlug";
 
 const Workdetail = () => {
   const { slug } = useParams();
@@ -19,27 +20,39 @@ const Workdetail = () => {
     window.scrollTo(0, 0);
     const fetchData = async () => {
       try {
-        const workRes = await fetch(`${API_BASE_URL}/api/work/slug/${slug}`);
+        const [workRes, allRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/work/slug/${slug}`),
+          fetch(`${API_BASE_URL}/api/work`)
+        ]);
         const workData = await workRes.json();
-        if (!workData.success) {
+        const allData = await allRes.json();
+        const currentWork = workData.success
+          ? workData.data
+          : allData.success
+            ? allData.data.find(
+              (project) => project.slug === slug || getWorkNameSlug(project) === slug
+            )
+            : null;
+
+        if (!currentWork) {
           setError(workData.message || "Work not found");
           setLoading(false);
           return;
         }
-        setWork(workData.data);
 
-        const allRes = await fetch(`${API_BASE_URL}/api/work`);
-        const allData = await allRes.json();
+        setWork(currentWork);
         if (allData.success) {
           setAllProjects(allData.data);
-          const currentIndex = allData.data.findIndex(p => p.slug === slug);
+          const currentIndex = allData.data.findIndex(
+            (project) => project._id === currentWork._id
+          );
           if (currentIndex !== -1 && currentIndex < allData.data.length - 1) {
             setNextProject(allData.data[currentIndex + 1]);
           }
           // Related: same category first, then others, excluding current
-          const others = allData.data.filter(p => p.slug !== slug);
-          const sameCategory = others.filter(p => p.category === workData.data.category);
-          const different = others.filter(p => p.category !== workData.data.category);
+          const others = allData.data.filter(p => p._id !== currentWork._id);
+          const sameCategory = others.filter(p => p.category === currentWork.category);
+          const different = others.filter(p => p.category !== currentWork.category);
           setRelatedProjects([...sameCategory, ...different].slice(0, 3));
         }
         setLoading(false);
@@ -123,7 +136,11 @@ const Workdetail = () => {
     return url;
   };
 
-  const displayTitle = work?.buttonText || work?.title || "Untitled";
+  const displayTitleSource = work?.buttonText || work?.title || "Untitled";
+  const displayTitle =
+    new DOMParser()
+      .parseFromString(displayTitleSource, "text/html")
+      .body.textContent.replace(/\s+/g, " ").trim() || "Untitled";
 
   const getImageUrl = (url) => {
     if (typeof url !== "string" || !url.trim()) return "";
@@ -298,7 +315,7 @@ const Workdetail = () => {
           {/* RIGHT SIDE – Next Project */}
           <div className="lg:w-[280px] flex-shrink-0">
             {nextProject ? (
-              <Link to={`/work/${nextProject.slug}`} className="group block">
+              <Link to={`/work/${getWorkNameSlug(nextProject)}`} className="group block">
                 <div className="text-right">
                   <p className="flex items-center justify-between gap-3 text-[14px] leading-tight tracking-[1px] text-[#C2BBB6] transition-colors duration-300 group-hover:text-[#1893D2]">
                     <span>
@@ -380,7 +397,7 @@ const Workdetail = () => {
             {relatedProjects.map((project, index) => (
               <Link
                 key={project._id || index}
-                to={`/work/${project.slug}`}
+                to={`/work/${getWorkNameSlug(project)}`}
                 className="group relative block overflow-hidden"
               >
                 <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-400">

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import API_BASE_URL from "../../config/api";
+import { getWorkNameSlug } from "../../utils/workSlug";
 
 const getProjectOrder = (project) => {
   if (
@@ -366,7 +367,7 @@ const AllProjectwork = () => {
                 className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${gridClass}`}
               >
                 {/* ✅ Link to dynamic detail page using slug */}
-                <Link to={`/work/${project.slug}`} className="block w-full h-full">
+                <Link to={`/work/${getWorkNameSlug(project)}`} className="block w-full h-full">
                   <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
                     {/* ✅ IMAGE with full URL */}
                     <img
