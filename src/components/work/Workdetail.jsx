@@ -283,7 +283,7 @@ const Workdetail = () => {
             <p className="text-[14px] md:text-[15px] text-[#9EA5BB] tracking-[2px] mt-3 uppercase">
               {work.subDescription || work.description}
             </p>
-            <div className="mt-8">
+            <div className="mt-2">
               {cleanedContent ? (
                 <div
                   className="work-content text-[17px] leading-relaxed"
