@@ -83,6 +83,36 @@ const Workdetail = () => {
     return cleaned;
   };
 
+  const extractAboutColumns = (html) => {
+    if (!html) return { content: html, leftText: "", rightText: "" };
+
+    const parsedContent = new DOMParser().parseFromString(html, "text/html");
+    const root = parsedContent.body.children[0];
+    const blocks = root?.children;
+
+    if (
+      parsedContent.body.children.length !== 1 ||
+      root?.tagName !== "DIV" ||
+      blocks.length !== 3 ||
+      blocks[1].tagName !== "DIV" ||
+      blocks[2].tagName !== "DIV" ||
+      blocks[1].children.length !== 0 ||
+      blocks[2].children.length !== 0
+    ) {
+      return { content: html, leftText: "", rightText: "" };
+    }
+
+    const leftText = blocks[1].textContent.trim();
+    const rightText = blocks[2].textContent.trim();
+    if (!leftText || !rightText) {
+      return { content: html, leftText: "", rightText: "" };
+    }
+
+    root.removeChild(blocks[2]);
+    root.removeChild(blocks[1]);
+    return { content: root.outerHTML, leftText, rightText };
+  };
+
   // ✅ Check if URL is direct video (MP4, WebM, etc.)
   const isDirectVideo = (url) => {
     if (!url) return false;
@@ -166,7 +196,20 @@ const Workdetail = () => {
   }
 
   const videoUrl = extractVideoFromContent(work.aboutContent);
-  const cleanedContent = cleanContent(work.aboutContent);
+  const aboutColumns = extractAboutColumns(work.aboutContent);
+  const cleanedContent = cleanContent(aboutColumns.content);
+  const aboutLeftText =
+    work.aboutUsLeftText ||
+    work.aboutLeftText ||
+    work.aboutUsLeft ||
+    work.aboutLeft ||
+    aboutColumns.leftText;
+  const aboutRightText =
+    work.aboutUsRightText ||
+    work.aboutRightText ||
+    work.aboutUsRight ||
+    work.aboutRight ||
+    aboutColumns.rightText;
   const finalVideoUrl = getEmbedUrl(videoUrl) || "";
   const posterUrl =
     getImageUrl(location.state?.thumbnail) || getPosterUrl(work, finalVideoUrl);
@@ -308,6 +351,21 @@ const Workdetail = () => {
             )}
           </div>
         </div>
+
+        {(aboutLeftText || aboutRightText) && (
+          <div className="mt-5 grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
+            <section>
+              <p className="whitespace-pre-line text-[15px] font-normal leading-relaxed text-[#293339]">
+                {aboutLeftText}
+              </p>
+            </section>
+            <section>
+              <p className="whitespace-pre-line text-[15px] font-normal leading-relaxed text-[#293339]">
+                {aboutRightText}
+              </p>
+            </section>
+          </div>
+        )}
       </div>
 
       
