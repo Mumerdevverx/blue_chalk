@@ -28,6 +28,9 @@ const sortProjectsByAdminOrder = (projects) =>
     })
     .map(({ project }) => project);
 
+const isAwardProject = (project) =>
+  ["award", "awards"].includes(String(project.category || "").trim().toLowerCase());
+
 const AllProjectwork = () => {
   const [allProjects, setAllProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,7 +78,9 @@ const AllProjectwork = () => {
     const filtered =
       activeFilter === "All Projects"
         ? allProjects.filter(
-            (project) => !invalidImageProjects.has(project._id || project.slug)
+            (project) =>
+              !isAwardProject(project) &&
+              !invalidImageProjects.has(project._id || project.slug)
           )
         : allProjects.filter(
             (project) =>
