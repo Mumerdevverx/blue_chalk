@@ -383,13 +383,13 @@ const Workdetail = () => {
               </h2>
             )}
             {(aboutLeftText || aboutRightText) && (
-              <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-1">
+              <div className="grid grid-cols-1 gap-y-2 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-x-0">
                 <div className="space-y-3 text-[15px] font-normal leading-relaxed text-[#293339]">
                   {aboutLeftText.split(/\r?\n/).filter(Boolean).map((line, index) => (
                     <p key={`left-${index}`}>{line}</p>
                   ))}
                 </div>
-                <div className="space-y-3 text-[15px] font-normal leading-relaxed text-[#293339]">
+                <div className="space-y-3  text-[15px] font-normal leading-relaxed text-[#293339]">
                   {aboutRightText.split(/\r?\n/).filter(Boolean).map((line, index) => (
                     <p key={`right-${index}`}>{line}</p>
                   ))}
@@ -446,7 +446,7 @@ const Workdetail = () => {
                         event.currentTarget.style.display = "none";
                       }}
                     />
-                    <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-40 h-[140px] group-hover:h-[350px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
+                    <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-45 h-[100px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
                       <span className="text-[12px] font-medium leading-tight">
                         {project.buttonText || project.title || "Watch Now"}
                       </span>
