@@ -86,7 +86,7 @@ const Workdetail = () => {
   };
 
   // ✅ Clean content – remove iframes and video tags
-  const cleanContent = (html) => {
+  const cleanContent = (html, removeFirstImage = false) => {
     if (!html) return '';
     let cleaned = html
       .replace(/<div data-youtube-video="[^"]*"><iframe[^>]*src="[^"]*"[^>]*><\/iframe><\/div>/, '')
@@ -94,6 +94,13 @@ const Workdetail = () => {
       .replace(/<video[^>]*src="[^"]*"[^>]*><\/video>/, '') // ✅ Remove video tags
       .replace(/Write something amazing\.\.\./g, '')
       .trim();
+
+    if (removeFirstImage) {
+      const parsedContent = new DOMParser().parseFromString(cleaned, "text/html");
+      parsedContent.querySelector("img")?.remove();
+      cleaned = parsedContent.body.innerHTML;
+    }
+
     return cleaned;
   };
 
@@ -208,6 +215,12 @@ const Workdetail = () => {
     return urls.filter((url, index) => url && urls.indexOf(url) === index);
   };
 
+  const getFirstContentImageUrl = (html) => {
+    if (!html) return "";
+    const parsedContent = new DOMParser().parseFromString(html, "text/html");
+    return parsedContent.querySelector("img")?.getAttribute("src") || "";
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -229,13 +242,19 @@ const Workdetail = () => {
 
   const videoUrl = extractVideoFromContent(work.aboutContent);
   const aboutFields = extractWorkAboutContent(work.aboutContent);
-  const cleanedContent = cleanContent(aboutFields.content);
+  const firstContentImageUrl = getFirstContentImageUrl(aboutFields.content);
+  const cleanedContent = cleanContent(aboutFields.content, !videoUrl);
   const aboutContextText = aboutFields.contextText;
   const aboutLeftText = aboutFields.leftText;
   const aboutRightText = aboutFields.rightText;
   const finalVideoUrl = getEmbedUrl(videoUrl) || "";
   const posterUrls = getPosterUrls(work, finalVideoUrl, location.state?.thumbnail);
   const posterUrl = posterUrls[0];
+  const noVideoImageUrls = [
+    getImageUrl(firstContentImageUrl),
+    ...posterUrls
+  ].filter((url, index, urls) => url && urls.indexOf(url) === index);
+  const noVideoImageUrl = noVideoImageUrls[0] || noImageUrl;
   const nextProjectImageUrls = getProjectImageUrls(nextProject);
 
   const startVideo = () => {
@@ -251,9 +270,12 @@ const Workdetail = () => {
   const renderVideoPlayer = () => {
     if (!videoUrl) {
       return (
-        <div className="w-full h-full flex items-center justify-center text-gray-500 bg-gray-200">
-          No video available
-        </div>
+        <img
+          src={noVideoImageUrl}
+          alt={work.title || "Work"}
+          className="h-full w-full object-cover"
+          onError={(event) => handleImageError(event, noVideoImageUrls)}
+        />
       );
     }
 
