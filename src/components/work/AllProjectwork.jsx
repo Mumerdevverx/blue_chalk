@@ -34,7 +34,7 @@ const isAwardProject = (project) =>
 const AllProjectwork = () => {
   const [allProjects, setAllProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState("All Projects");
+  const [activeFilter, setActiveFilter] = useState("Featured");
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [invalidImageProjects, setInvalidImageProjects] = useState(new Set());
