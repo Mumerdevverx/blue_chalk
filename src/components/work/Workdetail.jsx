@@ -5,6 +5,7 @@ import API_BASE_URL from "../../config/api";
 import { getWorkNameSlug } from "../../utils/workSlug";
 
 const Workdetail = () => {
+  const noImageUrl = "https://placehold.co/1200x675/e0e0e0/808080?text=No+Preview";
   const { slug } = useParams();
   const location = useLocation();
   const videoRef = useRef(null);
@@ -145,7 +146,38 @@ const Workdetail = () => {
   const getImageUrl = (url) => {
     if (typeof url !== "string" || !url.trim()) return "";
     if (/^https?:\/\//i.test(url)) return url;
-    return `${API_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+    try {
+      return new URL(url, `${API_BASE_URL.replace(/\/+$/, "")}/`).href;
+    } catch {
+      return "";
+    }
+  };
+
+  const getProjectImageUrls = (project) =>
+    [
+      project?.image,
+      project?.imageUrl,
+      project?.thumbnail,
+      project?.thumbnailUrl,
+      project?.mediaUrl,
+      project?.hoverImage
+    ]
+      .map(getImageUrl)
+      .filter((url, index, urls) => url && urls.indexOf(url) === index);
+
+  const handleImageError = (event, fallbackUrls) => {
+    const image = event.currentTarget;
+    const currentIndex = Number(image.dataset.fallbackIndex || 0);
+    const nextUrl = fallbackUrls[currentIndex + 1];
+
+    if (nextUrl) {
+      image.dataset.fallbackIndex = String(currentIndex + 1);
+      image.src = nextUrl;
+      return;
+    }
+
+    image.onerror = null;
+    image.src = noImageUrl;
   };
 
   const getYouTubeThumbnail = (url) => {
@@ -166,20 +198,14 @@ const Workdetail = () => {
     return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
   };
 
-  const getPosterUrl = (project, video) => {
-    const projectThumbnail =
-      project?.thumbnail ||
-      project?.thumbnailUrl ||
-      project?.image ||
-      project?.imageUrl ||
-      project?.mediaUrl ||
-      project?.hoverImage;
-
-    return (
-      getImageUrl(projectThumbnail) ||
-      getYouTubeThumbnail(video) ||
-      "https://placehold.co/1200x675/e0e0e0/808080?text=No+Preview"
-    );
+  const getPosterUrls = (project, video, preferredThumbnail) => {
+    const urls = [
+      ...getProjectImageUrls(project),
+      getImageUrl(preferredThumbnail),
+      getYouTubeThumbnail(video),
+      noImageUrl
+    ];
+    return urls.filter((url, index) => url && urls.indexOf(url) === index);
   };
 
   if (loading) {
@@ -208,8 +234,9 @@ const Workdetail = () => {
   const aboutLeftText = aboutFields.leftText;
   const aboutRightText = aboutFields.rightText;
   const finalVideoUrl = getEmbedUrl(videoUrl) || "";
-  const posterUrl =
-    getImageUrl(location.state?.thumbnail) || getPosterUrl(work, finalVideoUrl);
+  const posterUrls = getPosterUrls(work, finalVideoUrl, location.state?.thumbnail);
+  const posterUrl = posterUrls[0];
+  const nextProjectImageUrls = getProjectImageUrls(nextProject);
 
   const startVideo = () => {
     setIsVideoStarted(true);
@@ -244,7 +271,7 @@ const Workdetail = () => {
           className="w-full h-full object-cover"
           style={{ backgroundColor: '#000' }}
         >
-          <source src={videoUrl} type="video/mp4" />
+          <source src={getImageUrl(videoUrl)} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       );
@@ -280,6 +307,7 @@ const Workdetail = () => {
               src={posterUrl}
               alt=""
               className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+              onError={(event) => handleImageError(event, posterUrls)}
             />
             <span className="group/play relative z-10 flex h-16 w-16 items-center justify-center">
               <span className="h-0 w-0 border-y-[20px] border-y-transparent border-l-[34px] border-l-white transition-colors duration-300 group-hover/play:border-l-[#0089D0]" />
@@ -329,12 +357,10 @@ const Workdetail = () => {
                   </p>
                   <div className="mt-2 flex justify-end">
                     <img
-                      src={getImageUrl(nextProject.image)}
+                      src={nextProjectImageUrls[0] || noImageUrl}
                       alt={nextProject.title}
                       className="w-25 h-15 object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
-                      onError={(e) => {
-                        e.target.src = 'https://placehold.co/100x80/e0e0e0/808080?text=No+Image';
-                      }}
+                      onError={(event) => handleImageError(event, nextProjectImageUrls)}
                     />
                   </div>
                 </div>
@@ -394,40 +420,42 @@ const Workdetail = () => {
         {/* 3 Cards Grid */}
         {relatedProjects.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5">
-            {relatedProjects.map((project, index) => (
-              <Link
-                key={project._id || index}
-                to={`/work/${getWorkNameSlug(project)}`}
-                className="group relative block overflow-hidden"
-              >
-                <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-400">
-                  <img
-                    src={getImageUrl(project.image)}
-                    alt={project.title || "Related Work"}
-                    className="absolute inset-0 w-full h-full object-cover grayscale"
-                    onError={(e) => {
-                      e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
-                    }}
-                  />
-                  <img
-                    src={getImageUrl(project.hoverImage || project.image)}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
-                    onError={(e) => {
-                      e.target.src = 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
-                    }}
-                  />
-                  {/* ✅ Blue overlay button bottom-left – same as AllProjectwork */}
-                  <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-40 h-[140px] group-hover:h-[350px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
-                    <span className="text-[12px] font-medium leading-tight">
-                      {project.buttonText || project.title || "Watch Now"}
-                    </span>
-                    <FiPlus className="absolute top-2 right-2 text-base" />
+            {relatedProjects.map((project, index) => {
+              const projectImageUrls = getProjectImageUrls(project);
+              const projectImageUrl = projectImageUrls[0] || noImageUrl;
+
+              return (
+                <Link
+                  key={project._id || index}
+                  to={`/work/${getWorkNameSlug(project)}`}
+                  className="group relative block overflow-hidden"
+                >
+                  <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-400">
+                    <img
+                      src={projectImageUrl}
+                      alt={project.title || "Related Work"}
+                      className="absolute inset-0 w-full h-full object-cover grayscale"
+                      onError={(event) => handleImageError(event, projectImageUrls)}
+                    />
+                    <img
+                      src={getImageUrl(project.hoverImage) || projectImageUrl}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
+                      onError={(event) => {
+                        event.currentTarget.style.display = "none";
+                      }}
+                    />
+                    <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-40 h-[140px] group-hover:h-[350px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
+                      <span className="text-[12px] font-medium leading-tight">
+                        {project.buttonText || project.title || "Watch Now"}
+                      </span>
+                      <FiPlus className="absolute top-2 right-2 text-base" />
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         ) : (
           <p className="text-[#888] text-sm">No related projects found.</p>
