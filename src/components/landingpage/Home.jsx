@@ -307,7 +307,7 @@ const Home = () => {
                   isImageHovered ? "bg-[#0089D0]" : "bg-black/30"
                 }`}
               >
-                <span className="truncate pr-4">Now streaming</span>
+                <span className="truncate pr-4">Now Streaming</span>
                 <button
                   type="button"
                   onClick={(event) => {
@@ -330,7 +330,7 @@ const Home = () => {
                   isImageHovered ? "bg-[#0089D0]" : "bg-black/30"
                 }`}
               >
-                <span className="truncate pr-4">Now streaming</span>
+                <span className="truncate pr-4">Now Streaming</span>
                 <button
                   type="button"
                   onClick={(event) => {
