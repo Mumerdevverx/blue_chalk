@@ -118,6 +118,28 @@
   margin-bottom: 1em;
 }
 
+.work-content {
+  color: #6b7280;
+}
+
+.work-content > p:first-of-type {
+  text-transform: uppercase;
+}
+
+.work-content a,
+.work-content a * {
+  color: #293339 !important;
+  text-decoration: none;
+  text-underline-offset: 2px;
+  transition: color 200ms ease, text-decoration 200ms ease;
+}
+
+.work-content a:hover,
+.work-content a:hover * {
+  color: #1893d2 !important;
+  text-decoration: underline;
+}
+
 .about-rich-text p {
   margin-bottom: 20px;
 }
