@@ -400,11 +400,11 @@ const AllProjectwork = () => {
 
                     {/* ✅ Bottom-right button with dynamic buttonText */}
                     <div
-                      className={`absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-20 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]`}
+                      className={`absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-22 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]`}
                     >
                       {(String(project.category || "").trim().toLowerCase() === "documentary" ||
                       (activeFilter === "Featured" && index === 0)) && (
-                      <h6 className="absolute top-1 left-0 z-10 bg-[#4b5559] px-3 py-1 text-xs font-semibold uppercase tracking-[2px] text-white after:absolute after:left-full after:top-0 after:border-y-[18px] after:border-l-[8px] after:border-y-transparent after:border-l-[#4b5559]">
+                      <h6 className="absolute top-1 left-0 z-10 bg-[#4b5559] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[2px] text-white after:absolute after:left-full after:top-0 after:border-y-[6px] after:border-l-[8px] after:border-y-transparent after:border-l-[#4b5559]">
                         DOCUMENTARY
                       </h6>
                     )}
