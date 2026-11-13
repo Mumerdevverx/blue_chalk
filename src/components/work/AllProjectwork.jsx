@@ -251,7 +251,7 @@ const AllProjectwork = () => {
 
       {/* Portfolio Filter */}
       <div ref={portfolioRef} className="w-full js-portfolio-variety-1">
-        <div className="text-start mb-10">
+        <div className="text-start mb-8">
           <div className="relative grid grid-cols-2 gap-1 sm:gap-3 lg:max-w-[500px] mx-auto px-4 lg:pt-6 pt-0 w-full lg:px-0 md:px-6">
             <div className="absolute lg:top-1 md:-top-2.5 top-3 lg:left-17 md:left-13.5 left-4 text-[11px] font-semibold text-[#C2BBB6] tracking-[3px] uppercase">
               FILTER BY:
@@ -396,15 +396,18 @@ const AllProjectwork = () => {
                     {/* ✅ Overlay only if showOverlay is true */}
                     {/* {project.showOverlay && renderOverlay(project)} */}
 
+                    
+
                     {/* ✅ Bottom-right button with dynamic buttonText */}
                     <div
                       className={`absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-20 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]`}
                     >
-                      {String(project.category || "").toLowerCase().includes("documentary") && (
-                        <h6 className="absolute -top-1 left-0 bg-[#4b5559] px-2 py-0.5 text-[8px] font-semibold uppercase tracking-[2px] after:absolute after:left-full after:top-0 after:border-b-[14px] after:border-l-[7px] after:border-b-transparent after:border-l-[#4b5559]">
-                          DOCUMENTARY
-                        </h6>
-                      )}
+                      {(String(project.category || "").trim().toLowerCase() === "documentary" ||
+                      (activeFilter === "Featured" && index === 0)) && (
+                      <h6 className="absolute top-1 left-0 z-10 bg-[#4b5559] px-3 py-1 text-xs font-semibold uppercase tracking-[2px] text-white after:absolute after:left-full after:top-0 after:border-y-[18px] after:border-l-[8px] after:border-y-transparent after:border-l-[#4b5559]">
+                        DOCUMENTARY
+                      </h6>
+                    )}
                       <span className="text-xs sm:text-sm md:text-sm font-medium ml-3">
                         {project.buttonText || "Watch Now"}
                       </span>
