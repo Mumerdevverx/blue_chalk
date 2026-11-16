@@ -19,6 +19,7 @@ const Workdetail = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setIsVideoStarted(false);
     const fetchData = async () => {
       try {
         const [workRes, allRes] = await Promise.all([
@@ -207,8 +208,8 @@ const Workdetail = () => {
 
   const getPosterUrls = (project, video, preferredThumbnail) => {
     const urls = [
-      ...getProjectImageUrls(project),
       getImageUrl(preferredThumbnail),
+      ...getProjectImageUrls(project),
       getYouTubeThumbnail(video),
       noImageUrl
     ];
@@ -251,6 +252,7 @@ const Workdetail = () => {
   const posterUrls = getPosterUrls(work, finalVideoUrl, location.state?.thumbnail);
   const posterUrl = posterUrls[0];
   const noVideoImageUrls = [
+    getImageUrl(location.state?.thumbnail),
     getImageUrl(firstContentImageUrl),
     ...posterUrls
   ].filter((url, index, urls) => url && urls.indexOf(url) === index);
@@ -271,6 +273,7 @@ const Workdetail = () => {
     if (!videoUrl) {
       return (
         <img
+          key={slug}
           src={noVideoImageUrl}
           alt={work.title || "Work"}
           className="h-full w-full object-cover"
@@ -365,7 +368,11 @@ const Workdetail = () => {
           {/* RIGHT SIDE – Next Project */}
           <div className="lg:w-[280px] flex-shrink-0">
             {nextProject ? (
-              <Link to={`/work/${getWorkNameSlug(nextProject)}`} className="group block">
+              <Link
+                to={`/work/${getWorkNameSlug(nextProject)}`}
+                state={{ thumbnail: nextProjectImageUrls[0] }}
+                className="group block"
+              >
                 <div className="text-right">
                   <p className="text-right text-[11px] leading-tight tracking-[3.5px] text-[#C2BBB6] uppercase transition-colors duration-300 group-hover:text-[#1893d2]">
                     NEXT PROJECT: {nextProject.buttonText || nextProject.title}
