@@ -180,55 +180,55 @@ const News = () => {
                 from Blue Chalk Media.
               </p>
               <form className="mt-[20px] w-full" onSubmit={handleNewsletterSubmit} noValidate>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Name*"
-                  className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
-                />
-                <input
-                  type="text"
-                  inputMode="email"
-                  name="email"
-                  placeholder="Email*"
-                  className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
-                />
-                <input
-                  type="text"
-                  name="title"
-                  placeholder="Title (optional)"
-                  className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
-                />
-                <input
-                  type="text"
-                  name="company"
-                  placeholder="Company (optional)"
-                  className="h-[38px] w-full bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] placeholder:opacity-100 focus:bg-white focus:ring-1 focus:ring-[#0089D0]"
-                />
-                <div className="relative">
-                  <button
-                    type="submit"
-                    className="h-[40px] w-full border border-[#0089D0] bg-[#0089D0] text-[11px] leading-[11px] font-semibold tracking-[1px] text-white transition duration-200 hover:bg-white hover:text-[#0089D0]"
-                  >
-                    SUBSCRIBE
-                  </button>
-                  {newsletterMessage && (
-                    <div
-                      className="absolute bottom-full right-0 z-[100] mb-3 flex w-[calc(100vw-40px)] max-w-md items-start gap-3 whitespace-normal break-words rounded-md border border-gray-300 bg-white px-5 py-4 text-sm text-black shadow-lg"
-                      role="status"
-                      aria-live="polite"
-                    >
-                      <span
-                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-[#f26522] font-bold text-white"
-                        aria-hidden="true"
-                      >
-                        !
-                      </span>
-                      <span>{newsletterMessage}</span>
-                    </div>
-                  )}
-                </div>
-              </form>
+<input
+    type="text"
+    name="name"
+    placeholder="Name*"
+    className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D] focus:placeholder:opacity-0  "
+  />
+<input
+    type="text"
+    inputMode="email"
+    name="email"
+    placeholder="Email*"
+    className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#152B3D] focus:placeholder:opacity-0 "
+  />
+<input
+    type="text"
+    name="title"
+    placeholder="Title (optional)"
+    className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] focus:placeholder:opacity-0  "
+  />
+<input
+    type="text"
+    name="company"
+    placeholder="Company (optional)"
+    className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] focus:placeholder:opacity-0  "
+  />
+<div className="relative">
+<button
+      type="submit"
+      className="h-[40px] w-full border border-[#0089D0] bg-[#0089D0] text-[11px] leading-[11px] font-semibold tracking-[1px] text-white transition duration-200 hover:bg-white hover:text-[#0089D0]"
+>
+      SUBSCRIBE
+</button>
+    {newsletterMessage && (
+<div
+        className="absolute bottom-full right-0 z-[100] mb-3 flex w-[calc(100vw-40px)] max-w-md items-start gap-3 whitespace-normal break-words rounded-md border border-gray-300 bg-white px-5 py-4 text-sm text-black shadow-lg"
+        role="status"
+        aria-live="polite"
+>
+<span
+          className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-[#f26522] font-bold text-white"
+          aria-hidden="true"
+>
+          !
+</span>
+<span>{newsletterMessage}</span>
+</div>
+    )}
+</div>
+</form>
             </div>
           </div>
         </div>
