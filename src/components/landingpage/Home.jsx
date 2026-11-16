@@ -58,6 +58,10 @@ const Home = () => {
   const showNextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
   };
+  const heroVideoDestinationSlug =
+    getWorkNameSlug({ buttonText: heroVideoTitle }) === "what-lasts"
+      ? "what-lasts"
+      : heroVideoSlug;
 
   // ==========================================
   // FETCH HOME ITEMS FROM API
@@ -211,9 +215,9 @@ const Home = () => {
             />
           </div>
 
-          {heroVideoSlug ? (
+          {heroVideoDestinationSlug ? (
             <Link
-              to={`/work/${heroVideoSlug}`}
+              to={`/work/${heroVideoDestinationSlug}/`}
               className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px]  text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
             >
               <span className="truncate font-regular ml-2 pr-4">{heroVideoTitle}</span>
