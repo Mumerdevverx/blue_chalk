@@ -367,16 +367,15 @@ const Workdetail = () => {
             {nextProject ? (
               <Link to={`/work/${getWorkNameSlug(nextProject)}`} className="group block">
                 <div className="text-right">
-                  <p className="flex items-center justify-between gap-3 text-[14px] leading-tight tracking-[1px] text-[#C2BBB6] transition-colors duration-300 group-hover:text-[#1893D2]">
-                    <span>
-                      <span className="tracking-[2.5px] uppercase">NEXT PROJECT:</span>{" "}
-                      {nextProject.buttonText || nextProject.title}
-                    </span>
+                  <p className="text-right text-[11px] leading-tight tracking-[3.5px] text-[#C2BBB6] uppercase transition-colors duration-300 group-hover:text-[#1893d2]">
+                    NEXT PROJECT: {nextProject.buttonText || nextProject.title}
+                  </p>
+                  <div className="mt-1 flex justify-end">
                     <FiArrowRight
                       aria-hidden="true"
-                      className="shrink-0 text-[#C2BBB6] transition-colors duration-300 group-hover:text-[#1893D2]"
+                      className="text-[#C2BBB6] transition-colors duration-300 group-hover:text-[#1893d2]"
                     />
-                  </p>
+                  </div>
                   <div className="mt-2 flex justify-end">
                     <img
                       src={nextProjectImageUrls[0] || noImageUrl}
@@ -452,7 +451,7 @@ const Workdetail = () => {
                   to={`/work/${getWorkNameSlug(project)}`}
                   className="group relative block overflow-hidden"
                 >
-                  <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-400">
+                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-400">
                     <img
                       src={projectImageUrl}
                       alt={project.title || "Related Work"}
@@ -468,7 +467,7 @@ const Workdetail = () => {
                         event.currentTarget.style.display = "none";
                       }}
                     />
-                    <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-45 h-[100px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
+                    <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-45 h-[70px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
                       <span className="text-[12px] font-medium leading-tight">
                         {project.buttonText || project.title || "Watch Now"}
                       </span>
