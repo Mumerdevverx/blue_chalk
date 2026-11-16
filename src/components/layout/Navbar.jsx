@@ -54,13 +54,13 @@ const Navbar = () => {
 
   return (
     <nav className="fixed inset-x-0 top-0 font-semibold bg-white z-50">
-      <div className="max-w-[1220px] mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-6 flex items-center">
+      <div className="w-full mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-25 flex items-center">
         {/* Logo */}
         <Link to="/" onClick={closeMenu} className="shrink-0">
           <img
             src={logonav}
             alt="Blue Chalk"
-            className="lg:w-[79px] md:w-[80px] w-[75px] ml-2 h-auto"
+            className="lg:w-[85px] md:w-[80px] w-[75px] ml-2 h-auto"
           />
         </Link>
 
