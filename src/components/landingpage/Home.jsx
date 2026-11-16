@@ -48,7 +48,7 @@ const Home = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isImageHovered, setIsImageHovered] = useState(false);
 
-  const [images, setImages] = useState(fallbackImages);
+  const [images, setImages] = useState([]);
 
   // ✅ Hero video state (falls back to local file)
   const [heroVideo, setHeroVideo] = useState(FALLBACK_HERO_VIDEO);
@@ -155,10 +155,15 @@ const Home = () => {
 
             console.log("🖼️ Home Images:", imageData);
             setImages(imageData);
+          } else {
+            setImages(fallbackImages);
           }
+        } else {
+          setImages(fallbackImages);
         }
       } catch (error) {
         console.error("Error fetching home items:", error);
+        setImages(fallbackImages);
       }
     };
 
