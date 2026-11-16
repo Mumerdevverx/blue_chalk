@@ -186,12 +186,12 @@ const Home = () => {
 
   return (
     <main className="min-h-screen w-full bg-white">
-      <section className="flex w-full flex-col lg:flex-row">
+      <section className="flex w-full flex-col md:flex-row">
 
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
-        <div className="group relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] lg:h-[calc(100vh-70px)] lg:w-[75%]">
+        <div className="group relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] md:h-[calc(100vh-70px)] md:w-[75%]">
 
           {/* ✅ Uses API video if available, else local fallback */}
           <video
@@ -207,7 +207,7 @@ const Home = () => {
           <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 md:h-40 bg-gradient-to-t from-[#265b7a] via-[#1989c2]/2 to-transparent pointer-events-none" />
           <div className="pointer-events-none absolute inset-0 bg-black/10" />
 
-          <div className="absolute -bottom-1 left-4 z-20 w-[min(52vw,220px)] sm:left-6 sm:w-[220px] md:left-7 md:w-[280px] lg:left-20 lg:w-[350px] xl:w-[380px]">
+          <div className="absolute -bottom-1 left-4 z-20 w-[min(52vw,220px)] sm:left-6 sm:w-[220px] md:left-20 md:w-[350px] xl:w-[380px]">
             <img
               src={bluechalkLogo}
               alt="Blue Chalk"
@@ -218,32 +218,32 @@ const Home = () => {
           {heroVideoDestinationSlug ? (
             <Link
               to={`/work/${heroVideoDestinationSlug}/`}
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px]  text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px]  text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px] cursor-pointer"
             >
               <span className="truncate font-regular ml-2 pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg md:text-xl xl:text-sm" />
             </Link>
           ) : heroVideoLink ? (
             <a
               href={heroVideoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-regular text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer"
+              className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-regular text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px] cursor-pointer"
             >
               <span className="truncate pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg md:text-xl xl:text-sm" />
             </a>
           ) : (
-            <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3  bg-black/20 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+            <div className="absolute bottom-4 right-8 z-20 flex h-[48px] w-[130px] items-center justify-start px-3  bg-black/20 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px]">
               <span className="truncate pr-4">{heroVideoTitle}</span>
-              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-sm xl:text-sm" />
+              <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg md:text-sm xl:text-sm" />
             </div>
           )}
 
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            className="absolute right-5 top-5 z-50 hidden h-11 w-11 items-center justify-center bg-white text-[24px] text-[#07354a] shadow-md sm:flex md:right-7 md:top-7 lg:hidden"
+            className="absolute right-5 top-5 z-50 hidden h-11 w-11 items-center justify-center bg-white text-[24px] text-[#07354a] shadow-md sm:flex md:hidden"
             aria-label="Open menu"
           >
             <FiMenu />
@@ -253,9 +253,9 @@ const Home = () => {
             <>
               <div
                 onClick={() => setMenuOpen(false)}
-                className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+                className="fixed inset-0 z-40 bg-black/30 md:hidden"
               />
-              <div className="fixed right-4 bottom-4 z-50 w-[180px] bg-white px-4 py-5 shadow-xl max-sm:right-2 max-sm:bottom-[64px] max-sm:max-h-[calc(100dvh-88px)] max-sm:w-[min(100px,calc(100vw-16px))] max-sm:overflow-y-auto lg:hidden">
+              <div className="fixed right-4 bottom-4 z-50 w-[180px] bg-white px-4 py-5 shadow-xl max-sm:right-2 max-sm:bottom-[64px] max-sm:max-h-[calc(100dvh-88px)] max-sm:w-[min(100px,calc(100vw-16px))] max-sm:overflow-y-auto md:hidden">
                 <div className="flex flex-col items-end gap-6 text-right">
                   <Link to="/about" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">About</Link>
                   <Link to="/work" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Work</Link>
@@ -279,12 +279,11 @@ const Home = () => {
         </div>
 
         {/* RIGHT ASIDE - IMAGE SLIDER */}
-        <aside className="hidden w-full flex-col bg-white lg:flex lg:h-[calc(100vh-70px)] lg:w-[28.5%]">
+        <aside className="hidden w-full flex-col bg-white md:flex md:h-[calc(100vh-70px)] md:w-[28.5%]">
           <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-11.5">
             <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c2bbb6] xl:text-[20px]">
-              <span className="whitespace-nowrap">An industry-leading production</span>{" "}
-              company founded by people who believe in the power of nonfiction
-              visual storytelling.
+              An industry-leading production company founded by people who believe
+              in the power of nonfiction visual storytelling.
             </p>
           </div>
 
@@ -344,7 +343,7 @@ const Home = () => {
               <Link
                 to={`/work/${images[currentImage].workSlug}`}
                 state={{ thumbnail: images[currentImage].url }}
-                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-Regular text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
+                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-Regular text-white sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
                   isImageHovered ? "bg-[#0089D0]" : "bg-black/30"
                 }`}
               >
@@ -356,7 +355,7 @@ const Home = () => {
                     event.stopPropagation();
                     showNextImage();
                   }}
-                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm"
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg md:text-xl xl:text-sm"
                   aria-label="Show next image"
                 >
                   <FiPlus />
@@ -367,7 +366,7 @@ const Home = () => {
                 href={images[currentImage].link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-Regular text-white sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
+                className={`absolute bottom-5 right-5 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 transition duration-300 text-[13px] font-Regular text-white sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px] cursor-pointer hover:bg-[#1989c2] ${
                   isImageHovered ? "bg-[#0089D0]" : "bg-black/30"
                 }`}
               >
@@ -379,19 +378,19 @@ const Home = () => {
                     event.stopPropagation();
                     showNextImage();
                   }}
-                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-2xl"
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg md:text-xl xl:text-2xl"
                   aria-label="Show next image"
                 >
                   <FiPlus />
                 </button>
               </a>
             ) : (
-              <div className="absolute bottom-5 right-2 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-[#E8EAEC] sm:h-[52px] sm:w-[170px] lg:h-[65px] lg:w-[180px]">
+              <div className="absolute bottom-5 right-2 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-[#E8EAEC] sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px]">
                 <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
                 <button
                   type="button"
                   onClick={showNextImage}
-                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg lg:text-xl xl:text-sm"
+                  className="absolute right-1.5 top-1.5 z-10 text-base sm:right-2 sm:top-2 sm:text-lg md:text-xl xl:text-sm"
                   aria-label="Show next image"
                 >
                   <FiPlus />
@@ -402,7 +401,7 @@ const Home = () => {
         </aside>
       </section>
 
-      <nav className="hidden h-[72px] w-full items-center bg-white px-20 lg:flex">
+      <nav className="hidden h-[72px] w-full items-center bg-white px-20 md:flex">
         <div className="flex items-center ml-4 gap-25 font-basis-web">
           <Link to="/about" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">About</Link>
           <Link to="/work" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">Work</Link>
