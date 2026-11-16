@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FiMenu, FiPlus } from "react-icons/fi";
 import bluechalkLogo from "../../assets/landingimg/bluechalk.avif";
 import API_BASE_URL from "../../config/api";
+import { getWorkNameSlug } from "../../utils/workSlug";
 
 // ✅ Fallback only — used if API has no video
 const FALLBACK_HERO_VIDEO = "/videos/herovideo.mp4";
@@ -20,6 +21,27 @@ const fallbackImages = [
   { url: "https://images.unsplash.com/photo-1497215728101-856f4ea42174", workSlug: "" },
   { url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4", workSlug: "" },
 ];
+
+const getHomeWorkSlug = (item, projects) => {
+  const workReference = item.workSlug;
+  const linkedSlug =
+    typeof workReference === "object" ? workReference?.slug : workReference;
+  const linkedId =
+    typeof workReference === "object" ? workReference?._id : item.workId;
+  const linkedProject = projects.find(
+    (project) =>
+      (linkedSlug &&
+        (project.slug === linkedSlug || getWorkNameSlug(project) === linkedSlug)) ||
+      (linkedId && project._id === linkedId)
+  );
+
+  if (linkedProject) return getWorkNameSlug(linkedProject);
+
+  const title =
+    item.buttonText ||
+    (String(item.title || "").toLowerCase() !== "home" ? item.title : "");
+  return title ? getWorkNameSlug({ buttonText: title }) : "";
+};
 
 const Home = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -43,7 +65,23 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/home`);
+        const [response, workProjects] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/home`),
+          fetch(`${API_BASE_URL}/api/work`)
+            .then(async (workResponse) => {
+              if (!workResponse.ok) {
+                throw new Error(`Work API returned ${workResponse.status}`);
+              }
+              const workData = await workResponse.json();
+              return workData.success && Array.isArray(workData.data)
+                ? workData.data
+                : [];
+            })
+            .catch((error) => {
+              console.error("Error fetching work projects:", error);
+              return [];
+            }),
+        ]);
         const data = await response.json();
 
         console.log("📦 Home API:", data);
@@ -75,10 +113,7 @@ const Home = () => {
               console.log("🎬 Hero video set:", videoUrl);
             }
 
-            const resolvedSlug =
-              latestVideo.workSlug ||
-              (typeof latestVideo.blogId === "object" ? latestVideo.blogId?.slug : latestVideo.blogId) ||
-              "";
+            const resolvedSlug = getHomeWorkSlug(latestVideo, workProjects);
             setHeroVideoSlug(resolvedSlug);
 
             const resolvedTitle =
@@ -103,10 +138,7 @@ const Home = () => {
                 imageUrl = `${API_BASE_URL}${imageUrl}`;
               }
 
-              const resolvedSlug =
-                item.workSlug ||
-                (typeof item.blogId === "object" ? item.blogId?.slug : item.blogId) ||
-                "";
+              const resolvedSlug = getHomeWorkSlug(item, workProjects);
 
               const resolvedTitle =
                 item.buttonText ||
