@@ -3,6 +3,15 @@ import Map, { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import API_BASE_URL from "../../config/api";
 
+// ✅ Custom Style to hide Mapbox Logo and Attribution
+const MapStyles = () => (
+  <style>{`
+    .mapboxgl-ctrl-logo { display: none !important; }
+    .mapboxgl-ctrl-attrib { display: none !important; }
+    .mapboxgl-ctrl-bottom-left, .mapboxgl-ctrl-bottom-right { display: none !important; }
+  `}</style>
+);
+
 const Contact = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -143,6 +152,7 @@ const Contact = () => {
               applyColors(brooklynMap, false);
             }}
           >
+            <MapStyles /> {/* ✅ Injected to hide logo & info */}
             <div className="map-wrapper w-full h-full">
               {MAPBOX_TOKEN ? (
               <Map
@@ -253,6 +263,7 @@ const Contact = () => {
               applyColors(portlandMap, false);
             }}
           >
+            <MapStyles /> {/* ✅ Injected to hide logo & info */}
             <div className="map-wrapper w-full h-full">
               {MAPBOX_TOKEN ? (
               <Map
