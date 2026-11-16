@@ -271,7 +271,7 @@ const Home = () => {
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            className="flex items-center  px-4 py-2 text-xl text-blue-700 transition-colors hover:bg-[#006fae]"
+            className="flex items-center  px-4 py-2 text-xl text-[#1893D2] transition-colors hover:bg-[#006fae]"
             aria-label="Open menu"
           >
             <span>Menu</span>
