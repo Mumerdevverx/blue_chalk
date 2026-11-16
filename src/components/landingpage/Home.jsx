@@ -191,7 +191,7 @@ const Home = () => {
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
-        <div className="group relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] md:h-[calc(100vh-70px)] md:w-[75%]">
+        <div className="group relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] md:h-[calc(100vh-70px)] md:w-[60%]">
 
           {/* ✅ Uses API video if available, else local fallback */}
           <video
@@ -279,7 +279,7 @@ const Home = () => {
         </div>
 
         {/* RIGHT ASIDE - IMAGE SLIDER */}
-        <aside className="hidden w-full flex-col bg-white md:flex md:h-[calc(100vh-70px)] md:w-[28.5%]">
+        <aside className="hidden w-full flex-col bg-white md:flex md:h-[calc(100vh-70px)] md:w-[39.5%]">
           <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-11.5">
             <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c2bbb6] xl:text-[20px]">
               An industry-leading production company founded by people who believe
