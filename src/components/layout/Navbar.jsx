@@ -45,12 +45,12 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
- const getLinkClass = (path) =>
-  `text-[16px] lg:text-[17px] font-basis transition-colors ${
-    location.pathname === path
-      ? "text-black"
-      : "text-[#0089D0] hover:text-[#006fae]"
-  }`;
+  const getLinkClass = (path) =>
+    `text-[16px] lg:text-[17px] font-basis transition-colors ${
+      location.pathname === path
+        ? "text-black"
+        : "text-[#0089D0] hover:text-[#006fae]"
+    }`;
 
   return (
     <nav className="fixed inset-x-0 top-0 font-semibold bg-white z-50">
@@ -77,11 +77,17 @@ const Navbar = () => {
             Work
           </Link>
 
-          <Link to="/news" className={`${getLinkClass("/news")} relative -left-1.5 hover:text-black`}>
+          <Link
+            to="/news"
+            className={`${getLinkClass("/news")} relative -left-1.5 hover:text-black`}
+          >
             News
           </Link>
 
-          <Link to="/contact" className={`${getLinkClass("/contact")} relative -left-2 hover:text-black`}>
+          <Link
+            to="/contact"
+            className={`${getLinkClass("/contact")} relative -left-2 hover:text-black`}
+          >
             Contact
           </Link>
         </div>
@@ -90,39 +96,34 @@ const Navbar = () => {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden ml-auto w-[42px] h-[42px] flex items-center justify-center text-[#0089D0] text-[30px] leading-none"
+          className={`md:hidden ml-auto w-[50px] h-[42px] flex items-center justify-center text-[17px] leading-4.25 font-semibold transition-colors hover:bg-[#94999C] ${
+            isOpen ? "text-[#94999C]" : "text-[#1893D2]"
+          }`}
           aria-label="Toggle navigation"
           aria-expanded={isOpen}
         >
-          {isOpen ? "×" : "☰"}
+          Menu
         </button>
       </div>
 
       {/* Mobile Navigation - Top to Bottom with Half Screen */}
-      <div
-        className={`md:hidden fixed top-0 left-0 w-full bg-white shadow-lg z-[100] transition-transform duration-400 ease-in-out ${
-          isOpen ? "translate-y-0" : "-translate-y-full"
-        }`}
-        style={{ height: "45vh", maxHeight: "400px" }}
-      >
-        {/* Close button */}
-        <div className="flex justify-end p-4">
-          <button
-            type="button"
-            onClick={closeMenu}
-            className="text-[#0089D0] text-[30px] leading-none w-[42px] h-[42px] flex items-center justify-center"
-            aria-label="Close menu"
-          >
-            ×
-          </button>
-        </div>
+      {/* Backdrop Overlay (Dark background jab menu open ho) */}
 
-        {/* Menu Links - Centered */}
-        <div className="flex flex-col items-center justify-center h-[calc(100%-70px)] px-20">
+      {/* Menu Panel */}
+     <div
+  className={`md:hidden fixed top-17 right-0 bg-white z-[60] transition-all duration-300 ease-out flex flex-col origin-top ${
+    isOpen
+      ? "scale-100 opacity-100 pointer-events-auto"
+      : "scale-90 opacity-0 pointer-events-none"
+  }`}
+  style={{ width: "23%", minWidth: "20px" }}
+>
+        {/* Menu Links */}
+        <div className="flex flex-col items-end justify-center flex-1 px-1 py-2 pb-10 gap-10">
           <Link
             to="/about"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`py-5 text-[17px] leading-4.25 font-semibold w-full text-center ${
               location.pathname === "/about" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -132,7 +133,7 @@ const Navbar = () => {
           <Link
             to="/work"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`text-[17px] leading-4.25 font-semibold w-full text-center ${
               location.pathname === "/work" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -142,7 +143,7 @@ const Navbar = () => {
           <Link
             to="/news"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`py-2 text-[17px] leading-4.25 font-semibold w-full text-center ${
               location.pathname === "/news" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -152,7 +153,7 @@ const Navbar = () => {
           <Link
             to="/contact"
             onClick={closeMenu}
-            className={`py-4 text-[20px] font-medium border-b-2 border-gray-300 w-full text-center ${
+            className={`py-2 text-[17px] leading-4.25 font-semibold w-full text-center ${
               location.pathname === "/contact" ? "text-black" : "text-[#0089D0]"
             } hover:text-[#006fae] transition-colors`}
           >
@@ -162,12 +163,12 @@ const Navbar = () => {
       </div>
 
       {/* Overlay for background */}
-      <div
+      {/* <div
         className={`md:hidden fixed inset-0 bg-black/50 z-[90] transition-opacity duration-300 ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={closeMenu}
-      />
+      /> */}
     </nav>
   );
 };
