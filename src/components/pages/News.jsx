@@ -121,7 +121,7 @@ const News = () => {
                       <img
                         src={resolveNewsImageUrl(item.image)}
                         alt={item.title}
-                        className="h-[230px] md:h-[290px] lg:h-[300px] w-full grayscale transition duration-300 group-hover:grayscale-0"
+                        className="h-[230px] md:h-[290px] lg:h-[275px] w-full grayscale transition duration-300 group-hover:grayscale-0"
                         onError={(e) => {
                           e.target.src = "https://via.placeholder.com/400x300?text=No+Image";
                         }}
@@ -134,18 +134,18 @@ const News = () => {
                     <h2 className="text-[24px] font-normal leading-[30px] text-[#152B3D] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[24px]">
                       {item.title}
                     </h2>
-                    <p className="pt-2 text-[11px] tracking-[2px] text-[#a5a5a5] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[11px] leading-[28px]">
+                    <p className="pt-1 text-[11px] tracking-[2px] text-[#a5a5a5] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[11px] uppercase leading-[28px]">
                       {item.date}
                     </p>
-                    <p className="mt-[3px] text-[18px] leading-[28px] text-[#152B3D] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[18px]">
-                      {item.description}
-                    </p>
-                    <Link
-  to={`/news/${item.slug}`}   // ✅ YEH SAHI HAI
-  className="mt-2 text-[#C6C2C2] hover:text-[#1893DB] group-hover:text-[#1893DB] font-medium text-[16px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
->
-  Read More →
-</Link>
+                   <p className="mt-[3px] text-[18px] leading-[28px] text-[#152B3D] transition-colors duration-300 group-hover:text-[#1893DB] md:text-[18px]">
+  {item.description}{" "}
+  <Link
+    to={`/news/${item.slug}`}
+    className="text-[#C6C2C2] hover:text-[#1893DB] group-hover:text-[#1893DB] font-medium text-[17px] hover:underline inline-flex items-center gap-1 transition group-hover:translate-x-1"
+  >
+    Read More →
+  </Link>
+</p>
                   </Link>
                 </div>
               ))
