@@ -12,14 +12,38 @@ const FALLBACK_HERO_VIDEO = "/videos/herovideo.mp4";
 // FALLBACK IMAGES
 // ==========================================
 const fallbackImages = [
-  { url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", workSlug: "" },
-  { url: "https://images.unsplash.com/photo-1497215728101-856f4ea42174", workSlug: "" },
-  { url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4", workSlug: "" },
-  { url: "https://images.unsplash.com/photo-1497366216548-37526070297c", workSlug: "" },
-  { url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4", workSlug: "" },
-  { url: "https://images.unsplash.com/photo-1497366811353-6870744d04b2", workSlug: "" },
-  { url: "https://images.unsplash.com/photo-1497215728101-856f4ea42174", workSlug: "" },
-  { url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4", workSlug: "" },
+  {
+    url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+    workSlug: "",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
+    workSlug: "",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
+    workSlug: "",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1497366216548-37526070297c",
+    workSlug: "",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
+    workSlug: "",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1497366811353-6870744d04b2",
+    workSlug: "",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1497215728101-856f4ea42174",
+    workSlug: "",
+  },
+  {
+    url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
+    workSlug: "",
+  },
 ];
 
 const getHomeWorkSlug = (item, projects) => {
@@ -31,8 +55,9 @@ const getHomeWorkSlug = (item, projects) => {
   const linkedProject = projects.find(
     (project) =>
       (linkedSlug &&
-        (project.slug === linkedSlug || getWorkNameSlug(project) === linkedSlug)) ||
-      (linkedId && project._id === linkedId)
+        (project.slug === linkedSlug ||
+          getWorkNameSlug(project) === linkedSlug)) ||
+      (linkedId && project._id === linkedId),
   );
 
   if (linkedProject) return getWorkNameSlug(linkedProject);
@@ -91,11 +116,11 @@ const Home = () => {
         console.log("📦 Home API:", data);
 
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-
           // ---------- ✅ Handle VIDEO ----------
           // Get the LATEST video by order (highest order wins)
           const videoItems = data.data.filter(
-            (item) => item.type?.toLowerCase() === "video" && item.isActive !== false
+            (item) =>
+              item.type?.toLowerCase() === "video" && item.isActive !== false,
           );
 
           if (videoItems.length > 0) {
@@ -122,7 +147,9 @@ const Home = () => {
 
             const resolvedTitle =
               latestVideo.buttonText ||
-              (latestVideo.title && latestVideo.title.toLowerCase() !== "home" ? latestVideo.title : "") ||
+              (latestVideo.title && latestVideo.title.toLowerCase() !== "home"
+                ? latestVideo.title
+                : "") ||
               "What Lasts";
             setHeroVideoTitle(resolvedTitle);
 
@@ -131,7 +158,7 @@ const Home = () => {
 
           // ---------- ✅ Handle IMAGES ----------
           const imageItems = data.data.filter(
-            (item) => item.type?.toLowerCase() === "image"
+            (item) => item.type?.toLowerCase() === "image",
           );
 
           if (imageItems.length > 0) {
@@ -146,14 +173,16 @@ const Home = () => {
 
               const resolvedTitle =
                 item.buttonText ||
-                (item.title && item.title.toLowerCase() !== "home" ? item.title : "") ||
+                (item.title && item.title.toLowerCase() !== "home"
+                  ? item.title
+                  : "") ||
                 "What Lasts";
 
-              return { 
-                url: imageUrl, 
+              return {
+                url: imageUrl,
                 workSlug: resolvedSlug,
                 title: resolvedTitle,
-                link: item.link || ""
+                link: item.link || "",
               };
             });
 
@@ -187,15 +216,13 @@ const Home = () => {
   return (
     <main className="min-h-screen w-full bg-white">
       <section className="flex w-full flex-col md:flex-row">
-
         {/* ==========================================
             VIDEO SECTION
         ========================================== */}
         <div className="group relative h-screen w-full overflow-hidden bg-black max-sm:h-[calc(100dvh-64px)] md:h-[calc(100vh-70px)] md:w-[74%]">
-
           {/* ✅ Uses API video if available, else local fallback */}
           <video
-            key={heroVideo}                 // ← forces reload when URL changes
+            key={heroVideo} // ← forces reload when URL changes
             src={heroVideo}
             autoPlay
             muted
@@ -220,7 +247,9 @@ const Home = () => {
               to={`/work/${heroVideoDestinationSlug}/`}
               className="absolute bottom-5 right-4 z-20 flex h-[48px] w-[130px] items-center justify-start px-3 bg-black/30 group-hover:bg-[#0089D0] hover:bg-[#1989c2] transition duration-300 text-[13px]  text-white max-sm:top-4 max-sm:bottom-auto max-sm:h-[54px] max-sm:w-[150px] max-sm:bg-[#0089D0] max-sm:hover:bg-[#006fae] sm:right-5 sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px] cursor-pointer"
             >
-              <span className="truncate font-regular ml-2 pr-4">{heroVideoTitle}</span>
+              <span className="truncate font-regular ml-2 pr-4">
+                {heroVideoTitle}
+              </span>
               <FiPlus className="absolute right-1.5 top-1.5 text-base sm:right-2 sm:top-2 sm:text-lg md:text-xl xl:text-sm" />
             </Link>
           ) : heroVideoLink ? (
@@ -253,25 +282,51 @@ const Home = () => {
             <>
               <div
                 onClick={() => setMenuOpen(false)}
-                className="fixed inset-0 z-40 bg-black/30 md:hidden"
+                className="fixed inset-0 z-40  md:hidden"
               />
-              <div className="fixed right-4 bottom-4 z-50 w-[180px] bg-white px-4 py-5 shadow-xl max-sm:right-2 max-sm:bottom-[64px] max-sm:max-h-[calc(100dvh-88px)] max-sm:w-[min(100px,calc(100vw-16px))] max-sm:overflow-y-auto md:hidden">
-                <div className="flex flex-col items-end gap-6 text-right">
-                  <Link to="/about" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">About</Link>
-                  <Link to="/work" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Work</Link>
-                  <Link to="/news" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">News</Link>
-                  <Link to="/contact" onClick={() => setMenuOpen(false)} className="w-full text-right text-[17px] font-medium text-[#1497d4] transition hover:opacity-60">Contact</Link>
+              <div className="fixed right-4 bottom-4 z-50 w-[180px] bg-white px-4 py-5  max-sm:right-0 max-sm:bottom-[64px] max-sm:max-h-[calc(100dvh-88px)] max-sm:w-[min(100px,calc(100vw-16px))] max-sm:overflow-y-auto md:hidden">
+                <div className="flex flex-col items-end gap-14 py-2 text-right">
+                  <Link
+                    to="/about"
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full text-center text-[17px] leading-4.25 font-semibold text-[#1497d4] transition hover:opacity-60"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    to="/work"
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full text-center text-[17px] leading-4.25 font-semibold text-[#1497d4] transition hover:opacity-60"
+                  >
+                    Work
+                  </Link>
+                  <Link
+                    to="/news"
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full text-center text-[17px] leading-4.25 font-semibold text-[#1497d4] transition hover:opacity-60"
+                  >
+                    News
+                  </Link>
+                  <Link
+                    to="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full text-left text-[17px] leading-4.25 font-semibold text-[#1497d4] transition hover:opacity-60"
+                  >
+                    Contact
+                  </Link>
                 </div>
               </div>
             </>
           )}
         </div>
 
-        <div className="hidden h-16 w-full items-center justify-end border-t border-gray-200 bg-white px-4 max-sm:flex">
+        <div className="hidden h-16 w-full items-center justify-end border-t border-gray-200 bg-white px-2 max-sm:flex">
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
-            className="flex items-center  px-4 py-2 text-xl text-[#1893D2] transition-colors hover:bg-[#006fae]"
+            className={`flex items-center px-4 py-2 text-[17px] leading-4.25 font-semibold transition-colors hover:bg-[#006fae] ${
+              menuOpen ? "text-[#94999C]" : "text-[#1893D2]"
+            }`}
             aria-label="Open menu"
           >
             <span>Menu</span>
@@ -282,11 +337,10 @@ const Home = () => {
         <aside className="hidden w-full flex-col bg-white md:flex md:h-[calc(100vh-70px)] md:w-[28.5%]">
           <div className="flex h-[42%] items-start px-8 pt-12 xl:px-12 xl:pt-11.5">
             <p className="max-w-[350px] text-[20px] font-basis-web leading-[26px] text-[#c2bbb6] xl:text-[20px]">
-              An industry-leading production company founded by people who believe
-              in the power of nonfiction visual storytelling.
+              An industry-leading production company founded by people who
+              believe in the power of nonfiction visual storytelling.
             </p>
           </div>
-
 
           <div
             className="relative h-[58%] w-full overflow-hidden"
@@ -304,7 +358,8 @@ const Home = () => {
                   }`}
                   style={{ opacity: isActive ? 1 : 0 }}
                   onError={(e) => {
-                    e.target.src = "https://placehold.co/600x400/e0e0e0/808080?text=No+Image";
+                    e.target.src =
+                      "https://placehold.co/600x400/e0e0e0/808080?text=No+Image";
                   }}
                 />
               );
@@ -316,7 +371,9 @@ const Home = () => {
                     to={`/work/${image.workSlug}`}
                     state={{ thumbnail: image.url }}
                     className={`absolute inset-0 block transition-opacity duration-700 ease-in-out ${
-                      isActive ? "z-10 pointer-events-auto cursor-pointer" : "z-0 pointer-events-none"
+                      isActive
+                        ? "z-10 pointer-events-auto cursor-pointer"
+                        : "z-0 pointer-events-none"
                     }`}
                     aria-label={`View ${image.workSlug}`}
                   >
@@ -329,7 +386,9 @@ const Home = () => {
                 <div
                   key={index}
                   className={`absolute inset-0 block transition-opacity duration-700 ease-in-out ${
-                    isActive ? "z-10 pointer-events-auto" : "z-0 pointer-events-none"
+                    isActive
+                      ? "z-10 pointer-events-auto"
+                      : "z-0 pointer-events-none"
                   }`}
                 >
                   {imageContent}
@@ -386,7 +445,9 @@ const Home = () => {
               </a>
             ) : (
               <div className="absolute bottom-5 right-2 z-20 flex h-[48px] w-[150px] items-center justify-start px-3 bg-black/30 hover:bg-[#1989c2] transition duration-300 text-[13px] font-medium text-[#E8EAEC] sm:h-[52px] sm:w-[170px] md:h-[65px] md:w-[180px]">
-                <span className="truncate pr-4">{images[currentImage]?.title || "What Lasts"}</span>
+                <span className="truncate pr-4">
+                  {images[currentImage]?.title || "What Lasts"}
+                </span>
                 <button
                   type="button"
                   onClick={showNextImage}
@@ -403,10 +464,30 @@ const Home = () => {
 
       <nav className="hidden h-[72px] w-full items-center bg-white px-20 md:flex">
         <div className="flex items-center ml-4 gap-25 font-basis-web">
-          <Link to="/about" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">About</Link>
-          <Link to="/work" className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">Work</Link>
-          <Link to="/news" className="text-[17px] ml-1.5 font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">News</Link>
-          <Link to="/contact" className="text-[17px] ml-1.5 font-semibold text-[#1497d4] transition hover:text-black leading-[17px]">Contact</Link>
+          <Link
+            to="/about"
+            className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]"
+          >
+            About
+          </Link>
+          <Link
+            to="/work"
+            className="text-[17px] font-semibold text-[#1497d4] transition hover:text-black leading-[17px]"
+          >
+            Work
+          </Link>
+          <Link
+            to="/news"
+            className="text-[17px]  font-semibold text-[#1497d4] transition hover:text-black leading-[17px]"
+          >
+            News
+          </Link>
+          <Link
+            to="/contact"
+            className="text-[17px]  font-semibold text-[#1497d4] transition hover:text-black leading-[17px]"
+          >
+            Contact
+          </Link>
         </div>
       </nav>
     </main>
