@@ -100,7 +100,7 @@ const About = () => {
   return (
     <div className="w-full pt-[70px] px-0 sm:px-0 md:px-0 lg:px-0.5">
       {/* VIDEO */}
-      <div className="w-full flex items-center justify-center lg:px-25 md:px-13 px-7">
+      <div className="w-full flex items-center justify-center lg:px-17 md:px-13 px-7">
         <div
           className="relative w-full overflow-hidden cursor-pointer md:aspect-[1.9/1]"
           onClick={!isPlaying ? handlePlay : undefined}
@@ -132,7 +132,7 @@ const About = () => {
       </div>
 
       {/* ABOUT US */}
-      <section className="w-full mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-25 md:px-13 px-7">
+      <section className="w-full mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-17 md:px-13 px-7">
         <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px]">
           About Us
         </h1>
@@ -202,7 +202,7 @@ const About = () => {
       </div>
 
       {/* SERVICES */}
-      <section className="w-full mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px] lg:px-25 md:px-13 px-7">
+      <section className="w-full mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px] lg:px-17 md:px-13 px-7">
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[30px]">
           Services
         </h2>
@@ -214,7 +214,7 @@ const About = () => {
       </section>
 
       {/* CLIENTS & PARTNERS */}
-      <section className="w-full mx-auto lg:px-25 mt-[50px] sm:mt-[60px] md:mt-[60px] md:px-13 px-7">
+      <section className="w-full mx-auto lg:px-17 mt-[50px] sm:mt-[60px] md:mt-[60px] md:px-13 px-7">
         <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[30px] sm:mb-[40px] md:mb-[30px]">
           Blue Chalk Clients & Partners
         </h2>
@@ -251,7 +251,7 @@ const About = () => {
 
       {/* CAREERS */}
      {/* ================= CAREERS ================= */}
-<section id="careers" className="w-full  mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-25 md:px-13 px-7">
+<section id="careers" className="w-full  mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-17 md:px-13 px-7">
   <h2 className="text-[36px] md:text-[32px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
     Careers
   </h2>

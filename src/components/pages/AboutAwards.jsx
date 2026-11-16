@@ -69,14 +69,14 @@ const AboutAwards = () => {
 
   if (loading) {
     return (
-      <section className="w-full  mx-auto mt-[110px] md:mt-[140px] pb-6 lg:px-25 md:px-13 px-7 sm:px-6 md:px-0">
+      <section className="w-full  mx-auto mt-[110px] md:mt-[140px] pb-6 lg:px-17 md:px-13 px-7 sm:px-6 md:px-0">
         <div className="text-center py-10">Loading awards...</div>
       </section>
     );
   }
 
   return (
-    <section className="w-full  mx-auto mt-[110px] md:mt-[140px] pb-6 lg:px-25 md:px-13 px-7 sm:px-6 md:px-0">
+    <section className="w-full  mx-auto mt-[110px] md:mt-[140px] pb-6 lg:px-17 md:px-13 px-7 sm:px-6 md:px-0">
       <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-normal text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px]">
         Awards
       </h2>
