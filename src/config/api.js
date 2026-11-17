@@ -2,7 +2,7 @@
 // In production (Vercel): uses VITE_API_URL environment variable
 // In development: falls back to localhost:5000
 // const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-const API_BASE_URL = "https://bluechalk-backend.vercel.app/" || "http://localhost:5000";
+const API_BASE_URL = "https://bluechalk-backend.vercel.app" || "http://localhost:5000";
 
 export const resolveNewsImageUrl = (image) => {
 	if (!image) return "";
