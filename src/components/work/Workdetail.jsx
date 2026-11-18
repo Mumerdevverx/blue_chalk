@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { FiArrowRight, FiPlus } from "react-icons/fi";
 import API_BASE_URL from "../../config/api";
 import { getWorkNameSlug } from "../../utils/workSlug";
@@ -7,6 +7,7 @@ import { getWorkNameSlug } from "../../utils/workSlug";
 const Workdetail = () => {
   const noImageUrl = "https://placehold.co/1200x675/e0e0e0/808080?text=No+Preview";
   const { slug } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const videoRef = useRef(null);
   const [work, setWork] = useState(null);
@@ -27,6 +28,13 @@ const Workdetail = () => {
           fetch(`${API_BASE_URL}/api/work`)
         ]);
         const workData = await workRes.json();
+
+        // If the slug actually belongs to an award, redirect to the award page
+        if (workData && workData.type === 'award' && workData.data) {
+          navigate(`/awardpage/${workData.data.slug || slug}`, { replace: true });
+          return;
+        }
+
         const allData = await allRes.json();
         const currentWork = workData.success
           ? workData.data

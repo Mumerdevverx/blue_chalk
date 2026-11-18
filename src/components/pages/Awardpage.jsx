@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import awardpage from "../../assets/about/award/awardpage.png";
 import API_BASE_URL from "../../config/api";
 
@@ -40,9 +40,20 @@ const sortAwards = (list) => {
 
 const Awardpage = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [award, setAward] = useState(null);
   const [nextAward, setNextAward] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const handleDescriptionClick = (e) => {
+    const anchor = e.target.closest("a");
+    if (!anchor) return;
+    const href = anchor.getAttribute("href");
+    if (href && (href.startsWith("/work/") || href.startsWith("/awardpage/") || href.startsWith("/awards/"))) {
+      e.preventDefault();
+      navigate(href);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -243,7 +254,8 @@ const Awardpage = () => {
    {award.description && (
   <div className="text-[#293339] text-[15px] sm:text-[16px] leading-[1.7] prose max-w-none">
     <div
-      className="award-description"
+      className="award-description cursor-pointer"
+      onClick={handleDescriptionClick}
       dangerouslySetInnerHTML={{ __html: formatAwardDescription(award.description) }}
     />
   </div>
