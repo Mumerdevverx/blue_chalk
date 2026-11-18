@@ -1,31 +1,29 @@
 # Dependencies
 node_modules/
-
-# Build files
-dist/
+/.pnp
+.pnp.js
 build/
-
-# Environment files
+# Environment variables
 .env
 .env.local
+.env.example
 .env.development.local
 .env.test.local
 .env.production.local
-
-# Vite
-.vite/
+*.env
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
-pnpm-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
 
-# OS
+# OS and Editor files
 .DS_Store
 Thumbs.db
-
-# VS Code
 .vscode/
+.idea/
 
-# Other
-*.log
+
+dist/

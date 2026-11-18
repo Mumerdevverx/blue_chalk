@@ -4,43 +4,32 @@ import { Link } from "react-router-dom";
 import API_BASE_URL from "../../config/api";
 import { getWorkNameSlug } from "../../utils/workSlug";
 
-const getProjectOrder = (project) => {
-  if (
-    project.order === null ||
-    project.order === undefined ||
-    (typeof project.order === "string" && project.order.trim() === "")
-  ) {
-    return Number.POSITIVE_INFINITY;
-  }
+const CHUNK_SIZE = 12;
 
-  const order = Number(project.order);
-  return Number.isFinite(order) ? order : Number.POSITIVE_INFINITY;
+const getCategoryApiPath = (category) => {
+  const cat = String(category || "").trim().toLowerCase();
+  if (cat === "all projects" || cat === "all") return "/api/work/all-projects";
+  if (cat === "featured") return "/api/work/featured";
+  if (cat === "branded" || cat === "brand") return "/api/work/branded";
+  if (cat === "entertainment") return "/api/work/entertainment";
+  if (cat === "social impact" || cat === "social-impact") return "/api/work/social-impact";
+  if (cat === "documentary") return "/api/work/documentary";
+  return `/api/work/category/${encodeURIComponent(category)}`;
 };
-
-const sortProjectsByAdminOrder = (projects) =>
-  projects
-    .map((project, index) => ({ project, index }))
-    .sort((first, second) => {
-      const orderDifference =
-        getProjectOrder(first.project) - getProjectOrder(second.project);
-
-      return orderDifference || first.index - second.index;
-    })
-    .map(({ project }) => project);
 
 const isAwardProject = (project) =>
   ["award", "awards"].includes(String(project.category || "").trim().toLowerCase());
 
 const AllProjectwork = () => {
-  const [allProjects, setAllProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projectsByCategory, setProjectsByCategory] = useState({});
+  const [isCategoryLoading, setIsCategoryLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [activeFilter, setActiveFilter] = useState("Featured");
   const [isBrandOpen, setIsBrandOpen] = useState(false);
-  const [filteredProjects, setFilteredProjects] = useState([]);
   const [invalidImageProjects, setInvalidImageProjects] = useState(new Set());
   const portfolioRef = useRef(null);
 
-  // ✅ Screen size detection
+  // Screen size detection
   useEffect(() => {
     const checkScreenSize = () => {
       const isLg = window.innerWidth >= 1024;
@@ -51,45 +40,104 @@ const AllProjectwork = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // ✅ Fetch projects from API
+  // Progressive Chunked Fetching:
+  // - Displays chunk 1 (12 items) immediately upon response.
+  // - Automatically requests next chunk and directly merges with existing items without any page reload.
+  // - For "All Projects", chunks arrive in saved order (1-12, 13-24, etc.).
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/work`);
-        const data = await response.json();
-        if (data.success) {
-          const projectsWithImages = data.data.filter((project) =>
-            String(project.image || "").trim()
-          );
-          setAllProjects(sortProjectsByAdminOrder(projectsWithImages));
+    let isCancelled = false;
+    const categoryKey = activeFilter;
+
+    // Check if we already have items cached for this category
+    const hasCached = Boolean(
+      projectsByCategory[categoryKey] && projectsByCategory[categoryKey].length > 0
+    );
+
+    if (!hasCached) {
+      setIsCategoryLoading(true);
+    }
+    setIsLoadingMore(false);
+
+    const loadCategoryChunks = async () => {
+      let page = 1;
+      let hasMore = true;
+
+      while (hasMore && !isCancelled) {
+        try {
+          if (page > 1 && !isCancelled) {
+            setIsLoadingMore(true);
+          }
+
+          const apiPath = getCategoryApiPath(categoryKey);
+          const url = `${API_BASE_URL}${apiPath}?page=${page}&limit=${CHUNK_SIZE}`;
+          const response = await fetch(url);
+          const data = await response.json();
+
+          if (isCancelled) break;
+
+          if (data && data.success && Array.isArray(data.data)) {
+            const validChunk = data.data.filter((project) =>
+              String(project.image || "").trim()
+            );
+
+            // Directly merge new chunk with old one without reload
+            setProjectsByCategory((prev) => {
+              const currentList = prev[categoryKey] || [];
+              const currentIds = new Set(
+                currentList.map((item) => String(item._id || item.slug))
+              );
+              const uniqueNewItems = validChunk.filter(
+                (item) => !currentIds.has(String(item._id || item.slug))
+              );
+
+              if (page === 1) {
+                return {
+                  ...prev,
+                  [categoryKey]: validChunk
+                };
+              }
+
+              return {
+                ...prev,
+                [categoryKey]: [...currentList, ...uniqueNewItems]
+              };
+            });
+
+            // Display immediately as response arrives
+            if (page === 1) {
+              setIsCategoryLoading(false);
+            }
+
+            hasMore = Boolean(data.hasMore) && validChunk.length > 0;
+            page += 1;
+          } else {
+            hasMore = false;
+          }
+        } catch (error) {
+          console.error(`Error loading chunk ${page} for ${categoryKey}:`, error);
+          hasMore = false;
         }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-        setLoading(false);
+      }
+
+      if (!isCancelled) {
+        setIsCategoryLoading(false);
+        setIsLoadingMore(false);
       }
     };
-    fetchProjects();
-  }, []);
 
-  // ✅ Filter projects when filter changes
-  useEffect(() => {
-    if (allProjects.length === 0) return;
-    const filtered =
-      activeFilter === "All Projects"
-        ? allProjects.filter(
-            (project) =>
-              !isAwardProject(project) &&
-              !invalidImageProjects.has(project._id || project.slug)
-          )
-        : allProjects.filter(
-            (project) =>
-              String(project.category || "").trim().toLowerCase() ===
-                activeFilter.toLowerCase() &&
-              !invalidImageProjects.has(project._id || project.slug)
-          );
-    setFilteredProjects(filtered);
-  }, [activeFilter, allProjects, invalidImageProjects]);
+    loadCategoryChunks();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [activeFilter]);
+
+  const currentCategoryList = projectsByCategory[activeFilter] || [];
+  const filteredProjects = currentCategoryList.filter(
+    (project) =>
+      !isAwardProject(project) &&
+      !invalidImageProjects.has(project._id || project.slug)
+  );
 
   // Portfolio Filter object
   const portfolioFilter = {
@@ -99,7 +147,6 @@ const AllProjectwork = () => {
     getProjects: () => filteredProjects,
   };
 
-  // Expose to window (optional)
   useEffect(() => {
     window.portfolioFilter = portfolioFilter;
     return () => { delete window.portfolioFilter; };
@@ -107,7 +154,6 @@ const AllProjectwork = () => {
 
   const navItems = ["About", "Work", "News", "Contact"];
 
-  // ✅ Helper to get full image URL
   const getImageUrl = (url) => {
     if (!url) return 'https://placehold.co/600x400/e0e0e0/808080?text=No+Image';
     return new URL(url, `${API_BASE_URL}/`).href;
@@ -121,114 +167,7 @@ const AllProjectwork = () => {
     });
   };
 
-  // Render overlay based on type (only if showOverlay is true)
-  const renderOverlay = (project) => {
-    if (!project.showOverlay) return null;
-
-    if (project.overlayType === "atomic") {
-      return (
-        <div className="absolute top-1/2 font-basis-web left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-5 pointer-events-none">
-          {/* <h2
-            className="text-white font-extrabold leading-tight"
-            style={{
-              fontSize: "clamp(2rem, 4.5vw, 4.5rem)",
-              letterSpacing: "clamp(4px, 1vw, 12px)",
-              textShadow: "0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)",
-            }}
-          >
-            {project.title}
-          </h2> */}
-          <p
-            className="text-white font-light opacity-90"
-            style={{
-              fontSize: "clamp(0.8rem, 1.2vw, 1.2rem)",
-              letterSpacing: "clamp(3px, 0.6vw, 6px)",
-              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
-              margin: "5px 0",
-            }}
-          >
-            {project.description}
-          </p>
-          <p
-            className="text-white font-light opacity-80"
-            style={{
-              fontSize: "clamp(0.7rem, 1vw, 1rem)",
-              letterSpacing: "clamp(2px, 0.4vw, 4px)",
-              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
-              margin: "5px 0",
-            }}
-          >
-            {project.subDescription}
-          </p>
-        </div>
-      );
-    }
-
-    if (project.overlayType === "firebreak") {
-      return (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-5 pointer-events-none">
-          <h2
-            className="text-white font-extrabold leading-tight"
-            style={{
-              fontSize: "clamp(2rem, 4.5vw, 4.5rem)",
-              letterSpacing: "clamp(4px, 1vw, 12px)",
-              textShadow: "0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)",
-            }}
-          >
-            {project.title}
-          </h2>
-          <p
-            className="text-white font-normal opacity-90"
-            style={{
-              fontSize: "clamp(0.9rem, 1.4vw, 1.4rem)",
-              letterSpacing: "clamp(3px, 0.6vw, 6px)",
-              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
-              margin: "8px 0",
-            }}
-          >
-            {project.subtitle}
-          </p>
-          <p
-            className="text-white font-semibold opacity-90"
-            style={{
-              fontSize: "clamp(1.2rem, 1.8vw, 1.8rem)",
-              letterSpacing: "clamp(4px, 0.8vw, 8px)",
-              textShadow: "0 2px 20px rgba(0,0,0,0.6)",
-              margin: "5px 0",
-            }}
-          >
-            {project.description}
-          </p>
-        </div>
-      );
-    }
-
-    // custom overlay – just show title
-    return (
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full px-5 pointer-events-none">
-        <h2
-          className="text-white font-extrabold leading-tight"
-          style={{
-            fontSize: "clamp(2rem, 4.5vw, 4.5rem)",
-            letterSpacing: "clamp(4px, 1vw, 12px)",
-            textShadow: "0 4px 30px rgba(0,0,0,0.6), 0 2px 10px rgba(0,0,0,0.3)",
-          }}
-        >
-          {project.title}
-        </h2>
-      </div>
-    );
-  };
-
   const isAllProjects = activeFilter === "All Projects";
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full max-w-none">
@@ -312,7 +251,7 @@ const AllProjectwork = () => {
               </div>
 
               {isBrandOpen && (
-                <div className="flex flex-col items-start w-full  pl-0 animate-[slideDown_0.3s_ease]">
+                <div className="flex flex-col items-start w-full pl-0 animate-[slideDown_0.3s_ease]">
                   <button
                     onClick={() => portfolioFilter.filter("Entertainment")}
                     className={`lg:text-[36px] md:text-4xl leading-[43px] text-xl py-1.5 cursor-pointer transition-all duration-300 w-full whitespace-nowrap text-left ${
@@ -349,78 +288,85 @@ const AllProjectwork = () => {
           </div>
         </div>
 
-        {/* Projects Grid */}
-        <div
-          key={activeFilter}
-          className="grid w-full grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3"
-        >
-          {filteredProjects.map((project, index) => {
-            const isFilteredView = !isAllProjects;
-            let gridClass = "md:col-span-1";
+        {/* Initial Category Loading Spinner (Only when no items are available yet) */}
+        {isCategoryLoading && filteredProjects.length === 0 ? (
+          <div className="min-h-[400px] flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <>
+            {/* Projects Grid: Directly renders items as they arrive and merges next chunks without reload */}
+            <div className="grid w-full grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3">
+              {filteredProjects.map((project, index) => {
+                const isFilteredView = !isAllProjects;
+                let gridClass = "md:col-span-1";
 
-            if (isFilteredView) {
-              if (index === 0) {
-                gridClass = "md:col-span-2 md:row-span-2";
-              } else if (index === 1 || index === 2) {
-                gridClass = "md:col-start-3";
-              }
-            }
+                if (isFilteredView) {
+                  if (index === 0) {
+                    gridClass = "md:col-span-2 md:row-span-2";
+                  } else if (index === 1 || index === 2) {
+                    gridClass = "md:col-start-3";
+                  }
+                }
 
-            return (
-              <div
-                key={project._id || index}
-                className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${gridClass}`}
-              >
-                {/* ✅ Link to dynamic detail page using slug */}
-                <Link to={`/work/${getWorkNameSlug(project)}`} className="block w-full h-full">
-                  <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
-                    {/* ✅ IMAGE with full URL */}
-                    <img
-                      src={getImageUrl(project.image)}
-                      alt={project.title || 'Work'}
-                      className="absolute inset-0 block h-full w-full object-cover grayscale animate-[projectImageEnter_1400ms_cubic-bezier(0.22,1,0.36,1)] transition-[filter] duration-700 ease-in-out group-hover:grayscale-0"
-                      onError={(e) => {
-                        removeInvalidImageProject(project);
-                      }}
-                    />
-                    <img
-                      src={getImageUrl(project.hoverImage || project.image)}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
+                return (
+                  <div
+                    key={project._id || project.slug || index}
+                    className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${gridClass}`}
+                  >
+                    <Link to={`/work/${getWorkNameSlug(project)}`} className="block w-full h-full">
+                      <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
+                        <img
+                          src={getImageUrl(project.image)}
+                          alt={project.title || 'Work'}
+                          className="absolute inset-0 block h-full w-full object-cover grayscale transition-[filter] duration-700 ease-in-out group-hover:grayscale-0"
+                          onError={() => {
+                            removeInvalidImageProject(project);
+                          }}
+                        />
+                        <img
+                          src={getImageUrl(project.hoverImage || project.image)}
+                          alt=""
+                          aria-hidden="true"
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
 
-                    {/* ✅ Overlay only if showOverlay is true */}
-                    {/* {project.showOverlay && renderOverlay(project)} */}
-
-                    
-
-                    {/* ✅ Bottom-right button with dynamic buttonText */}
-                    <div
-                      className={`absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-22 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]`}
-                    >
-                      {(String(project.category || "").trim().toLowerCase() === "documentary" ||
-                      (activeFilter === "Featured" && index === 0)) && (
-                      <h6 className="absolute top-1 left-0 z-10 bg-[#4b5559] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[2px] text-white after:absolute after:left-full after:top-0 after:border-y-[6px] after:border-l-[8px] after:border-y-transparent after:border-l-[#4b5559]">
-                        DOCUMENTARY
-                      </h6>
-                    )}
-                      <span className="text-xs sm:text-sm md:text-sm font-medium ml-3">
-                        {project.buttonText || "Watch Now"}
-                      </span>
-                      <FiPlus className="absolute top-1 right-1 sm:top-2 sm:right-2 text-base sm:text-lg" />
-                    </div>
+                        {/* Bottom-right button with dynamic buttonText */}
+                        <div
+                          className="absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-22 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]"
+                        >
+                          {(String(project.category || "").trim().toLowerCase() === "documentary" ||
+                          (activeFilter === "Featured" && index === 0)) && (
+                            <h6 className="absolute top-1 left-0 z-10 bg-[#4b5559] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[2px] text-white after:absolute after:left-full after:top-0 after:border-y-[6px] after:border-l-[8px] after:border-y-transparent after:border-l-[#4b5559]">
+                              DOCUMENTARY
+                            </h6>
+                          )}
+                          <span className="text-xs sm:text-sm md:text-sm font-medium ml-3">
+                            {project.buttonText || "Watch Now"}
+                          </span>
+                          <FiPlus className="absolute top-1 right-1 sm:top-2 sm:right-2 text-base sm:text-lg" />
+                        </div>
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
 
-        {filteredProjects.length === 0 && (
+            {/* Subtle background chunk merge loader */}
+            {isLoadingMore && (
+              <div className="flex items-center justify-center py-6 gap-2 text-gray-400 text-xs">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                <span>Loading more projects...</span>
+              </div>
+            )}
+          </>
+        )}
+
+        {!isCategoryLoading && filteredProjects.length === 0 && (
           <div className="text-center py-16 text-gray-400 text-lg">
             No projects found in this category
           </div>
@@ -432,17 +378,6 @@ const AllProjectwork = () => {
           @keyframes slideDown {
             from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
-          }
-
-          @keyframes projectImageEnter {
-            from {
-              transform: scale(1.1);
-              opacity: 0.7;
-            }
-            to {
-              transform: scale(1);
-              opacity: 1;
-            }
           }
         `}
       </style>
