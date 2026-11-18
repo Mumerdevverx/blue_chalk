@@ -14,6 +14,7 @@ const getCategoryApiPath = (category) => {
   if (cat === "entertainment") return "/api/work/entertainment";
   if (cat === "social impact" || cat === "social-impact") return "/api/work/social-impact";
   if (cat === "documentary") return "/api/work/documentary";
+  if (cat === "award" || cat === "awards") return "/api/work/award";
   return `/api/work/category/${encodeURIComponent(category)}`;
 };
 
@@ -133,9 +134,10 @@ const AllProjectwork = () => {
   }, [activeFilter]);
 
   const currentCategoryList = projectsByCategory[activeFilter] || [];
+  const isAwardFilter = ["award", "awards"].includes(String(activeFilter || "").trim().toLowerCase());
   const filteredProjects = currentCategoryList.filter(
     (project) =>
-      !isAwardProject(project) &&
+      (isAwardFilter ? true : !isAwardProject(project)) &&
       !invalidImageProjects.has(project._id || project.slug)
   );
 
@@ -281,6 +283,16 @@ const AllProjectwork = () => {
                     }`}
                   >
                     Documentary
+                  </button>
+                  <button
+                    onClick={() => portfolioFilter.filter("Award")}
+                    className={`lg:text-[36px] leading-[43px] md:text-4xl text-xl py-1.5 cursor-pointer transition-all duration-300 w-full text-left ${
+                      activeFilter === "Award"
+                        ? "text-[#1893D2]"
+                        : "text-[#C2BBB6] hover:text-[#1893D2]"
+                    }`}
+                  >
+                    Award
                   </button>
                 </div>
               )}

@@ -106,6 +106,8 @@ const Allroutes = () => {
           {/* AWARDS */}
           <Route path="/awardpage" element={<Awardpage />} />
           <Route path="/awardpage/:slug" element={<Awardpage />} />
+          <Route path="/awards" element={<Awardpage />} />
+          <Route path="/awards/:slug" element={<Awardpage />} />
 
           {/* OTHER */}
           <Route path="/contact" element={<Contact />} />
