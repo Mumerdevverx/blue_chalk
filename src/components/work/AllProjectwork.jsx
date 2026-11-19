@@ -71,7 +71,10 @@ const AllProjectwork = () => {
 
           const apiPath = getCategoryApiPath(categoryKey);
           const url = `${API_BASE_URL}${apiPath}?page=${page}&limit=${CHUNK_SIZE}`;
-          const response = await fetch(url);
+          let response = await fetch(url);
+          if (!response.ok && (categoryKey.toLowerCase() === 'award' || categoryKey.toLowerCase() === 'awards')) {
+            response = await fetch(`${API_BASE_URL}/api/work?category=Award&page=${page}&limit=${CHUNK_SIZE}`);
+          }
           const data = await response.json();
 
           if (isCancelled) break;
