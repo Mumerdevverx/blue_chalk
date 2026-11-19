@@ -325,7 +325,7 @@ const Workdetail = () => {
 
   return (
     <>
-    <div className="w-full lg:mt-[80px] md:mt-[115px] mt-[100px] lg:px-20 px-4">
+    <div className="w-full mt-[100px] md:mt-[115px] lg:mt-[80px] lg:px-24 px-4">
       {/* ✅ VIDEO PLAYER – at the top */}
       <div className="relative w-full aspect-video bg-gray-200 overflow-hidden">
         {renderVideoPlayer()}
@@ -350,7 +350,7 @@ const Workdetail = () => {
       </div>
 
       {/* TWO-COLUMN LAYOUT */}
-      <div className="max-w-7xl mx-auto py-8 px-4 md:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto py-8 md:px-4 mt-[21px] lg:mt-[40px]">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
           {/* LEFT SIDE */}
           <div className="flex-1">
