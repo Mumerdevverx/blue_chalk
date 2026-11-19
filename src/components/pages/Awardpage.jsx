@@ -3,9 +3,40 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import awardpage from "../../assets/about/award/awardpage.png";
 import API_BASE_URL from "../../config/api";
 
-const formatAwardDescription = (description) =>
-  description.replace(/<p>\s*(\d{4})\s*<\/p>/g, '<p class="award-year">$1</p>');
+// const formatAwardDescription = (description) =>
+//   description.replace(/<p>\s*(\d{4})\s*<\/p>/g, '<p class="award-year">$1</p>');
 
+const formatAwardDescription = (description) => {
+  if (!description) return "";
+
+  const TITLE_STYLE =
+    "font-family:'Basis Grotesque Web','Helvetica Neue',Helvetica,Arial,sans-serif;" +
+    "font-size:18px;font-weight:400;line-height:28px;color:#1893D2;";
+
+  const YEAR_STYLE =
+    "font-family:'Basis Grotesque Web','Helvetica Neue',Helvetica,Arial,sans-serif;" +
+    "font-size:24px;font-weight:400;line-height:29px;color:#C2BBB6;";
+
+  return (
+    description
+      .replace(
+        /(<a\b[^>]*?href="\/work\/[^"]*"[^>]*?)style="[^"]*"/g,
+        `$1style="${TITLE_STYLE}"`
+      )
+      .replace(
+        /<a\b(?=[^>]*href="\/work\/")(?![^>]*style=)([^>]*?)>/g,
+        `<a$1 style="${TITLE_STYLE}">`
+      )
+      .replace(
+        /<p>\s*((?:19|20)\d{2})\s*<\/p>/g,
+        `<p style="${YEAR_STYLE};display:block;margin:1.5rem 0 0.75rem;">$1</p>`
+      )
+      .replace(
+        /(<br\s*\/?>\s*<br\s*\/?>)\s*((?:19|20)\d{2})\s*(<\/p>)/g,
+        `$1<span style="${YEAR_STYLE};display:block;margin-top:1.5rem;">$2</span>$3`
+      )
+  );
+};
 const getImageUrl = (url) => {
   if (!url) return "https://via.placeholder.com/600x400?text=No+Image";
   if (url.startsWith("http")) return url;
