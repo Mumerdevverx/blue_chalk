@@ -284,7 +284,7 @@ const AllProjectwork = () => {
                   >
                     Documentary
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => portfolioFilter.filter("Award")}
                     className={`lg:text-[36px] leading-[43px] md:text-4xl text-xl py-1.5 cursor-pointer transition-all duration-300 w-full text-left ${
                       activeFilter === "Award"
@@ -293,7 +293,7 @@ const AllProjectwork = () => {
                     }`}
                   >
                     Award
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>
