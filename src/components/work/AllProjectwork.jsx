@@ -28,28 +28,43 @@ const AllProjectwork = () => {
   const [activeFilter, setActiveFilter] = useState("Featured");
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [invalidImageProjects, setInvalidImageProjects] = useState(new Set());
+  const [isScreenTransitioning, setIsScreenTransitioning] = useState(false);
   const portfolioRef = useRef(null);
+  const prevScreenSizeRef = useRef(null);
 
-  // Screen size detection
+  // Screen size detection with transition effect
   useEffect(() => {
+    const getScreenCategory = () => {
+      const w = window.innerWidth;
+      if (w >= 1024) return "lg";
+      if (w >= 768) return "md";
+      return "sm";
+    };
+
     const checkScreenSize = () => {
       const isLg = window.innerWidth >= 1024;
       setIsBrandOpen(isLg);
+
+      const newCategory = getScreenCategory();
+      if (prevScreenSizeRef.current && prevScreenSizeRef.current !== newCategory) {
+        // Trigger transition animation on breakpoint change
+        setIsScreenTransitioning(true);
+        const timer = setTimeout(() => setIsScreenTransitioning(false), 400);
+        return () => clearTimeout(timer);
+      }
+      prevScreenSizeRef.current = newCategory;
     };
+
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  // Progressive Chunked Fetching:
-  // - Displays chunk 1 (12 items) immediately upon response.
-  // - Automatically requests next chunk and directly merges with existing items without any page reload.
-  // - For "All Projects", chunks arrive in saved order (1-12, 13-24, etc.).
+  // Progressive Chunked Fetching
   useEffect(() => {
     let isCancelled = false;
     const categoryKey = activeFilter;
 
-    // Check if we already have items cached for this category
     const hasCached = Boolean(
       projectsByCategory[categoryKey] && projectsByCategory[categoryKey].length > 0
     );
@@ -84,7 +99,6 @@ const AllProjectwork = () => {
               String(project.image || "").trim()
             );
 
-            // Directly merge new chunk with old one without reload
             setProjectsByCategory((prev) => {
               const currentList = prev[categoryKey] || [];
               const currentIds = new Set(
@@ -107,7 +121,6 @@ const AllProjectwork = () => {
               };
             });
 
-            // Display immediately as response arrives
             if (page === 1) {
               setIsCategoryLoading(false);
             }
@@ -144,7 +157,6 @@ const AllProjectwork = () => {
       !invalidImageProjects.has(project._id || project.slug)
   );
 
-  // Portfolio Filter object
   const portfolioFilter = {
     filter: (category) => setActiveFilter(category),
     reset: () => setActiveFilter("All Projects"),
@@ -287,31 +299,25 @@ const AllProjectwork = () => {
                   >
                     Documentary
                   </button>
-                  {/* <button
-                    onClick={() => portfolioFilter.filter("Award")}
-                    className={`lg:text-[36px] leading-[43px] md:text-4xl text-xl py-1.5 cursor-pointer transition-all duration-300 w-full text-left ${
-                      activeFilter === "Award"
-                        ? "text-[#1893D2]"
-                        : "text-[#C2BBB6] hover:text-[#1893D2]"
-                    }`}
-                  >
-                    Award
-                  </button> */}
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Initial Category Loading Spinner (Only when no items are available yet) */}
+        {/* Initial Category Loading Spinner */}
         {isCategoryLoading && filteredProjects.length === 0 ? (
           <div className="min-h-[400px] flex items-center justify-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
         ) : (
           <>
-            {/* Projects Grid: Directly renders items as they arrive and merges next chunks without reload */}
-            <div className="grid w-full grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3">
+            {/* Projects Grid with smooth screen-size transition */}
+            <div
+              className={`grid w-full grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3 transition-all duration-500 ease-in-out ${
+                isScreenTransitioning ? "opacity-90 scale-[0.995]" : "opacity-100 scale-100"
+              }`}
+            >
               {filteredProjects.map((project, index) => {
                 const isFilteredView = !isAllProjects;
                 let gridClass = "md:col-span-1";
@@ -327,7 +333,16 @@ const AllProjectwork = () => {
                 return (
                   <div
                     key={project._id || project.slug || index}
-                    className={`bg-white overflow-hidden transition-all duration-300 flex flex-col group ${gridClass}`}
+                    className={`bg-white overflow-hidden transition-all duration-500 ease-in-out flex flex-col group ${gridClass} ${
+                      isScreenTransitioning
+                        ? "opacity-95 translate-y-1"
+                        : "opacity-100 translate-y-0"
+                    }`}
+                    style={{
+                      transitionDelay: isScreenTransitioning
+                        ? `${Math.min(index * 30, 300)}ms`
+                        : "0ms",
+                    }}
                   >
                     <Link to={`/work/${getWorkNameSlug(project)}`} className="block w-full h-full">
                       <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
@@ -349,10 +364,7 @@ const AllProjectwork = () => {
                           }}
                         />
 
-                        {/* Bottom-right button with dynamic buttonText */}
-                        <div
-                          className="absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-22 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]"
-                        >
+                        <div className="absolute bottom-4 right-2 sm:bottom-8 sm:right-8 md:bottom-4 md:right-4 text-white w-28 sm:w-32 md:w-36 lg:w-50 h-12 sm:h-14 md:h-22 px-2 py-4 flex items-end justify-between transition-all duration-200 bg-black/40 group-hover:bg-[#1989c2]">
                           {(String(project.category || "").trim().toLowerCase() === "documentary" ||
                           (activeFilter === "Featured" && index === 0)) && (
                             <h6 className="absolute top-1 left-0 z-10 bg-[#4b5559] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[2px] text-white after:absolute after:left-full after:top-0 after:border-y-[6px] after:border-l-[8px] after:border-y-transparent after:border-l-[#4b5559]">
@@ -393,6 +405,44 @@ const AllProjectwork = () => {
           @keyframes slideDown {
             from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
+          }
+
+          @keyframes gridResize {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.92; transform: scale(0.995); }
+            100% { opacity: 1; transform: scale(1); }
+          }
+
+          /* Smooth transition for grid layout changes */
+          .js-portfolio-variety-1 .grid {
+            transition: grid-template-columns 0.4s ease, gap 0.3s ease;
+          }
+
+          /* Ensure smooth reflow for project cards */
+          .js-portfolio-variety-1 .grid > div {
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                        opacity 0.45s ease,
+                        grid-column 0.4s ease,
+                        grid-row 0.4s ease;
+            will-change: transform, opacity;
+          }
+
+          /* Staggered entrance for cards on layout change */
+          .js-portfolio-variety-1 .grid.screen-resizing > div {
+            animation: cardResize 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+          }
+
+          @keyframes cardResize {
+            0% { opacity: 0.7; transform: translateY(6px) scale(0.985); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .js-portfolio-variety-1 .grid,
+            .js-portfolio-variety-1 .grid > div {
+              transition: none !important;
+              animation: none !important;
+            }
           }
         `}
       </style>
