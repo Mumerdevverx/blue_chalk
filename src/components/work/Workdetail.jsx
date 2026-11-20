@@ -556,7 +556,7 @@ const Workdetail = () => {
     <>
     <div className="w-full mt-[100px] md:mt-[115px] lg:mt-[80px] lg:px-24 px-4">
       {/* ✅ VIDEO PLAYER – at the top */}
-      <div className="relative w-full aspect-video bg-gray-200 overflow-hidden">
+      <div className="relative  w-full h-[400px] md:h-[450px] lg:h-[540px] bg-gray-200 overflow-hidden">
         {renderVideoPlayer()}
         {videoUrl && !isVideoStarted && (
           <button
