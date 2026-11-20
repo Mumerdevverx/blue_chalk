@@ -4,6 +4,15 @@ import { FiArrowRight, FiPlus } from "react-icons/fi";
 import API_BASE_URL from "../../config/api";
 import { getWorkNameSlug } from "../../utils/workSlug";
 
+const isDaveyImage = (url) => {
+  if (!url || typeof url !== "string") return false;
+  return (
+    url.includes("awardTwo") ||
+    url.includes("/9j/4AAQSkZJRgABAQAAAQABAAD/4gKgSUNDX1BST0ZJTEU") ||
+    url.toLowerCase().includes("davey")
+  );
+};
+
 const Workdetail = () => {
   const noImageUrl = "https://placehold.co/1200x675/e0e0e0/808080?text=No+Preview";
   const { slug } = useParams();
@@ -59,10 +68,32 @@ const Workdetail = () => {
           if (currentIndex !== -1 && currentIndex < allData.data.length - 1) {
             setNextProject(allData.data[currentIndex + 1]);
           }
-          // Related: same category first, then others, excluding current
+
+          if (
+            slug === "created-for-oregon-health-science-university" ||
+            slug?.toLowerCase().includes("oregon-health-science-university") ||
+            currentWork?.slug === "created-for-oregon-health-science-university" ||
+            currentWork?.slug?.toLowerCase().includes("oregon-health-science-university")
+          ) {
+            const senseOfOhsu = allData.data.find(
+              (p) =>
+                p.slug === "a-sense-of-ohsu" ||
+                p.buttonText?.toLowerCase().includes("sense of ohsu")
+            );
+            if (senseOfOhsu) {
+              setNextProject(senseOfOhsu);
+            }
+          }
+          // Related: prioritize projects that have valid real images (exclude Davey awards logo)
           const others = allData.data.filter(p => p._id !== currentWork._id);
-          const sameCategory = others.filter(p => p.category === currentWork.category);
-          const different = others.filter(p => p.category !== currentWork.category);
+          const hasRealImage = (p) => {
+            const img = p.image || p.imageUrl || p.thumbnail || p.thumbnailUrl || p.mediaUrl;
+            return Boolean(img && !isDaveyImage(img));
+          };
+          const validImageProjects = others.filter(hasRealImage);
+          const pool = validImageProjects.length >= 3 ? validImageProjects : others;
+          const sameCategory = pool.filter(p => p.category === currentWork.category);
+          const different = pool.filter(p => p.category !== currentWork.category);
           setRelatedProjects([...sameCategory, ...different].slice(0, 3));
         }
         setLoading(false);
@@ -111,6 +142,193 @@ const Workdetail = () => {
     }
 
     return cleaned;
+  };
+
+  const formatWorkContent = (html) => {
+    if (!html || typeof DOMParser === "undefined") return html;
+
+    try {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+
+      const monthPattern = "(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
+      const headerLineRegex = new RegExp(`(?:${monthPattern}|\\b(?:19|20)\\d{2}\\b|\\bwith\\s+[a-z0-9])`, "i");
+
+      const applyParagraphStyles = (container) => {
+        Array.from(container.querySelectorAll("p, div:not(.work-section-title):not(.work-header-line), li, blockquote")).forEach((el) => {
+          if (!el.textContent.trim() && !el.querySelector("img, iframe, video")) {
+            el.remove();
+          } else {
+            el.style.cssText = "font-size: 18px; line-height: 28px; letter-spacing: 0px; font-weight: 400; color: #293339; margin-bottom: 20px; text-transform: none;";
+            Array.from(el.querySelectorAll("span:not(.work-header-date):not(.work-header-sep):not(.work-header-with)")).forEach((s) => {
+              s.style.cssText = "font-size: 18px; line-height: 28px; letter-spacing: 0px; font-weight: 400; color: #293339; text-transform: none;";
+            });
+            Array.from(el.querySelectorAll("a:not(.work-header-with a)")).forEach((a) => {
+              a.style.cssText = "color: #293339; text-decoration: none; transition: color 0.2s ease;";
+              a.setAttribute("onmouseover", "this.style.color='#1893d2'; this.style.textDecoration='underline';");
+              a.setAttribute("onmouseout", "this.style.color='#293339'; this.style.textDecoration='none';");
+            });
+          }
+        });
+      };
+
+      // Find the header element containing date or "WITH"
+      let targetP = null;
+      const candidates = Array.from(doc.querySelectorAll("p, h6, div"));
+      for (const el of candidates) {
+        const txt = (el.textContent || "").trim();
+        if (!txt) continue;
+        if (headerLineRegex.test(txt)) {
+          targetP = el;
+          break;
+        }
+      }
+
+      if (!targetP) {
+        Array.from(doc.querySelectorAll("h1, h2, h3, h4, h5, p")).forEach((el) => {
+          if (/^\s*about (?:the )?(?:project|film|video|series|work)\b/i.test(el.textContent || "")) {
+            const titleDiv = doc.createElement("div");
+            titleDiv.className = "work-section-title";
+            titleDiv.style.cssText = "font-size: 24px; line-height: 29px; letter-spacing: 0px; font-weight: 400; color: #C2BBB6; margin-bottom: 24px; margin-top: 0; text-transform: none; display: block;";
+            titleDiv.textContent = el.textContent.trim();
+            el.replaceWith(titleDiv);
+          }
+        });
+        applyParagraphStyles(doc);
+        return doc.body.innerHTML;
+      }
+
+      // Remove leading and trailing <br> tags
+      let rawP = targetP.innerHTML
+        .replace(/^(\s*<br\s*\/?>\s*)+/gi, "")
+        .replace(/(\s*<br\s*\/?>\s*)+$/gi, "")
+        .trim();
+
+      const parts = rawP.split(/(?:<br\s*\/?>\s*)+/i).map((s) => s.trim()).filter(Boolean);
+
+      let headerHtml = "";
+      let sectionTitle = "";
+
+      if (parts.length > 1) {
+        headerHtml = parts[0];
+        sectionTitle = parts.slice(1).join(" ").replace(/<[^>]+>/g, "").trim();
+      } else {
+        headerHtml = parts[0] || rawP;
+      }
+
+      let nextElToRemove = null;
+      if (!sectionTitle && targetP.nextElementSibling) {
+        const nextText = (targetP.nextElementSibling.textContent || "").trim();
+        if (/^about (?:the )?(?:project|film|video|series|work)\b/i.test(nextText) || (nextText.length < 50 && targetP.nextElementSibling.tagName.match(/^H[1-6]$/i))) {
+          sectionTitle = nextText;
+          nextElToRemove = targetP.nextElementSibling;
+        }
+      }
+
+      const tempDiv = doc.createElement("div");
+      tempDiv.innerHTML = headerHtml;
+
+      const anchor = tempDiv.querySelector("a");
+      let dateText = "";
+      let withHtml = "";
+
+      if (anchor) {
+        const anchorHref = anchor.getAttribute("href") || "#";
+        const anchorTarget = anchor.getAttribute("target") || "_blank";
+        const anchorRel = anchor.getAttribute("rel") || "noopener noreferrer nofollow";
+        const linkText = anchor.textContent.trim().toUpperCase();
+
+        anchor.remove();
+        const remainingText = (tempDiv.textContent || "")
+          .replace(/&nbsp;/gi, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        const withMatch = remainingText.match(/^(.*?)(?:\s*:?\s*)?\bWith\b\s*$/i);
+        if (withMatch) {
+          dateText = withMatch[1].trim();
+        } else {
+          dateText = remainingText.replace(/\bWith\b.*$/i, "").trim();
+        }
+
+        const cleanLinkText = linkText.replace(/^\s*WITH\s+/i, "");
+        withHtml = `WITH <a target="${anchorTarget}" rel="${anchorRel}" href="${anchorHref}" style="font-size: 11px; line-height: 13px; letter-spacing: 3.3px; font-weight: 600; color: #293339; text-transform: uppercase; text-decoration: none; transition: color 0.2s ease;" onmouseover="this.style.color='#1893d2'; this.style.textDecoration='underline';" onmouseout="this.style.color='#293339'; this.style.textDecoration='none';">${cleanLinkText}</a>`;
+      } else {
+        const fullText = (tempDiv.textContent || "")
+          .replace(/&nbsp;/gi, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        const withMatch = fullText.match(/^(.*?)(?:\s*:?\s*)?\bWith\b\s*(.*)$/i);
+        if (withMatch) {
+          dateText = withMatch[1].trim();
+          withHtml = `WITH ${withMatch[2].trim().toUpperCase()}`;
+        } else {
+          dateText = fullText.trim();
+        }
+      }
+
+      dateText = dateText
+        .replace(/&nbsp;/gi, " ")
+        .replace(/\s*:\s*$/, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toUpperCase();
+
+      const h6 = doc.createElement("h6");
+      h6.className = "work-header-line";
+      h6.style.cssText = "font-size: 11px; line-height: 13px; letter-spacing: 3.3px; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; margin-top: 0; display: block;";
+
+      const dateSpan = doc.createElement("span");
+      dateSpan.className = "work-header-date";
+      dateSpan.style.cssText = "font-size: 11px; line-height: 13px; letter-spacing: 3.3px; font-weight: 600; color: #C2BBB6; text-transform: uppercase;";
+      dateSpan.textContent = dateText;
+      h6.appendChild(dateSpan);
+
+      if (withHtml) {
+        const sepSpan = doc.createElement("span");
+        sepSpan.className = "work-header-sep";
+        sepSpan.style.cssText = "font-size: 11px; line-height: 13px; letter-spacing: 3.3px; font-weight: 600; color: #C2BBB6; margin: 0 10px;";
+        sepSpan.textContent = ":";
+        h6.appendChild(sepSpan);
+
+        const withSpan = doc.createElement("span");
+        withSpan.className = "work-header-with";
+        withSpan.style.cssText = "font-size: 11px; line-height: 13px; letter-spacing: 3.3px; font-weight: 600; color: #293339; text-transform: uppercase;";
+        withSpan.innerHTML = withHtml;
+        h6.appendChild(withSpan);
+      }
+
+      targetP.parentNode.insertBefore(h6, targetP);
+
+      if (sectionTitle) {
+        const titleDiv = doc.createElement("div");
+        titleDiv.className = "work-section-title";
+        titleDiv.style.cssText = "font-size: 24px; line-height: 29px; letter-spacing: 0px; font-weight: 400; color: #C2BBB6; margin-bottom: 24px; margin-top: 0; text-transform: none; display: block;";
+        titleDiv.textContent = sectionTitle;
+        targetP.parentNode.insertBefore(titleDiv, targetP);
+      }
+
+      targetP.remove();
+      if (nextElToRemove) {
+        nextElToRemove.remove();
+      }
+
+      Array.from(doc.querySelectorAll("h1, h2, h3, h4, h5, p")).forEach((el) => {
+        if (/^\s*about (?:the )?(?:project|film|video|series|work)\b/i.test(el.textContent || "")) {
+          const titleDiv = doc.createElement("div");
+          titleDiv.className = "work-section-title";
+          titleDiv.style.cssText = "font-size: 24px; line-height: 29px; letter-spacing: 0px; font-weight: 400; color: #C2BBB6; margin-bottom: 24px; margin-top: 0; text-transform: none; display: block;";
+          titleDiv.textContent = el.textContent.trim();
+          el.replaceWith(titleDiv);
+        }
+      });
+
+      applyParagraphStyles(doc);
+
+      return doc.body.innerHTML;
+    } catch (e) {
+      console.error("Error formatting work content:", e);
+      return html;
+    }
   };
 
   const extractWorkAboutContent = (html) => {
@@ -179,7 +397,7 @@ const Workdetail = () => {
       project?.hoverImage
     ]
       .map(getImageUrl)
-      .filter((url, index, urls) => url && urls.indexOf(url) === index);
+      .filter((url, index, urls) => url && !isDaveyImage(url) && urls.indexOf(url) === index);
 
   const handleImageError = (event, fallbackUrls) => {
     const image = event.currentTarget;
@@ -218,10 +436,13 @@ const Workdetail = () => {
     const urls = [
       getImageUrl(preferredThumbnail),
       ...getProjectImageUrls(project),
-      getYouTubeThumbnail(video),
-      noImageUrl
-    ];
-    return urls.filter((url, index) => url && urls.indexOf(url) === index);
+      getYouTubeThumbnail(video)
+    ].filter((url, index, urls) => url && !isDaveyImage(url) && url !== noImageUrl && urls.indexOf(url) === index);
+
+    if (urls.length === 0 && !video) {
+      urls.push(noImageUrl);
+    }
+    return urls;
   };
 
   const getFirstContentImageUrl = (html) => {
@@ -250,9 +471,15 @@ const Workdetail = () => {
   }
 
   const videoUrl = extractVideoFromContent(work.aboutContent);
+  const isOregonHealthPage =
+    slug === "created-for-oregon-health-science-university" ||
+    slug?.toLowerCase().includes("oregon-health-science-university") ||
+    work?.slug === "created-for-oregon-health-science-university" ||
+    work?.slug?.toLowerCase().includes("oregon-health-science-university");
   const aboutFields = extractWorkAboutContent(work.aboutContent);
   const firstContentImageUrl = getFirstContentImageUrl(aboutFields.content);
   const cleanedContent = cleanContent(aboutFields.content, !videoUrl);
+  const formattedContent = formatWorkContent(cleanedContent);
   const aboutContextText = aboutFields.contextText;
   const aboutLeftText = aboutFields.leftText;
   const aboutRightText = aboutFields.rightText;
@@ -291,11 +518,13 @@ const Workdetail = () => {
     }
 
     if (isDirectVideo(videoUrl)) {
+      const hasRealPoster = Boolean(posterUrl && posterUrl !== noImageUrl && !isDaveyImage(posterUrl) && !isOregonHealthPage);
       // ✅ Direct MP4 video
       return (
         <video
           ref={videoRef}
-          poster={posterUrl}
+          poster={hasRealPoster ? posterUrl : undefined}
+          preload="auto"
           controls
           muted
           loop
@@ -333,15 +562,17 @@ const Workdetail = () => {
           <button
             type="button"
             onClick={startVideo}
-            className="group absolute inset-0 z-10 flex items-center justify-center"
+            className="group absolute inset-0 z-10 flex items-center justify-center cursor-pointer"
             aria-label="Play video"
           >
-            <img
-              src={posterUrl}
-              alt=""
-              className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-              onError={(event) => handleImageError(event, posterUrls)}
-            />
+            {posterUrl && posterUrl !== noImageUrl && !isDaveyImage(posterUrl) && !isOregonHealthPage && (
+              <img
+                src={posterUrl}
+                alt=""
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                onError={(event) => handleImageError(event, posterUrls)}
+              />
+            )}
             <span className="group/play relative z-10 flex h-16 w-16 items-center justify-center">
               <span className="h-0 w-0 border-y-[20px] border-y-transparent border-l-[34px] border-l-white transition-colors duration-300 group-hover/play:border-l-[#0089D0]" />
             </span>
@@ -362,10 +593,110 @@ const Workdetail = () => {
               {work.subDescription || work.description}
             </p>
             <div className="mt-5">
-              {cleanedContent ? (
+              <style>{`
+                .work-detail-content h6,
+                .work-detail-content .work-header-line {
+                  font-size: 11px !important;
+                  line-height: 13px !important;
+                  letter-spacing: 3.3px !important;
+                  font-weight: 600 !important;
+                  text-transform: uppercase !important;
+                  margin-bottom: 30px !important;
+                  margin-top: 0 !important;
+                  display: block !important;
+                }
+                .work-detail-content .work-header-date {
+                  font-size: 11px !important;
+                  line-height: 13px !important;
+                  letter-spacing: 3.3px !important;
+                  font-weight: 600 !important;
+                  color: #C2BBB6 !important;
+                  text-transform: uppercase !important;
+                }
+                .work-detail-content .work-header-sep {
+                  font-size: 11px !important;
+                  line-height: 13px !important;
+                  letter-spacing: 3.3px !important;
+                  font-weight: 600 !important;
+                  color: #C2BBB6 !important;
+                  margin: 0 10px !important;
+                }
+                .work-detail-content .work-header-with {
+                  font-size: 11px !important;
+                  line-height: 13px !important;
+                  letter-spacing: 3.3px !important;
+                  font-weight: 600 !important;
+                  color: #293339 !important;
+                  text-transform: uppercase !important;
+                }
+                .work-detail-content .work-header-with a,
+                .work-detail-content .work-header-with a * {
+                  font-size: 11px !important;
+                  line-height: 13px !important;
+                  letter-spacing: 3.3px !important;
+                  font-weight: 600 !important;
+                  color: #293339 !important;
+                  text-transform: uppercase !important;
+                  text-decoration: none !important;
+                  transition: color 200ms ease !important;
+                }
+                .work-detail-content .work-header-with a:hover,
+                .work-detail-content .work-header-with a:hover * {
+                  color: #1893d2 !important;
+                  text-decoration: underline !important;
+                }
+                .work-detail-content h1,
+                .work-detail-content h2,
+                .work-detail-content h3,
+                .work-detail-content h4,
+                .work-detail-content .work-section-title {
+                  font-size: 24px !important;
+                  line-height: 29px !important;
+                  letter-spacing: 0px !important;
+                  font-weight: 400 !important;
+                  color: #C2BBB6 !important;
+                  margin-bottom: 24px !important;
+                  margin-top: 0 !important;
+                  text-transform: none !important;
+                  display: block !important;
+                }
+                .work-detail-content p,
+                .work-detail-content p *,
+                .work-detail-content div:not(.work-section-title):not(.work-header-line),
+                .work-detail-content span:not(.work-header-date):not(.work-header-sep):not(.work-header-with):not(.work-header-with *),
+                .work-detail-content li {
+                  font-size: 18px !important;
+                  line-height: 28px !important;
+                  letter-spacing: 0px !important;
+                  font-weight: 400 !important;
+                  color: #293339 !important;
+                  text-transform: none !important;
+                }
+                .work-detail-content p {
+                  margin-bottom: 20px !important;
+                }
+                .work-detail-content a:not(.work-header-with a) {
+                  color: #293339 !important;
+                  text-decoration: none !important;
+                  transition: color 200ms ease !important;
+                }
+                .work-detail-content a:not(.work-header-with a):hover {
+                  color: #1893d2 !important;
+                  text-decoration: underline !important;
+                }
+              `}</style>
+              {formattedContent ? (
                 <div
-                  className="work-content text-[17px] leading-relaxed "
-                  dangerouslySetInnerHTML={{ __html: cleanedContent }}
+                  className="work-detail-content leading-relaxed"
+                  style={{
+                    fontSize: "18px",
+                    lineHeight: "28px",
+                    letterSpacing: "0px",
+                    fontWeight: 400,
+                    color: "#293339",
+                    textTransform: "none"
+                  }}
+                  dangerouslySetInnerHTML={{ __html: formattedContent }}
                 />
               ) : (
                 <p className="text-gray-500">No content available.</p>
@@ -470,18 +801,20 @@ const Workdetail = () => {
                     <img
                       src={projectImageUrl}
                       alt={project.title || "Related Work"}
-                      className="absolute inset-0 w-full h-full object-cover grayscale"
+                      className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                       onError={(event) => handleImageError(event, projectImageUrls)}
                     />
-                    <img
-                      src={getImageUrl(project.hoverImage) || projectImageUrl}
-                      alt=""
-                      aria-hidden="true"
-                      className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
-                      onError={(event) => {
-                        event.currentTarget.style.display = "none";
-                      }}
-                    />
+                    {project.hoverImage && !isDaveyImage(project.hoverImage) && (
+                      <img
+                        src={getImageUrl(project.hoverImage)}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
+                        onError={(event) => {
+                          event.currentTarget.style.display = "none";
+                        }}
+                      />
+                    )}
                     <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-45 h-[70px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
                       <span className="text-[12px] font-medium leading-tight">
                         {project.buttonText || project.title || "Watch Now"}

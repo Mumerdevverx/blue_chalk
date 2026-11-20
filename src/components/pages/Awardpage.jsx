@@ -281,7 +281,7 @@ const Awardpage = () => {
         </div>
       </div>
 
-      {/* Description */}
+      {/* Description  First Page */} 
    {award.description && (
   <div className="text-[#293339] text-[15px] sm:text-[16px] leading-[1.7] prose max-w-none">
     <div
