@@ -150,7 +150,12 @@ const AboutPeopleData = () => {
                           </a>
                         )}
                         {member.email && (
-                          <a href={`mailto:${member.email}`} className="w-[25px] h-[25px] bg-[#1199DE] rounded-xs flex items-center justify-center hover:bg-[#56b9eb] transition-colors duration-200">
+                          <a
+                            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(member.email)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-[25px] h-[25px] bg-[#1199DE] rounded-xs flex items-center justify-center hover:bg-[#56b9eb] transition-colors duration-200"
+                          >
                             <svg className="w-[14px] h-[14px] fill-white" viewBox="0 0 24 24"><path d="M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z" /></svg>
                           </a>
                         )}

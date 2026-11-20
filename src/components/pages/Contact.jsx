@@ -16,6 +16,8 @@ const Contact = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newsletterMessage, setNewsletterMessage] = useState("");
+  const [isSubmittingNewsletter, setIsSubmittingNewsletter] = useState(false);
+  const [publicEmail, setPublicEmail] = useState("hello@bluechalk.com");
 
   // Hover state (pin aur map colors ke liye zaroori hai)
   const [hoveredMap, setHoveredMap] = useState(null);
@@ -34,7 +36,7 @@ const Contact = () => {
     return () => window.clearTimeout(timeoutId);
   }, [newsletterMessage]);
 
-  const handleNewsletterSubmit = (event) => {
+  const handleNewsletterSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     const visibleInputs = [...form.querySelectorAll("input")].filter(
@@ -46,30 +48,45 @@ const Contact = () => {
     const email = visibleInputs
       .find((input) => input.placeholder === "Email*")
       ?.value.trim();
+    const title = visibleInputs
+      .find((input) => input.placeholder === "Title (optional)")
+      ?.value.trim() || "";
+    const company = visibleInputs
+      .find((input) => input.placeholder === "Company (optional)")
+      ?.value.trim() || "";
 
     if (!name) {
-      setNewsletterMessage(
-        "Please include an '@' in the email address. 'Email' is missing an '@'.",
-      );
+      setNewsletterMessage("Please enter your name.");
       return;
     }
-    if (!email) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setNewsletterMessage(
-        "Please include an '@' in the email address. 'Email' is missing an '@'.",
-      );
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setNewsletterMessage(
-        "Please include an '@' in the email address. 'Email' is missing an '@'.",
+        "Please include a valid email address.",
       );
       return;
     }
 
-    setNewsletterMessage(
-      "Thank you! Your newsletter request has been received.",
-    );
-    form.reset();
+    setIsSubmittingNewsletter(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/contact/newsletter`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, title, company })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNewsletterMessage(
+          "Thank you! Your newsletter request has been received.",
+        );
+        form.reset();
+      } else {
+        setNewsletterMessage(data.message || "Failed to submit. Please try again.");
+      }
+    } catch (err) {
+      setNewsletterMessage("Failed to submit. Please try again later.");
+    } finally {
+      setIsSubmittingNewsletter(false);
+    }
   };
 
   useEffect(() => {
@@ -86,7 +103,21 @@ const Contact = () => {
         setLoading(false);
       }
     };
+
+    const fetchPublicEmail = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/email/public-recipient`);
+        const data = await res.json();
+        if (data.success && data.recipientEmail) {
+          setPublicEmail(data.recipientEmail);
+        }
+      } catch (err) {
+        // fallback hello@bluechalk.com
+      }
+    };
+
     fetchContacts();
+    fetchPublicEmail();
   }, []);
 
   const getOffice = (name) => {
@@ -315,10 +346,12 @@ const Contact = () => {
                   />
                 </svg>
                 <a
-                  href={`mailto:${brooklyn?.email || "hello@bluechalk.com"}`}
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(brooklyn?.email || publicEmail)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-blue-600 hover:underline break-all"
                 >
-                  {brooklyn?.email || "hello@bluechalk.com"}
+                  {brooklyn?.email || publicEmail}
                 </a>
               </div>
 
@@ -518,10 +551,12 @@ const Contact = () => {
                   />
                 </svg>
                 <a
-                  href={`mailto:${portland?.email || "hello@bluechalk.com"}`}
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(portland?.email || publicEmail)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-blue-600 hover:underline break-all"
                 >
-                  {portland?.email || "hello@bluechalk.com"}
+                  {portland?.email || publicEmail}
                 </a>
               </div>
             </div>
@@ -580,9 +615,10 @@ const Contact = () => {
                   <div className="relative">
                     <button
                       type="submit"
-                      className="bg-[#1f93d1] border border-[#1f93d1] text-white uppercase font-semibold hover:bg-white hover:text-[#1f93d1] transition h-[46px] w-full text-[11px] leading-[11px]"
+                      disabled={isSubmittingNewsletter}
+                      className="bg-[#1f93d1] border border-[#1f93d1] text-white uppercase font-semibold hover:bg-white hover:text-[#1f93d1] transition h-[46px] w-full text-[11px] leading-[11px] disabled:opacity-50"
                     >
-                      Subscribe
+                      {isSubmittingNewsletter ? "Subscribing..." : "Subscribe"}
                     </button>
                     {newsletterMessage && (
                       <div
@@ -639,9 +675,10 @@ const Contact = () => {
                   <div className="relative">
                     <button
                       type="submit"
-                      className="bg-[#1f93d1] text-white uppercase font-semibold md:text-[11px] transition lg:h-[92px] h-[84px] w-full lg:w-[310px] md:w-[230px] px-6 sm:px-8 text-sm sm:text-base leading-[11px] hover:bg-white hover:text-[#1f93d1] hover:border hover:border-[#1f93d1]"
+                      disabled={isSubmittingNewsletter}
+                      className="bg-[#1f93d1] text-white uppercase font-semibold md:text-[11px] transition lg:h-[92px] h-[84px] w-full lg:w-[310px] md:w-[230px] px-6 sm:px-8 text-sm sm:text-base leading-[11px] hover:bg-white hover:text-[#1f93d1] hover:border hover:border-[#1f93d1] disabled:opacity-50"
                     >
-                      Subscribe
+                      {isSubmittingNewsletter ? "Subscribing..." : "Subscribe"}
                     </button>
                     {newsletterMessage && (
                       <div

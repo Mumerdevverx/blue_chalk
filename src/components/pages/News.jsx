@@ -9,6 +9,23 @@ const News = () => {
   const [page, setPage] = useState(1); 
   const [hasMore, setHasMore] = useState(true); 
   const [newsletterMessage, setNewsletterMessage] = useState("");
+  const [isSubmittingNewsletter, setIsSubmittingNewsletter] = useState(false);
+  const [publicEmail, setPublicEmail] = useState("hello@bluechalk.com");
+
+  useEffect(() => {
+    const fetchPublicEmail = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/email/public-recipient`);
+        const data = await res.json();
+        if (data.success && data.recipientEmail) {
+          setPublicEmail(data.recipientEmail);
+        }
+      } catch (err) {
+        // keep fallback hello@bluechalk.com
+      }
+    };
+    fetchPublicEmail();
+  }, []);
 
   useEffect(() => {
     if (!newsletterMessage) return undefined;
@@ -16,18 +33,38 @@ const News = () => {
     return () => window.clearTimeout(timeoutId);
   }, [newsletterMessage]);
 
-  const handleNewsletterSubmit = (event) => {
+  const handleNewsletterSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const name = form.elements.name.value.trim();
-    const email = form.elements.email.value.trim();
+    const name = form.elements.name?.value?.trim() || "";
+    const email = form.elements.email?.value?.trim() || "";
+    const title = form.elements.title?.value?.trim() || "";
+    const company = form.elements.company?.value?.trim() || "";
 
     if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setNewsletterMessage("Please enter a valid name and email address.");
       return;
     }
-    setNewsletterMessage("Thank you! Your newsletter request has been received.");
-    form.reset();
+
+    setIsSubmittingNewsletter(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/contact/newsletter`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, title, company })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setNewsletterMessage("Thank you! Your newsletter request has been received.");
+        form.reset();
+      } else {
+        setNewsletterMessage(data.message || "Failed to submit. Please try again.");
+      }
+    } catch (err) {
+      setNewsletterMessage("Failed to submit. Please try again later.");
+    } finally {
+      setIsSubmittingNewsletter(false);
+    }
   };
 
   useEffect(() => {
@@ -150,9 +187,14 @@ const News = () => {
             <h1 className="lg:hidden block mb-[30px] text-[36px] font-normal leading-[43px] text-[#c5c0bd] md:text-[36px] mt-10">Work With Us</h1>
             <div>
               <p className="text-[15px] text-[#777f83] md:text-[15px] leading-[22px]">Use the email below to reach out.</p>
-              <a href="mailto:hello@bluechalk.com" className="mt-[12px] flex items-center gap-[9px] text-[#0089D0] hover:underline text-[22px] md:text-[22px] leading-[28px]">
+              <a
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(publicEmail)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-[12px] flex items-center gap-[9px] text-[#0089D0] hover:underline text-[22px] md:text-[22px] leading-[28px]"
+              >
                 <span className="flex h-[22px] w-[22px] text-[16px] shrink-0 items-center justify-center rounded-full bg-[#0089D0] text-[11px] text-white">✉</span>
-                <span>hello@bluechalk.com</span>
+                <span>{publicEmail}</span>
               </a>
             </div>
             <div className="mt-[70px] sm:mt-[80px] md:mt-[90px] lg:mt-[60px]">
@@ -164,7 +206,9 @@ const News = () => {
                 <input type="text" name="title" placeholder="Title (optional)" className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] focus:placeholder:opacity-0" />
                 <input type="text" name="company" placeholder="Company (optional)" className="h-[38px] w-full border-b border-[#d9d9d9] bg-[#f1f1f1] px-[10px] text-[13px] text-[#152B3D] outline-none placeholder:text-[#aaa] focus:placeholder:opacity-0" />
                 <div className="relative">
-                  <button type="submit" className="h-[40px] w-full border border-[#0089D0] bg-[#0089D0] text-[11px] leading-[11px] font-semibold tracking-[1px] text-white transition duration-200 hover:bg-white hover:text-[#0089D0]">SUBSCRIBE</button>
+                  <button type="submit" disabled={isSubmittingNewsletter} className="h-[40px] w-full border border-[#0089D0] bg-[#0089D0] text-[11px] leading-[11px] font-semibold tracking-[1px] text-white transition duration-200 hover:bg-white hover:text-[#0089D0] disabled:opacity-50">
+                    {isSubmittingNewsletter ? "SUBMITTING..." : "SUBSCRIBE"}
+                  </button>
                   {newsletterMessage && (
                     <div className="absolute bottom-full right-0 z-[100] mb-3 flex w-[calc(100vw-40px)] max-w-md items-start gap-3 whitespace-normal break-words rounded-md border border-gray-300 bg-white px-5 py-4 text-sm text-black shadow-lg" role="status">
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm bg-[#f26522] font-bold text-white">!</span>

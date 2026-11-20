@@ -102,7 +102,9 @@ const Footer = () => {
           >
             <img src={mail} alt="Email" className="w-[16px] h-[16px] shrink-0" />
             <a
-              href={`mailto:${data.email}`}
+              href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(data.email || "hello@bluechalk.com")}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="whitespace-nowrap text-[#049bd7] text-[16px]"
             >
               {data.email}
@@ -195,7 +197,11 @@ const Footer = () => {
             )}
             {data.socialLinks?.emailLink && (
               <a
-                href={data.socialLinks.emailLink}
+                href={
+                  data.socialLinks.emailLink.includes("@") && !data.socialLinks.emailLink.startsWith("http")
+                    ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(data.socialLinks.emailLink.replace(/^mailto:/, ''))}`
+                    : `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(data.email || 'hello@bluechalk.com')}`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={() => setHoveredSocial("email")}
