@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import API_BASE_URL, { resolveNewsImageUrl } from "../../config/api";
 
@@ -12,6 +12,9 @@ const News = () => {
   const [isSubmittingNewsletter, setIsSubmittingNewsletter] = useState(false);
   const [publicEmail, setPublicEmail] = useState("hello@bluechalk.com");
 
+  // ✅ Loader ka reference (jo screen par neeche dikhega)
+  const loaderRef = useRef(null);
+
   useEffect(() => {
     const fetchPublicEmail = async () => {
       try {
@@ -21,7 +24,7 @@ const News = () => {
           setPublicEmail(data.recipientEmail);
         }
       } catch (err) {
-        // keep fallback hello@bluechalk.com
+        // keep fallback
       }
     };
     fetchPublicEmail();
@@ -67,6 +70,7 @@ const News = () => {
     }
   };
 
+  // ✅ Data Fetch Logic
   useEffect(() => {
     const fetchNews = async () => {
       try {
@@ -75,8 +79,6 @@ const News = () => {
         const data = await response.json();
         
         if (data.success) {
-          // ✅ Yahan se custom sorting hata di hai.
-          // Backend pehle se hi naya data (200, 199, 198...) bhej raha hai.
           if (page === 1) {
             setNews(data.data); 
           } else {
@@ -99,9 +101,28 @@ const News = () => {
     fetchNews();
   }, [page]);
 
-  const loadMore = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
+  // ✅ INTERSECTION OBSERVER (Automatic Load on Scroll)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Agar loader screen par dikh jaye aur abhi data load ho raha ho to ruk jaye
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      { threshold: 1.0 } // 100% visible hone par trigger hoga
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [hasMore, loading]);
 
   if (error) {
     return (
@@ -115,10 +136,9 @@ const News = () => {
     <div className="w-full bg-white mt-20 pt-[30px] pb-[60px] sm:pt-[40px] md:pt-[45px] md:pb-[80px]">
       <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-0">
         
-        {/* TOP HEADINGS */}
         <div className="flex w-full items-center justify-between pb-[20px] max-sm:px-8">
           <div className="w-full lg:w-[73%]">
-            <h1 className="text-[36px] ml-22  md:text-[36px] font-normal leading-[43px] text-[#152B3D]">News</h1>
+            <h1 className="text-[36px] ml-22 md:text-[36px] font-normal leading-[43px] text-[#152B3D]">News</h1>
           </div>
           <div className="hidden w-[28%] lg:block">
             <h1 className="text-[28px] font-normal lg:pt-4 leading-[43px] text-[#c5c0bd] sm:text-[30px] md:text-[36px]">Work With Us</h1>
@@ -142,6 +162,7 @@ const News = () => {
                         <img
                           src={resolveNewsImageUrl(item.image)}
                           alt={item.title}
+                          loading="lazy" // ✅ Images lazy load hongi
                           className="h-[230px] md:h-[290px] lg:h-[270px] w-full grayscale transition duration-300 group-hover:grayscale-0"
                           onError={(e) => { e.target.src = "https://via.placeholder.com/400x300?text=No+Image"; }}
                         />
@@ -166,23 +187,16 @@ const News = () => {
                   </div>
                 ))}
 
-                {/* LOAD MORE BUTTON */}
+                {/* ✅ NAYA: Loader jo khud load karega, button nahi */}
                 {hasMore && (
-                  <div className="flex justify-center mt-10 mb-8 w-full">
-                    <button 
-                      onClick={loadMore} 
-                      disabled={loading}
-                      className="px-8 py-3 bg-[#0089D0] text-white text-[13px] font-semibold tracking-[1px] hover:bg-white hover:text-[#0089D0] border border-[#0089D0] transition duration-300 disabled:opacity-50 cursor-pointer"
-                    >
-                      {loading ? "LOADING..." : "LOAD MORE NEWS"}
-                    </button>
+                  <div ref={loaderRef} className="flex justify-center mt-10 mb-8 w-full py-4">
+                    {loading && <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>}
                   </div>
                 )}
               </>
             )}
           </div>
 
-          {/* Right Sidebar */}
           <div className="w-full border-[#eeeeee] pt-[40px] lg:px-0 md:px-0 lg:w-[27%] lg:pl-[34px] lg:pt-[5px] max-sm:px-8">
             <h1 className="lg:hidden block mb-[30px] text-[36px] font-normal leading-[43px] text-[#c5c0bd] md:text-[36px] mt-10">Work With Us</h1>
             <div>

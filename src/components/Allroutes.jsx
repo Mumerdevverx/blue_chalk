@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 
 import Home from "./landingpage/Home";
 import Layout from "./layout/Layout";
+import Navbar from "./layout/Navbar";
 import About from "./pages/About";
 import Aboutpartner from "./pages/aboutpartner";
 import Contact from "./pages/Contact";
@@ -19,6 +20,8 @@ const Allroutes = () => {
   const location = useLocation();
   const [displayedLocation, setDisplayedLocation] = useState(location);
   const [transitionStage, setTransitionStage] = useState("idle");
+  const [isFromHome, setIsFromHome] = useState(false);
+  const [isToHome, setIsToHome] = useState(false);
   const locationKey = `${location.pathname}${location.search}${location.hash}`;
   const displayedLocationKey = `${displayedLocation.pathname}${displayedLocation.search}${displayedLocation.hash}`;
 
@@ -32,28 +35,33 @@ const Allroutes = () => {
   }, []);
 
   useLayoutEffect(() => {
-    if (location.hash && displayedLocationKey === locationKey) {
+    const hash = location.hash;
+    if (hash) {
       let attempts = 0;
       let timer;
-      const scrollToCareers = () => {
-        const target = document.getElementById(location.hash.slice(1));
+      const targetId = hash.slice(1);
+      const scrollToTarget = () => {
+        const target = document.getElementById(targetId);
         if (target) {
-          const top = target.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top, behavior: "auto" });
+          const NAVBAR_HEIGHT = 70;
+          const PADDING = 20;
+          const top = target.getBoundingClientRect().top + window.scrollY - (NAVBAR_HEIGHT + PADDING);
+          window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
           return;
         }
-        if (attempts < 30) {
+        if (attempts < 50) {
           attempts += 1;
-          timer = window.setTimeout(scrollToCareers, 100);
+          timer = window.setTimeout(scrollToTarget, 50);
         }
       };
 
-      timer = window.setTimeout(scrollToCareers, 0);
+      timer = window.setTimeout(scrollToTarget, 0);
       return () => window.clearTimeout(timer);
     }
 
+    // Only scroll to top when there is NO hash
     window.scrollTo(0, 0);
-  }, [displayedLocationKey]);
+  }, [displayedLocationKey, locationKey, location.hash]);
 
   useEffect(() => {
     if (locationKey === displayedLocationKey) return undefined;
@@ -64,34 +72,77 @@ const Allroutes = () => {
       return undefined;
     }
 
-    setTransitionStage("exit");
+    // Two-way navigation detection
+    const fromHome = displayedLocation.pathname === "/";
+    const toHome = location.pathname === "/";
 
-    const timer = setTimeout(() => {
+    setIsFromHome(fromHome);
+    setIsToHome(toHome);
+
+    if (fromHome) {
+      // Home -> Internal: navbar slides UP to top
       setDisplayedLocation(location);
       setTransitionStage("enter");
-    }, 450);
-
-    return () => clearTimeout(timer);
+    } else if (toHome) {
+      // Internal -> Home: navbar slides DOWN to bottom
+      setDisplayedLocation(location);
+      setTransitionStage("exit-to-home");
+    } else {
+      // Internal -> Internal: cross-fade content, navbar stays fixed
+      setDisplayedLocation(location);
+      setTransitionStage("internal");
+    }
   }, [displayedLocationKey, location, locationKey]);
 
   useEffect(() => {
-    if (transitionStage !== "enter") return undefined;
-
-    const timer = setTimeout(() => {
-      setTransitionStage("idle");
-    }, 550);
-
-    return () => clearTimeout(timer);
+    if (transitionStage === "enter") {
+      const timer = setTimeout(() => {
+        setTransitionStage("idle");
+        setIsFromHome(false);
+      }, 550);
+      return () => clearTimeout(timer);
+    }
+    if (transitionStage === "exit-to-home") {
+      const timer = setTimeout(() => {
+        setTransitionStage("idle");
+        setIsToHome(false);
+      }, 550);
+      return () => clearTimeout(timer);
+    }
+    if (transitionStage === "internal") {
+      const timer = setTimeout(() => {
+        setTransitionStage("idle");
+      }, 250);
+      return () => clearTimeout(timer);
+    }
   }, [transitionStage]);
 
   return (
-    <div className={`route-transition route-transition-${transitionStage}`}>
+    <>
+      {/* While returning to Home, render floating Navbar sliding down to bottom */}
+      {isToHome && transitionStage === "exit-to-home" && (
+        <Navbar isToHome={true} transitionStage="exit-to-home" />
+      )}
+
       <Routes location={displayedLocation}>
         {/* Home – No Navbar & Footer */}
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Home isToHome={isToHome && transitionStage === "exit-to-home"} />
+          }
+        />
 
         {/* Layout Pages */}
-        <Route element={<Layout />}>
+        <Route
+          element={
+            <Layout
+              isFromHome={isFromHome}
+              isToHome={isToHome}
+              transitionStage={transitionStage}
+            />
+          }
+        >
           <Route path="/about" element={<About />} />
           <Route path="/aboutpartner" element={<Aboutpartner />} />
 
@@ -115,7 +166,7 @@ const Allroutes = () => {
           <Route path="/terms-of-use" element={<TermsOfUse />} />
         </Route>
       </Routes>
-    </div>
+    </>
   );
 };
 
