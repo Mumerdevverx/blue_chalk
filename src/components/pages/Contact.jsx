@@ -167,7 +167,7 @@ const Contact = () => {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto py-6 mt-20 px-7 lg:px-9 md:px-12">
+      <div className="max-w-7xl mx-auto py-6 mt-20 px-7 lg:px-13 md:px-12">
         <h1 className="font-basis-web leading-[43px] text-[36px] font-semibold text-[#293339]">
           Contact Us
         </h1>
@@ -349,7 +349,7 @@ const Contact = () => {
                   href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(brooklyn?.email || publicEmail)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline break-all"
+                  className="text-[#0077B6] hover:underline break-all"
                 >
                   {brooklyn?.email || publicEmail}
                 </a>
@@ -369,7 +369,7 @@ const Contact = () => {
                 </svg>
                 <a
                   href={`tel:${brooklyn?.phone || "3474108445"}`}
-                  className="text-blue-600 hover:underline"
+                  className="text-[#0077B6] hover:underline"
                 >
                   {brooklyn?.phone || "347.410.8445"}
                 </a>
@@ -554,7 +554,7 @@ const Contact = () => {
                   href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(portland?.email || publicEmail)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline break-all"
+                  className="text-[#0077B6] hover:underline break-all"
                 >
                   {portland?.email || publicEmail}
                 </a>
