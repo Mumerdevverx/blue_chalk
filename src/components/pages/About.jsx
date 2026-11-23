@@ -18,6 +18,145 @@ const renderRichText = (content) => ({
   __html: content || "",
 });
 
+// ✅ Fallback 9 filmstrip images from bluechalk.com/about/
+const DEFAULT_FILMSTRIP_IMAGES = [
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/f6/2d/f62d19e026df791ba3a7c661beda0ecf.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/8d/6b/8d6b240158cdb9e39b502e24bc91ef2d.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/22/d2/22d2103e849a2750b2fc53933781749e.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/09/c5/09c50aaf0e82bff20e5b41fd6f1ff3d6.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/1f/5c/1f5cc003676fcf9b5f1ce3b3ed87c5d6.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/12/b3/12b32ab41938ea132a4284ec838aed81.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/e8/5d/e85d441346b33ae10b95f04d314d2a2f.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/0f/0a/0f0a7c5ceb3515ea8c10b1777ead50ac.jpg",
+    caption: "",
+  },
+  {
+    src: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/e5/90/e5902ac0c0e9dc904fe70ff4e11607b9.jpg",
+    caption: "",
+  },
+];
+
+// Filmstrip component matching bluechalk.com
+const Filmstrip = ({ images = [] }) => {
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [aspectRatios, setAspectRatios] = useState({});
+  const [filmstripHeight, setFilmstripHeight] = useState(0);
+  const [filmstripWidth, setFilmstripWidth] = useState(0);
+  const filmstripRef = useRef(null);
+
+  const items = images && images.length > 0
+    ? images.map((img) => ({
+        _id: img._id,
+        src: getImageUrl(img.imageUrl || img.src || img.url),
+        caption: img.caption || img.title || "",
+        href: img.href || img.link || "",
+      }))
+    : DEFAULT_FILMSTRIP_IMAGES;
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (filmstripRef.current) {
+        setFilmstripHeight(filmstripRef.current.clientHeight);
+        setFilmstripWidth(filmstripRef.current.clientWidth);
+      }
+    };
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  useEffect(() => {
+    items.forEach((item) => {
+      if (!item.src) return;
+      const img = new Image();
+      img.onload = () => {
+        setAspectRatios((prev) => {
+          if (prev[item.src]) return prev;
+          return {
+            ...prev,
+            [item.src]: img.naturalWidth / img.naturalHeight,
+          };
+        });
+      };
+      img.src = item.src;
+    });
+  }, [items]);
+
+  const handleTouchMove = (e) => {
+    if (!filmstripRef.current || items.length === 0) return;
+    const touch = e.touches[0];
+    const rect = filmstripRef.current.getBoundingClientRect();
+    const xPos = touch.clientX - rect.left;
+    const targetImgNum = Math.floor(xPos / (rect.width / items.length));
+    if (targetImgNum >= 0 && targetImgNum < items.length) {
+      setExpandedIndex(targetImgNum);
+    }
+  };
+
+  return (
+    <div className="filmstrip-container">
+      <div
+        className="filmstrip"
+        data-filmstrip=""
+        ref={filmstripRef}
+        onMouseLeave={() => setExpandedIndex(null)}
+        onTouchMove={handleTouchMove}
+      >
+        {items.map((item, index) => {
+          const isExpanded = expandedIndex === index;
+          const ratio = aspectRatios[item.src] || 1.5;
+          const height = filmstripHeight || (filmstripRef.current ? filmstripRef.current.clientHeight : 0);
+          const targetWidth = height > 0 ? Math.floor(height * ratio) : undefined;
+
+          return (
+            <div
+              key={item._id || index}
+              className={`filmstrip-img ${isExpanded ? "state-expanded" : ""}`}
+              data-src={item.src}
+              data-caption={item.caption || ""}
+              data-href={item.href || undefined}
+              style={{
+                backgroundImage: `url("${item.src}")`,
+                width: isExpanded && targetWidth ? `${targetWidth}px` : undefined,
+              }}
+              onMouseEnter={() => setExpandedIndex(index)}
+              onTouchStart={() => setExpandedIndex(index)}
+              onClick={() => {
+                if (item.href) window.open(item.href, "_blank");
+              }}
+            >
+              <div className="filmstrip-caption">{item.caption || ""}</div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="caption" data-captionholder=""></div>
+    </div>
+  );
+};
+
 const About = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -74,8 +213,11 @@ const About = () => {
     if (!loading && window.location.hash === "#careers") {
       const careersSection = document.getElementById("careers");
       if (careersSection) {
+        const NAVBAR_HEIGHT = 70;
+        const PADDING = 20;
+        const top = careersSection.getBoundingClientRect().top + window.scrollY - (NAVBAR_HEIGHT + PADDING);
         window.scrollTo({
-          top: careersSection.getBoundingClientRect().top + window.scrollY,
+          top: Math.max(0, top),
           behavior: "auto",
         });
       }
@@ -154,7 +296,7 @@ const About = () => {
 
 </div>
 
-        {/* ON ASSIGNMENT */}
+        {/* ON ASSIGNMENT*/}
         <div className="mt-[90px] md:mt-[65px] lg:mt-[65px] max-sm:mb-10">
           <h2 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] font-bgw-400 text-[#293339] mb-[15px] sm:mb-[20px] md:mb-[25px]">
             {about.onAssignmentTitle}
@@ -170,36 +312,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* 9 IMAGE GALLERY */}
-      <div className="w-full mt-[30px] sm:mt-[40px] md:mt-[40px] overflow-hidden">
-        <div className="flex flex-wrap sm:flex-nowrap w-full h-[200px] sm:h-[280px] md:h-[380px]">
-          {images.length > 0 ? (
-            images.map((img, index) => (
-              <div
-                key={img._id || index}
-                className="relative h-full flex-1 min-w-[50px] sm:min-w-0 overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:flex-[4]"
-              >
-                <img
-                  src={getImageUrl(img.imageUrl)}
-                  alt={img.title || `Assignment ${index + 1}`}
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                  loading="lazy"
-                />
-              </div>
-            ))
-          ) : (
-            // Fallback: show static images (if you want to keep them)
-            Array.from({ length: 9 }).map((_, i) => (
-              <div
-                key={i}
-                className="relative h-full flex-1 min-w-[50px] sm:min-w-0 overflow-hidden bg-gray-200"
-              >
-                <div className="w-full h-full flex items-center justify-center text-gray-400">No image</div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+      {/* FILMSTRIP (Blue Chalk) */}
+      <Filmstrip images={images} />
 
       {/* SERVICES */}
       <section className="w-full mx-auto mt-[50px] sm:mt-[60px] md:mt-[80px] lg:px-22 md:px-13 px-7">
@@ -251,7 +365,7 @@ const About = () => {
 
       {/* CAREERS */}
      {/* ================= CAREERS ================= */}
-<section id="careers" className="w-full  mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-23 md:px-13 px-7">
+<section id="careers" className="w-full scroll-mt-[90px] mx-auto mt-[60px] md:mt-[76px] lg:mt-[60px] pb-[60px] md:pb-[50px] lg:pb-[60px] lg:px-23 md:px-13 px-7">
   <h2 className="text-[36px] md:text-[32px] lg:text-[36px] leading-[1.2] font-normal text-[#152B3D] mb-[40px] sm:mb-[50px] md:mb-[75px]">
     Careers
   </h2>

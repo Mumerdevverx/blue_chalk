@@ -68,7 +68,7 @@ const getHomeWorkSlug = (item, projects) => {
   return title ? getWorkNameSlug({ buttonText: title }) : "";
 };
 
-const Home = () => {
+const Home = ({ isToHome = false }) => {
   const [currentImage, setCurrentImage] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -214,7 +214,7 @@ const Home = () => {
   }, [images]);
 
   return (
-    <main className="min-h-screen w-full bg-white">
+    <main className={`min-h-screen w-full bg-white ${isToHome ? "home-fade-in" : ""}`}>
       <section className="flex w-full flex-col md:flex-row">
         {/* ==========================================
             VIDEO SECTION
@@ -320,7 +320,7 @@ const Home = () => {
           )}
         </div>
 
-        <div className="hidden h-16 w-full items-center justify-end border-t border-gray-200 bg-white px-2 max-sm:flex">
+        <div className={`hidden h-16 w-full items-center justify-end border-t border-gray-200 bg-white px-2 max-sm:flex ${isToHome ? "opacity-0" : "opacity-100 transition-opacity duration-200"}`}>
           <button
             type="button"
             onClick={() => setMenuOpen(true)}
@@ -462,7 +462,7 @@ const Home = () => {
         </aside>
       </section>
 
-      <nav className="hidden h-[72px] w-full items-center bg-white px-20 md:flex">
+      <nav className={`hidden h-[72px] w-full items-center bg-white px-20 md:flex ${isToHome ? "opacity-0" : "opacity-100 transition-opacity duration-200"}`}>
         <div className="flex items-center ml-4 gap-25 font-basis-web">
           <Link
             to="/about"

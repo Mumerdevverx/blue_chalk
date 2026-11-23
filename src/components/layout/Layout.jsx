@@ -4,16 +4,30 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-const Layout = () => {
+const Layout = ({ isFromHome = false, isToHome = false, transitionStage = "idle" }) => {
   return (
     <>
-      <Navbar />
+      <Navbar
+        isFromHome={isFromHome}
+        isToHome={isToHome}
+        transitionStage={transitionStage}
+      />
 
-      <main>
-        <Outlet />
-      </main>
+      <div
+        className={
+          isFromHome && transitionStage === "enter"
+            ? "content-transition-from-home"
+            : transitionStage === "internal"
+            ? "content-transition-internal"
+            : ""
+        }
+      >
+        <main>
+          <Outlet />
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
     </>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logonav from "../../assets/logonav.png";
 
-const Navbar = () => {
+const Navbar = ({ isFromHome = false, isToHome = false, transitionStage = "idle" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -46,17 +46,35 @@ const Navbar = () => {
   };
 
   const getLinkClass = (path) =>
-    `text-[16px] lg:text-[17px] font-basis transition-colors ${
+    `text-[16px] lg:text-[17px] font-basis transition-colors duration-300 ${
       location.pathname === path
         ? "text-black"
         : "text-[#0089D0] hover:text-[#006fae]"
     }`;
 
   return (
-    <nav className="fixed inset-x-0 top-0 font-semibold bg-white z-50">
+    <nav
+      className={`fixed inset-x-0 top-0 font-semibold bg-white z-50 ${
+        isFromHome && transitionStage === "enter"
+          ? "navbar-slide-up"
+          : isToHome && transitionStage === "exit-to-home"
+          ? "navbar-slide-down"
+          : ""
+      }`}
+    >
       <div className="w-full mx-auto h-[70px] px-5 sm:px-6  md:px-10 lg:px-22 flex items-center">
         {/* Logo */}
-        <Link to="/" onClick={closeMenu} className="shrink-0">
+        <Link
+          to="/"
+          onClick={closeMenu}
+          className={`shrink-0 ${
+            isFromHome && transitionStage === "enter"
+              ? "navbar-logo-enter"
+              : isToHome && transitionStage === "exit-to-home"
+              ? "navbar-logo-exit"
+              : ""
+          }`}
+        >
           <img
             src={logonav}
             alt="Blue Chalk"
