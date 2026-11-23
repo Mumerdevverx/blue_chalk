@@ -132,7 +132,7 @@ const About = () => {
       </div>
 
       {/* ABOUT US */}
-      <section className="w-full mx-auto mt-[40px] sm:mt-[50px] md:mt-[35px] lg:px-22 md:px-13 px-7">
+      <section className="w-full mx-auto lg:px-22 md:px-13 px-7">
         <h1 className="text-[36px] md:text-[36px] lg:text-[36px] leading-[1.2] sm:leading-[43px] text-[#293339] mb-[20px] sm:mb-[25px] md:mb-[20px]">
           About Us
         </h1>
