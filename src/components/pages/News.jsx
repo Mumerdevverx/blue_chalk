@@ -113,20 +113,20 @@ const News = () => {
 
   return (
     <div className="w-full bg-white mt-20 pt-[30px] pb-[60px] sm:pt-[40px] md:pt-[45px] md:pb-[80px]">
-      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-1">
+      <div className="w-full lg-flex-1 px-0 md:px-[50px] lg:px-0">
         
         {/* TOP HEADINGS */}
-        <div className="flex w-full items-center justify-between pb-[28px] max-sm:px-8">
+        <div className="flex w-full items-center justify-between pb-[20px] max-sm:px-8">
           <div className="w-full lg:w-[73%]">
-            <h1 className="text-[36px] ml-20 md:text-[36px] font-normal leading-[43px] text-[#152B3D]">News</h1>
+            <h1 className="text-[36px] ml-22  md:text-[36px] font-normal leading-[43px] text-[#152B3D]">News</h1>
           </div>
-          <div className="hidden w-[27%] lg:block">
+          <div className="hidden w-[28%] lg:block">
             <h1 className="text-[28px] font-normal lg:pt-4 leading-[43px] text-[#c5c0bd] sm:text-[30px] md:text-[36px]">Work With Us</h1>
           </div>
         </div>
 
         <div className="flex w-full flex-col lg:flex-row">
-          <div className="w-full lg:w-[71%]">
+          <div className="w-full lg:w-[70%]">
             {news.length === 0 && loading ? (
               <div className="flex justify-center py-10">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -137,12 +137,12 @@ const News = () => {
               <>
                 {news.map((item) => (
                   <div key={item._id} className="group flex w-full flex-col border-t border-[#eeeeee] md:flex-row">
-                    <div className="w-full shrink-0 md:w-[40%]">
+                    <div className="w-full shrink-0 md:w-[43%]">
                       <Link to={`/news/${item.slug}`} className="block">
                         <img
                           src={resolveNewsImageUrl(item.image)}
                           alt={item.title}
-                          className="h-[230px] md:h-[290px] lg:h-[275px] w-full grayscale transition duration-300 group-hover:grayscale-0"
+                          className="h-[230px] md:h-[290px] lg:h-[270px] w-full grayscale transition duration-300 group-hover:grayscale-0"
                           onError={(e) => { e.target.src = "https://via.placeholder.com/400x300?text=No+Image"; }}
                         />
                       </Link>
