@@ -8,9 +8,138 @@ const isDaveyImage = (url) => {
   if (!url || typeof url !== "string") return false;
   return (
     url.includes("awardTwo") ||
-    url.includes("/9j/4AAQSkZJRgABAQAAAQABAAD/4gKgSUNDX1BST0ZJTEU") ||
     url.toLowerCase().includes("davey")
   );
+};
+
+const cleanSlugStr = (s) => {
+  if (!s) return "";
+  return String(s)
+    .replace(/&nbsp;|nbsp/gi, " ")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
+const simplify = (s) => cleanSlugStr(s).replace(/-/g, "");
+
+const projectFallbacks = {
+  "fix-me-a-plate": {
+    videoUrl: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/media/FMAP_S4Trailer.mp4",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/e8/8e/e88e00680fa8a03d127770ec7155e8c4.jpg"
+  },
+  "atomic-echoes-untold-stories-from-world-war-ii": {
+    videoUrl: "https://www.youtube.com/embed/4iUpvDhoPOw",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/a1/51/a15197d0c577bc974f759fbe5fa4cd40.jpg"
+  },
+  "atomic-echoes": {
+    videoUrl: "https://www.youtube.com/embed/4iUpvDhoPOw",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/a1/51/a15197d0c577bc974f759fbe5fa4cd40.jpg"
+  },
+  "lowe-s-how-to": {
+    videoUrl: "https://www.youtube.com/embed/qbGkLPImZZY",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/fd/ed/fded2dc497a0060ebacd7b1fffe674c9.jpg"
+  },
+  "lowes-how-to": {
+    videoUrl: "https://www.youtube.com/embed/qbGkLPImZZY",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/fd/ed/fded2dc497a0060ebacd7b1fffe674c9.jpg"
+  },
+  "diary-of-an-old-home": {
+    videoUrl: "https://www.youtube.com/embed/hRrEKkyYy8U",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/6a/1b/6a1b70b05424339c7cfc41227b7f9e66.jpg"
+  },
+  "oct-20-2020-with-oregon": {
+    videoUrl: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/media/OHSU_GME_Recruitment_90_Final.mp4",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/28/bf/28bf0605dbefb1a20a44288ffbc2a98f.jpg"
+  },
+  "created-for-oregon-health-science-university": {
+    videoUrl: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/media/OHSU_GME_Recruitment_90_Final.mp4",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/28/bf/28bf0605dbefb1a20a44288ffbc2a98f.jpg"
+  },
+  "a-sense-of-ohsu": {
+    videoUrl: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/media/OHSU_GME_Recruitment_90_Final.mp4",
+    poster: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/28/bf/28bf0605dbefb1a20a44288ffbc2a98f.jpg"
+  }
+};
+
+const findMatchingProject = (searchSlug, projects) => {
+  if (!searchSlug || !Array.isArray(projects) || !projects.length) return null;
+  const targetClean = cleanSlugStr(searchSlug);
+  const targetSimple = simplify(searchSlug);
+
+  // 1. Exact match on slug, _id, or buttonText slug
+  let found = projects.find(
+    (p) =>
+      p.slug === searchSlug ||
+      p._id === searchSlug ||
+      cleanSlugStr(p.slug) === targetClean ||
+      cleanSlugStr(p.buttonText) === targetClean
+  );
+  if (found) return found;
+
+  // 2. Exact match on title slug
+  found = projects.find((p) => cleanSlugStr(p.title) === targetClean);
+  if (found) return found;
+
+  // 3. Simplified match (ignoring dashes and spacing)
+  found = projects.find((p) => {
+    const pSlugSimp = simplify(p.slug);
+    const pBtnSimp = simplify(p.buttonText);
+    const pTitleSimp = simplify(p.title);
+    return (
+      pSlugSimp === targetSimple ||
+      pBtnSimp === targetSimple ||
+      pTitleSimp === targetSimple
+    );
+  });
+  if (found) return found;
+
+  // 4. Prefix or substring match for truncated slugs
+  found = projects.find((p) => {
+    const pSlugSimp = simplify(p.slug);
+    const pBtnSimp = simplify(p.buttonText);
+    const pTitleSimp = simplify(p.title);
+    if (targetSimple.length >= 8) {
+      if (pSlugSimp.startsWith(targetSimple) || targetSimple.startsWith(pSlugSimp)) return true;
+      if (pBtnSimp.startsWith(targetSimple) || targetSimple.startsWith(pBtnSimp)) return true;
+      if (pTitleSimp.startsWith(targetSimple) || targetSimple.startsWith(pTitleSimp)) return true;
+    }
+    return false;
+  });
+  if (found) return found;
+
+  // 5. Special keyword match
+  if (targetSimple.includes("lowe") && targetSimple.includes("how")) {
+    return projects.find(
+      (p) => simplify(p.slug).includes("lowe") && simplify(p.slug).includes("how")
+    );
+  }
+  if (targetSimple.includes("diary") && targetSimple.includes("home")) {
+    return projects.find(
+      (p) => simplify(p.slug).includes("diary") && simplify(p.slug).includes("home")
+    );
+  }
+  if (targetSimple.includes("atomicechoes")) {
+    return projects.find(
+      (p) => simplify(p.slug).includes("atomic") && simplify(p.slug).includes("echoes")
+    );
+  }
+  if (targetSimple.includes("fixmeaplate") && targetSimple.includes("sermon")) {
+    return projects.find((p) => simplify(p.slug).includes("sermon"));
+  }
+  if (targetSimple.includes("fixmeaplate") && targetSimple.includes("spumoni")) {
+    return projects.find((p) => simplify(p.slug).includes("spumoni"));
+  }
+  if (targetSimple.includes("fixmeaplate") && targetSimple.includes("nomwah")) {
+    return projects.find((p) => simplify(p.slug).includes("nomwah"));
+  }
+  if (targetSimple.includes("fixmeaplate")) {
+    return projects.find((p) => p.slug === "fix-me-a-plate");
+  }
+
+  return null;
 };
 
 const Workdetail = () => {
@@ -45,13 +174,10 @@ const Workdetail = () => {
         }
 
         const allData = await allRes.json();
-        const currentWork = workData.success
-          ? workData.data
-          : allData.success
-            ? allData.data.find(
-              (project) => project.slug === slug || getWorkNameSlug(project) === slug
-            )
-            : null;
+        let currentWork = workData.success ? workData.data : null;
+        if (!currentWork && allData.success && Array.isArray(allData.data)) {
+          currentWork = findMatchingProject(slug, allData.data);
+        }
 
         if (!currentWork) {
           setError(workData.message || "Work not found");
@@ -60,40 +186,70 @@ const Workdetail = () => {
         }
 
         setWork(currentWork);
-        if (allData.success) {
+        if (allData.success && Array.isArray(allData.data)) {
           setAllProjects(allData.data);
-          const currentIndex = allData.data.findIndex(
-            (project) => project._id === currentWork._id
-          );
-          if (currentIndex !== -1 && currentIndex < allData.data.length - 1) {
-            setNextProject(allData.data[currentIndex + 1]);
-          }
 
-          if (
-            slug === "created-for-oregon-health-science-university" ||
-            slug?.toLowerCase().includes("oregon-health-science-university") ||
-            currentWork?.slug === "created-for-oregon-health-science-university" ||
-            currentWork?.slug?.toLowerCase().includes("oregon-health-science-university")
-          ) {
-            const senseOfOhsu = allData.data.find(
+          // Determine category context (from navigation state or project category)
+          const navCategory = location.state?.category;
+          const currentCategory =
+            navCategory && navCategory !== "All Projects" && navCategory !== "Featured"
+              ? navCategory
+              : currentWork.category &&
+                String(currentWork.category).toLowerCase() !== "award"
+              ? currentWork.category
+              : null;
+
+          // Exclude Award items unless current project is an award
+          const isAward = String(currentWork.category || "").toLowerCase() === "award";
+          const candidateList = allData.data.filter(
+            (p) => isAward || String(p.category || "").toLowerCase() !== "award"
+          );
+
+          let next = null;
+          if (currentCategory) {
+            const sameCatProjects = candidateList.filter(
               (p) =>
-                p.slug === "a-sense-of-ohsu" ||
-                p.buttonText?.toLowerCase().includes("sense of ohsu")
+                String(p.category || "").toLowerCase() ===
+                String(currentCategory).toLowerCase()
             );
-            if (senseOfOhsu) {
-              setNextProject(senseOfOhsu);
+            const idxInCat = sameCatProjects.findIndex(
+              (p) => p._id === currentWork._id
+            );
+            if (idxInCat !== -1 && sameCatProjects.length > 1) {
+              next = sameCatProjects[(idxInCat + 1) % sameCatProjects.length];
             }
           }
+
+          if (!next || next._id === currentWork._id) {
+            const idxInAll = candidateList.findIndex(
+              (p) => p._id === currentWork._id
+            );
+            if (idxInAll !== -1 && candidateList.length > 1) {
+              next = candidateList[(idxInAll + 1) % candidateList.length];
+            } else if (candidateList.length > 0) {
+              next = candidateList[0];
+            }
+          }
+
+          if (next) {
+            setNextProject(next);
+          }
+
           // Related: prioritize projects that have valid real images (exclude Davey awards logo)
-          const others = allData.data.filter(p => p._id !== currentWork._id);
+          const others = allData.data.filter((p) => p._id !== currentWork._id);
           const hasRealImage = (p) => {
-            const img = p.image || p.imageUrl || p.thumbnail || p.thumbnailUrl || p.mediaUrl;
+            const img =
+              p.image || p.imageUrl || p.thumbnail || p.thumbnailUrl || p.mediaUrl;
             return Boolean(img && !isDaveyImage(img));
           };
           const validImageProjects = others.filter(hasRealImage);
           const pool = validImageProjects.length >= 3 ? validImageProjects : others;
-          const sameCategory = pool.filter(p => p.category === currentWork.category);
-          const different = pool.filter(p => p.category !== currentWork.category);
+          const sameCategory = pool.filter(
+            (p) => p.category === currentWork.category
+          );
+          const different = pool.filter(
+            (p) => p.category !== currentWork.category
+          );
           setRelatedProjects([...sameCategory, ...different].slice(0, 3));
         }
         setLoading(false);
@@ -106,20 +262,26 @@ const Workdetail = () => {
     fetchData();
   }, [slug]);
 
-  // ✅ Extract video URL – supports YouTube iframe AND direct <video> tag
+  // ✅ Extract video URL – supports YouTube iframe, embed div, direct <video>, and <source>
   const extractVideoFromContent = (html) => {
     if (!html) return null;
 
-    // Try YouTube iframe
-    let match = html.match(/<iframe[^>]*src="([^"]*)"[^>]*><\/iframe>/);
-    if (match) return match[1];
-
     // Try YouTube embed div
-    match = html.match(/<div data-youtube-video="[^"]*"><iframe[^>]*src="([^"]*)"[^>]*><\/iframe><\/div>/);
+    let match = html.match(
+      /<div data-youtube-video="[^"]*"><iframe[\s\S]*?src="([^"]*)"[\s\S]*?<\/iframe><\/div>/i
+    );
     if (match) return match[1];
 
-    // ✅ Try direct <video> tag
-    match = html.match(/<video[^>]*src="([^"]*)"[^>]*>/);
+    // Try iframe src
+    match = html.match(/<iframe[\s\S]*?src="([^"]*)"[\s\S]*?>/i);
+    if (match) return match[1];
+
+    // Try direct <video> tag src
+    match = html.match(/<video[\s\S]*?src="([^"]*)"[\s\S]*?>/i);
+    if (match) return match[1];
+
+    // Try <source src="..."> inside video
+    match = html.match(/<source[\s\S]*?src="([^"]*)"[\s\S]*?>/i);
     if (match) return match[1];
 
     return null;
@@ -127,12 +289,17 @@ const Workdetail = () => {
 
   // ✅ Clean content – remove iframes and video tags
   const cleanContent = (html, removeFirstImage = false) => {
-    if (!html) return '';
+    if (!html) return "";
     let cleaned = html
-      .replace(/<div data-youtube-video="[^"]*"><iframe[^>]*src="[^"]*"[^>]*><\/iframe><\/div>/, '')
-      .replace(/<iframe[^>]*src="[^"]*"[^>]*><\/iframe>/, '')
-      .replace(/<video[^>]*src="[^"]*"[^>]*><\/video>/, '') // ✅ Remove video tags
-      .replace(/Write something amazing\.\.\./g, '')
+      .replace(
+        /<div data-youtube-video="[^"]*"><iframe[\s\S]*?<\/iframe><\/div>/gi,
+        ""
+      )
+      .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
+      .replace(/<iframe[^>]*\/?>/gi, "")
+      .replace(/<video[\s\S]*?<\/video>/gi, "")
+      .replace(/<video[^>]*\/?>/gi, "")
+      .replace(/Write something amazing\.\.\./g, "")
       .trim();
 
     if (removeFirstImage) {
@@ -150,31 +317,55 @@ const Workdetail = () => {
     try {
       const doc = new DOMParser().parseFromString(html, "text/html");
 
-      const monthPattern = "(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
-      const headerLineRegex = new RegExp(`(?:${monthPattern}|\\b(?:19|20)\\d{2}\\b|\\bwith\\s+[a-z0-9])`, "i");
+      const monthPattern =
+        "(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)";
+      const headerLineRegex = new RegExp(
+        `(?:${monthPattern}|\\b(?:19|20)\\d{2}\\b|\\bwith\\s+[a-z0-9])`,
+        "i"
+      );
 
       const applyParagraphStyles = (container) => {
-        Array.from(container.querySelectorAll("p, div:not(.work-section-title):not(.work-header-line), li, blockquote")).forEach((el) => {
+        Array.from(
+          container.querySelectorAll(
+            "p, div:not(.work-section-title):not(.work-header-line), li, blockquote"
+          )
+        ).forEach((el) => {
           if (!el.textContent.trim() && !el.querySelector("img, iframe, video")) {
             el.remove();
           } else {
-            el.style.cssText = "font-size: 18px; line-height: 28px; letter-spacing: 0px; font-weight: 400; color: #293339; margin-bottom: 20px; text-transform: none;";
-            Array.from(el.querySelectorAll("span:not(.work-header-date):not(.work-header-sep):not(.work-header-with)")).forEach((s) => {
-              s.style.cssText = "font-size: 18px; line-height: 28px; letter-spacing: 0px; font-weight: 400; color: #293339; text-transform: none;";
+            el.style.cssText =
+              "font-size: 18px; line-height: 28px; letter-spacing: 0px; font-weight: 400; color: #293339; margin-bottom: 20px; text-transform: none;";
+            Array.from(
+              el.querySelectorAll(
+                "span:not(.work-header-date):not(.work-header-sep):not(.work-header-with)"
+              )
+            ).forEach((s) => {
+              s.style.cssText =
+                "font-size: 18px; line-height: 28px; letter-spacing: 0px; font-weight: 400; color: #293339; text-transform: none;";
             });
-            Array.from(el.querySelectorAll("a:not(.work-header-with a)")).forEach((a) => {
-              a.style.cssText = "color: #293339; text-decoration: none; transition: color 0.2s ease;";
-              a.setAttribute("onmouseover", "this.style.color='#1893d2'; this.style.textDecoration='underline';");
-              a.setAttribute("onmouseout", "this.style.color='#293339'; this.style.textDecoration='none';");
-            });
+            Array.from(el.querySelectorAll("a:not(.work-header-with a)")).forEach(
+              (a) => {
+                a.style.cssText =
+                  "color: #293339; text-decoration: none; transition: color 0.2s ease;";
+                a.setAttribute(
+                  "onmouseover",
+                  "this.style.color='#1893d2'; this.style.textDecoration='underline';"
+                );
+                a.setAttribute(
+                  "onmouseout",
+                  "this.style.color='#293339'; this.style.textDecoration='none';"
+                );
+              }
+            );
           }
         });
       };
 
-      // Find the header element containing date or "WITH"
+      // Find the header element containing date or "WITH" (only leaf p or h6 to avoid removing parent div)
       let targetP = null;
-      const candidates = Array.from(doc.querySelectorAll("p, h6, div"));
+      const candidates = Array.from(doc.querySelectorAll("h6, p"));
       for (const el of candidates) {
+        if (el.querySelector("p, h6, div")) continue;
         const txt = (el.textContent || "").trim();
         if (!txt) continue;
         if (headerLineRegex.test(txt)) {
@@ -185,10 +376,15 @@ const Workdetail = () => {
 
       if (!targetP) {
         Array.from(doc.querySelectorAll("h1, h2, h3, h4, h5, p")).forEach((el) => {
-          if (/^\s*about (?:the )?(?:project|film|video|series|work)\b/i.test(el.textContent || "")) {
+          if (
+            /^\s*about (?:the )?(?:project|film|video|series|work)\b/i.test(
+              el.textContent || ""
+            )
+          ) {
             const titleDiv = doc.createElement("div");
             titleDiv.className = "work-section-title";
-            titleDiv.style.cssText = "font-size: 24px; line-height: 29px; letter-spacing: 0px; font-weight: 400; color: #C2BBB6; margin-bottom: 24px; margin-top: 0; text-transform: none; display: block;";
+            titleDiv.style.cssText =
+              "font-size: 24px; line-height: 29px; letter-spacing: 0px; font-weight: 400; color: #C2BBB6; margin-bottom: 24px; margin-top: 0; text-transform: none; display: block;";
             titleDiv.textContent = el.textContent.trim();
             el.replaceWith(titleDiv);
           }
@@ -415,7 +611,7 @@ const Workdetail = () => {
   };
 
   const getYouTubeThumbnail = (url) => {
-    if (!url || !/(youtube\.com|youtu\.be)/i.test(url)) return "";
+    if (!url || !/(youtube\.com|youtu\.be)/i.test(url)) return [];
 
     let videoId = url.match(/\/embed\/([^?&#/]+)/i)?.[1];
     if (!videoId && url.includes("youtu.be/")) {
@@ -425,18 +621,28 @@ const Workdetail = () => {
       try {
         videoId = new URLSearchParams(new URL(url).search).get("v");
       } catch {
-        return "";
+        return [];
       }
     }
 
-    return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : "";
+    if (!videoId) return [];
+    return [
+      `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+      `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+      `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+      `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+    ];
   };
 
   const getPosterUrls = (project, video, preferredThumbnail) => {
+    const slugKey = cleanSlugStr(project?.slug || slug || project?.buttonText);
+    const fallback = projectFallbacks[slugKey] || {};
+    const ytThumbs = getYouTubeThumbnail(video);
     const urls = [
       getImageUrl(preferredThumbnail),
+      fallback.poster,
       ...getProjectImageUrls(project),
-      getYouTubeThumbnail(video)
+      ...ytThumbs
     ].filter((url, index, urls) => url && !isDaveyImage(url) && url !== noImageUrl && urls.indexOf(url) === index);
 
     if (urls.length === 0 && !video) {
@@ -470,12 +676,14 @@ const Workdetail = () => {
     );
   }
 
-  const videoUrl = extractVideoFromContent(work.aboutContent);
-  const isOregonHealthPage =
-    slug === "created-for-oregon-health-science-university" ||
-    slug?.toLowerCase().includes("oregon-health-science-university") ||
-    work?.slug === "created-for-oregon-health-science-university" ||
-    work?.slug?.toLowerCase().includes("oregon-health-science-university");
+  const slugKey = cleanSlugStr(work?.slug || slug || work?.buttonText);
+  const fallbackInfo = projectFallbacks[slugKey] || {};
+  const videoUrl =
+    extractVideoFromContent(work.aboutContent) ||
+    work.videoUrl ||
+    work.mediaUrl ||
+    fallbackInfo.videoUrl ||
+    "";
   const aboutFields = extractWorkAboutContent(work.aboutContent);
   const firstContentImageUrl = getFirstContentImageUrl(aboutFields.content);
   const cleanedContent = cleanContent(aboutFields.content, !videoUrl);
@@ -518,7 +726,9 @@ const Workdetail = () => {
     }
 
     if (isDirectVideo(videoUrl)) {
-      const hasRealPoster = Boolean(posterUrl && posterUrl !== noImageUrl && !isDaveyImage(posterUrl) && !isOregonHealthPage);
+      const hasRealPoster = Boolean(
+        posterUrl && posterUrl !== noImageUrl && !isDaveyImage(posterUrl)
+      );
       // ✅ Direct MP4 video
       return (
         <video
@@ -531,7 +741,7 @@ const Workdetail = () => {
           playsInline
           onPlay={() => setIsVideoStarted(true)}
           className="w-full h-full object-cover"
-          style={{ backgroundColor: '#000' }}
+          style={{ backgroundColor: "#000" }}
         >
           <source src={getImageUrl(videoUrl)} type="video/mp4" />
           Your browser does not support the video tag.
@@ -541,12 +751,17 @@ const Workdetail = () => {
       // ✅ YouTube/Vimeo embed
       return (
         <iframe
-          src={isVideoStarted ? `${finalVideoUrl}${finalVideoUrl.includes("?") ? "&" : "?"}autoplay=1` : finalVideoUrl}
-          title="Video"
+          src={
+            isVideoStarted
+              ? `${finalVideoUrl}${finalVideoUrl.includes("?") ? "&" : "?"}autoplay=1`
+              : finalVideoUrl
+          }
+          title={displayTitle || "Video"}
           className="absolute top-0 left-0 w-full h-full"
           frameBorder="0"
           allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
         />
       );
     }
@@ -565,7 +780,7 @@ const Workdetail = () => {
             className="group absolute inset-0 z-10 flex items-center justify-center cursor-pointer"
             aria-label="Play video"
           >
-            {posterUrl && posterUrl !== noImageUrl && !isDaveyImage(posterUrl) && !isOregonHealthPage && (
+            {posterUrl && posterUrl !== noImageUrl && !isDaveyImage(posterUrl) && (
               <img
                 src={posterUrl}
                 alt=""
@@ -709,7 +924,10 @@ const Workdetail = () => {
             {nextProject ? (
               <Link
                 to={`/work/${getWorkNameSlug(nextProject)}`}
-                state={{ thumbnail: nextProjectImageUrls[0] }}
+                state={{
+                  category: location.state?.category || work?.category,
+                  thumbnail: nextProjectImageUrls[0]
+                }}
                 className="group block"
               >
                 <div className="text-right">
@@ -724,8 +942,13 @@ const Workdetail = () => {
                   </div>
                   <div className="mt-2 flex justify-end">
                     <img
-                      src={nextProjectImageUrls[0] || noImageUrl}
-                      alt={nextProject.title}
+                      src={
+                        nextProjectImageUrls[0] ||
+                        projectFallbacks[cleanSlugStr(nextProject.slug)]?.poster ||
+                        projectFallbacks[cleanSlugStr(nextProject.buttonText)]?.poster ||
+                        noImageUrl
+                      }
+                      alt={nextProject.title || "Next Project"}
                       className="w-25 h-15 object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                       onError={(event) => handleImageError(event, nextProjectImageUrls)}
                     />
