@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import API_BASE_URL, { resolveNewsImageUrl } from "../../config/api";
+import BlueChalkLoader from "../common/BlueChalkLoader";
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -148,9 +149,7 @@ const News = () => {
         <div className="flex w-full flex-col lg:flex-row">
           <div className="w-full lg:w-[70%]">
             {news.length === 0 && loading ? (
-              <div className="flex justify-center py-10">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-              </div>
+              <BlueChalkLoader inline={true} className="py-20" />
             ) : news.length === 0 ? (
               <p className="text-center text-gray-500 py-10">No news articles found.</p>
             ) : (
@@ -187,10 +186,10 @@ const News = () => {
                   </div>
                 ))}
 
-                {/* ✅ NAYA: Loader jo khud load karega, button nahi */}
+                {/* ✅ Authentic Blue Chalk loader */}
                 {hasMore && (
                   <div ref={loaderRef} className="flex justify-center mt-10 mb-8 w-full py-4">
-                    {loading && <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>}
+                    {loading && <BlueChalkLoader inline={true} />}
                   </div>
                 )}
               </>

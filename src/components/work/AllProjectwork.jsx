@@ -3,6 +3,7 @@ import { FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import API_BASE_URL from "../../config/api";
 import { getWorkNameSlug } from "../../utils/workSlug";
+import BlueChalkLoader from "../common/BlueChalkLoader";
 
 const CHUNK_SIZE = 12;
 
@@ -307,15 +308,13 @@ const AllProjectwork = () => {
 
         {/* Initial Category Loading Spinner */}
         {isCategoryLoading && filteredProjects.length === 0 ? (
-          <div className="min-h-[400px] flex items-center justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          </div>
+          <BlueChalkLoader inline={true} className="min-h-[400px]" />
         ) : (
           <>
-            {/* Projects Grid with smooth screen-size transition */}
+            {/* Projects Grid without gradual resizing on category switch */}
             <div
-              className={`grid w-full grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3 transition-all duration-500 ease-in-out ${
-                isScreenTransitioning ? "opacity-90 scale-[0.995]" : "opacity-100 scale-100"
+              className={`grid w-full grid-cols-1 gap-px sm:grid-cols-2 md:grid-cols-3 ${
+                isScreenTransitioning ? "opacity-90" : "opacity-100"
               }`}
             >
               {filteredProjects.map((project, index) => {
@@ -333,18 +332,21 @@ const AllProjectwork = () => {
                 return (
                   <div
                     key={project._id || project.slug || index}
-                    className={`bg-white overflow-hidden transition-all duration-500 ease-in-out flex flex-col group ${gridClass} ${
-                      isScreenTransitioning
-                        ? "opacity-95 translate-y-1"
-                        : "opacity-100 translate-y-0"
-                    }`}
-                    style={{
-                      transitionDelay: isScreenTransitioning
-                        ? `${Math.min(index * 30, 300)}ms`
-                        : "0ms",
-                    }}
+                    className={`bg-white overflow-hidden flex flex-col group ${gridClass}`}
                   >
-                    <Link to={`/work/${getWorkNameSlug(project)}`} className="block w-full h-full">
+                    <Link
+                      to={`/work/${getWorkNameSlug(project)}`}
+                      state={{
+                        category: activeFilter,
+                        title: project.title,
+                        buttonText: project.buttonText,
+                        thumbnail: project.image,
+                        videoUrl: project.mediaUrl || project.videoUrl,
+                        description: project.description,
+                        subDescription: project.subDescription
+                      }}
+                      className="block w-full h-full"
+                    >
                       <div className="relative overflow-hidden bg-gray-100 w-full aspect-[16/9]">
                         <img
                           src={getImageUrl(project.image)}
@@ -386,7 +388,7 @@ const AllProjectwork = () => {
             {/* Subtle background chunk merge loader */}
             {isLoadingMore && (
               <div className="flex items-center justify-center py-6 gap-2 text-gray-400 text-xs">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
+                <div className="w-8 h-[2px] bg-[#1893D2] animate-pulse"></div>
                 <span>Loading more projects...</span>
               </div>
             )}
@@ -405,44 +407,6 @@ const AllProjectwork = () => {
           @keyframes slideDown {
             from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
-          }
-
-          @keyframes gridResize {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.92; transform: scale(0.995); }
-            100% { opacity: 1; transform: scale(1); }
-          }
-
-          /* Smooth transition for grid layout changes */
-          .js-portfolio-variety-1 .grid {
-            transition: grid-template-columns 0.4s ease, gap 0.3s ease;
-          }
-
-          /* Ensure smooth reflow for project cards */
-          .js-portfolio-variety-1 .grid > div {
-            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                        opacity 0.45s ease,
-                        grid-column 0.4s ease,
-                        grid-row 0.4s ease;
-            will-change: transform, opacity;
-          }
-
-          /* Staggered entrance for cards on layout change */
-          .js-portfolio-variety-1 .grid.screen-resizing > div {
-            animation: cardResize 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-          }
-
-          @keyframes cardResize {
-            0% { opacity: 0.7; transform: translateY(6px) scale(0.985); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-          }
-
-          @media (prefers-reduced-motion: reduce) {
-            .js-portfolio-variety-1 .grid,
-            .js-portfolio-variety-1 .grid > div {
-              transition: none !important;
-              animation: none !important;
-            }
           }
         `}
       </style>

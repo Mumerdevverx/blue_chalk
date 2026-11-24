@@ -3,6 +3,7 @@ import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { FiArrowRight, FiPlus } from "react-icons/fi";
 import API_BASE_URL from "../../config/api";
 import { getWorkNameSlug } from "../../utils/workSlug";
+import BlueChalkLoader from "../common/BlueChalkLoader";
 
 const isDaveyImage = (url) => {
   if (!url || typeof url !== "string") return false;
@@ -148,6 +149,7 @@ const Workdetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const videoRef = useRef(null);
+
   const [work, setWork] = useState(null);
   const [allProjects, setAllProjects] = useState([]);
   const [nextProject, setNextProject] = useState(null);
@@ -159,6 +161,9 @@ const Workdetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     setIsVideoStarted(false);
+    setLoading(true);
+    setError(null);
+
     const fetchData = async () => {
       try {
         const [workRes, allRes] = await Promise.all([
@@ -235,22 +240,48 @@ const Workdetail = () => {
             setNextProject(next);
           }
 
-          // Related: prioritize projects that have valid real images (exclude Davey awards logo)
-          const others = allData.data.filter((p) => p._id !== currentWork._id);
+          // Related: strictly exclude awards - related work must ALWAYS be actual films/projects!
+          const nonAwardProjects = allData.data.filter(
+            (p) =>
+              p._id !== currentWork._id &&
+              String(p.category || "").toLowerCase() !== "award" &&
+              String(p.category || "").toLowerCase() !== "awards" &&
+              !isDaveyImage(p.image || p.imageUrl || p.thumbnail || p.thumbnailUrl || p.mediaUrl)
+          );
           const hasRealImage = (p) => {
             const img =
               p.image || p.imageUrl || p.thumbnail || p.thumbnailUrl || p.mediaUrl;
             return Boolean(img && !isDaveyImage(img));
           };
-          const validImageProjects = others.filter(hasRealImage);
-          const pool = validImageProjects.length >= 3 ? validImageProjects : others;
-          const sameCategory = pool.filter(
-            (p) => p.category === currentWork.category
-          );
-          const different = pool.filter(
-            (p) => p.category !== currentWork.category
-          );
-          setRelatedProjects([...sameCategory, ...different].slice(0, 3));
+          const validImageProjects = nonAwardProjects.filter(hasRealImage);
+          const pool = validImageProjects.length >= 3 ? validImageProjects : nonAwardProjects;
+
+          let related = [];
+          if (!isAward && currentWork.category) {
+            const sameCategory = pool.filter(
+              (p) => p.category === currentWork.category
+            );
+            const different = pool.filter(
+              (p) => p.category !== currentWork.category
+            );
+            related = [...sameCategory, ...different].slice(0, 3);
+          } else {
+            // For awards: find projects referenced in aboutContent or pick top non-award projects
+            const contentStr = String(currentWork.aboutContent || currentWork.description || "").toLowerCase();
+            const matchedProjects = pool.filter((p) => {
+              const pSlug = cleanSlugStr(p.slug);
+              const pTitle = cleanSlugStr(p.title);
+              const pBtn = cleanSlugStr(p.buttonText);
+              return (
+                (pSlug && pSlug.length > 3 && contentStr.includes(pSlug)) ||
+                (pTitle && pTitle.length > 3 && contentStr.includes(pTitle)) ||
+                (pBtn && pBtn.length > 3 && contentStr.includes(pBtn))
+              );
+            });
+            const remaining = pool.filter((p) => !matchedProjects.some((m) => m._id === p._id));
+            related = [...matchedProjects, ...remaining].slice(0, 3);
+          }
+          setRelatedProjects(related);
         }
         setLoading(false);
       } catch (error) {
@@ -658,11 +689,7 @@ const Workdetail = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <BlueChalkLoader />;
   }
 
   if (error || !work) {
@@ -926,7 +953,25 @@ const Workdetail = () => {
                 to={`/work/${getWorkNameSlug(nextProject)}`}
                 state={{
                   category: location.state?.category || work?.category,
-                  thumbnail: nextProjectImageUrls[0]
+                  title: nextProject.title,
+                  buttonText: nextProject.buttonText,
+                  thumbnail:
+                    nextProjectImageUrls[0] ||
+                    projectFallbacks[cleanSlugStr(nextProject.slug)]?.poster ||
+                    projectFallbacks[cleanSlugStr(nextProject.buttonText)]?.poster ||
+                    projectFallbacks[cleanSlugStr(nextProject.title)]?.poster ||
+                    (cleanSlugStr(nextProject.title || "").includes("oregon")
+                      ? projectFallbacks["created-for-oregon-health-science-university"]?.poster
+                      : null),
+                  videoUrl:
+                    nextProject.mediaUrl ||
+                    nextProject.videoUrl ||
+                    projectFallbacks[cleanSlugStr(nextProject.slug)]?.videoUrl ||
+                    projectFallbacks[cleanSlugStr(nextProject.buttonText)]?.videoUrl ||
+                    projectFallbacks[cleanSlugStr(nextProject.title)]?.videoUrl ||
+                    (cleanSlugStr(nextProject.title || "").includes("oregon")
+                      ? projectFallbacks["created-for-oregon-health-science-university"]?.videoUrl
+                      : null)
                 }}
                 className="group block"
               >
@@ -946,6 +991,11 @@ const Workdetail = () => {
                         nextProjectImageUrls[0] ||
                         projectFallbacks[cleanSlugStr(nextProject.slug)]?.poster ||
                         projectFallbacks[cleanSlugStr(nextProject.buttonText)]?.poster ||
+                        projectFallbacks[cleanSlugStr(nextProject.title)]?.poster ||
+                        projectFallbacks[simplify(nextProject.title)]?.poster ||
+                        (cleanSlugStr(nextProject.title || "").includes("oregon")
+                          ? projectFallbacks["created-for-oregon-health-science-university"]?.poster
+                          : null) ||
                         noImageUrl
                       }
                       alt={nextProject.title || "Next Project"}
@@ -1018,6 +1068,15 @@ const Workdetail = () => {
                 <Link
                   key={project._id || index}
                   to={`/work/${getWorkNameSlug(project)}`}
+                  state={{
+                    category: project.category || location.state?.category,
+                    title: project.title,
+                    buttonText: project.buttonText,
+                    thumbnail: projectImageUrl,
+                    videoUrl: project.mediaUrl || project.videoUrl,
+                    description: project.description,
+                    subDescription: project.subDescription
+                  }}
                   className="group relative block overflow-hidden"
                 >
                   <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-400">

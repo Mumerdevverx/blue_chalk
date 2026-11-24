@@ -1,117 +1,67 @@
 /* =========================
-   LOADER
+   AUTHENTIC BLUE CHALK LOADER
 ========================= */
 
-.page-loader {
+.loader {
   position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100vh;
-  background: #fff;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 999999;
+  background: #ffffff;
+  display: block;
+}
+
+.loader table,
+.loader tr,
+.loader td {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  border-collapse: collapse;
+}
+
+.loader .bar,
+.bluechalk-bar {
+  height: 1px;
+  width: 0;
+  background: #1893D2;
+  display: inline-block;
+  animation: baranimate 1000ms ease-in-out 0ms infinite normal;
+}
+
+.inline-loader {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 40px 0;
+  width: 100%;
 }
 
-
-/* =========================
-   HORIZONTAL
-========================= */
-
-.loader-horizontal {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 2px;
-  background: #0089D0;
-  transform: translate(-50%, -50%);
-
-  animation: horizontalCycle 1s
-    cubic-bezier(0.65, 0, 0.35, 1)
-    0s
-    3
-    both;
-}
-
-
-/* =========================
-   VERTICAL
-========================= */
-
-.loader-vertical {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 2px;
-  height: 0;
-  background: #0089D0;
-  transform: translate(-50%, -50%);
-
-  animation: verticalCycle 1s
-    cubic-bezier(0.65, 0, 0.35, 1)
-    0s
-    3
-    both;
-}
-
-
-/* =========================
-   HORIZONTAL ANIMATION
-========================= */
-
-@keyframes horizontalCycle {
+@keyframes baranimate {
   0% {
-    width: 0;
-    opacity: 1;
+    width: 1px;
+    height: 1px;
   }
-
-  43% {
-    width: 180px;
-    opacity: 1;
+  25% {
+    width: 100px;
+    height: 1px;
   }
-
-  57% {
-    width: 180px;
-    opacity: 0;
+  50% {
+    width: 1px;
+    height: 1px;
   }
-
+  75% {
+    width: 1px;
+    height: 90px;
+  }
   100% {
-    width: 0;
-    opacity: 0;
-  }
-}
-
-
-/* =========================
-   VERTICAL ANIMATION
-========================= */
-
-@keyframes verticalCycle {
-
-  /* Completely hidden */
-  0% {
-    height: 0;
-    opacity: 0;
-  }
-
-  /* Wait for horizontal */
-  57% {
-    height: 0;
-    opacity: 0;
-  }
-
-  /* Start */
-  58% {
-    height: 0;
-    opacity: 1;
-  }
-
-  /* Smoothly expand */
-  100% {
-    height: 100px;
-    opacity: 1;
+    width: 1px;
+    height: 1px;
   }
 }
 .work-content p {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import backarrow from "../../assets/newsImages/backarrow.svg";
 import API_BASE_URL, { resolveNewsImageUrl } from "../../config/api";
+import BlueChalkLoader from "../common/BlueChalkLoader";
 
 const NewsBlogs = () => {
   const { slug } = useParams();
@@ -32,11 +33,7 @@ const NewsBlogs = () => {
   }, [slug]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <BlueChalkLoader />;
   }
 
   if (error || !news) {

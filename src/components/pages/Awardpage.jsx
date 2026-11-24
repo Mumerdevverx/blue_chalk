@@ -1,7 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { FiPlus } from "react-icons/fi";
 import awardpage from "../../assets/about/award/awardpage.png";
 import API_BASE_URL from "../../config/api";
+import BlueChalkLoader from "../common/BlueChalkLoader";
+import { getWorkNameSlug } from "../../utils/workSlug";
+
+const isDaveyImage = (url) => {
+  if (!url || typeof url !== "string") return false;
+  return url.includes("awardTwo") || url.toLowerCase().includes("davey");
+};
+
+const cleanSlugStr = (s) => {
+  if (!s) return "";
+  return String(s)
+    .replace(/&nbsp;|nbsp/gi, " ")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
+const fallbackRelatedProjects = [
+  {
+    _id: "fb-1",
+    slug: "fix-me-a-plate",
+    title: "Fix Me A Plate",
+    buttonText: "Fix Me A Plate",
+    category: "Branded",
+    image: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/e8/8e/e88e00680fa8a03d127770ec7155e8c4.jpg"
+  },
+  {
+    _id: "fb-2",
+    slug: "atomic-echoes-untold-stories-from-world-war-ii",
+    title: "Atomic Echoes",
+    buttonText: "Atomic Echoes",
+    category: "Documentary",
+    image: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/a1/51/a15197d0c577bc974f759fbe5fa4cd40.jpg"
+  },
+  {
+    _id: "fb-3",
+    slug: "lowe-s-how-to",
+    title: "Lowe's How-To",
+    buttonText: "Lowe's How-To",
+    category: "Branded",
+    image: "https://s3.amazonaws.com/bluechalk-prod-app/static/uploads/cache/fd/ed/fded2dc497a0060ebacd7b1fffe674c9.jpg"
+  }
+];
 
 // const formatAwardDescription = (description) =>
 //   description.replace(/<p>\s*(\d{4})\s*<\/p>/g, '<p class="award-year">$1</p>');
@@ -74,6 +120,7 @@ const Awardpage = () => {
   const navigate = useNavigate();
   const [award, setAward] = useState(null);
   const [nextAward, setNextAward] = useState(null);
+  const [relatedProjects, setRelatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const handleDescriptionClick = (e) => {
@@ -90,9 +137,12 @@ const Awardpage = () => {
     window.scrollTo(0, 0);
     const fetchAward = async () => {
       try {
-        // Fetch all awards to match admin panel order
-        const allRes = await fetch(`${API_BASE_URL}/api/awards`);
+        const [allRes, workRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/awards`),
+          fetch(`${API_BASE_URL}/api/work`).catch(() => null)
+        ]);
         const allData = await allRes.json();
+        const workData = workRes ? await workRes.json().catch(() => null) : null;
         let sorted = [];
 
         if (allData.success && Array.isArray(allData.data) && allData.data.length > 0) {
@@ -132,6 +182,37 @@ const Awardpage = () => {
               setNextAward(sorted[0]);
             }
           }
+
+          // Compute related work (strictly non-award projects)
+          const allWorks =
+            workData && workData.success && Array.isArray(workData.data) && workData.data.length > 0
+              ? workData.data
+              : fallbackRelatedProjects;
+
+          const nonAwardWorks = allWorks.filter(
+            (p) =>
+              String(p.category || "").toLowerCase() !== "award" &&
+              String(p.category || "").toLowerCase() !== "awards" &&
+              !isDaveyImage(p.image || p.imageUrl || p.thumbnail || p.mediaUrl)
+          );
+
+          const descStr = String(selectedAward.description || "").toLowerCase();
+          const matched = nonAwardWorks.filter((p) => {
+            const pSlug = cleanSlugStr(p.slug);
+            const pTitle = cleanSlugStr(p.title);
+            const pBtn = cleanSlugStr(p.buttonText);
+            return (
+              (pSlug && pSlug.length > 3 && descStr.includes(pSlug)) ||
+              (pTitle && pTitle.length > 3 && descStr.includes(pTitle)) ||
+              (pBtn && pBtn.length > 3 && descStr.includes(pBtn))
+            );
+          });
+
+          const remaining = nonAwardWorks.filter(
+            (p) => !matched.some((m) => (m._id || m.slug) === (p._id || p.slug))
+          );
+          const finalRelated = [...matched, ...remaining].slice(0, 3);
+          setRelatedProjects(finalRelated.length >= 3 ? finalRelated : fallbackRelatedProjects);
         } else {
           setAward({
             title: "Award Not Found",
@@ -141,6 +222,7 @@ const Awardpage = () => {
             image: awardpage,
             description: "",
           });
+          setRelatedProjects(fallbackRelatedProjects);
         }
       } catch (error) {
         console.error("Error fetching award:", error);
@@ -153,6 +235,7 @@ const Awardpage = () => {
           image: awardpage,
           description: "",
         });
+        setRelatedProjects(fallbackRelatedProjects);
       }
 
       setLoading(false);
@@ -162,11 +245,7 @@ const Awardpage = () => {
   }, [slug]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <BlueChalkLoader />;
   }
 
   if (!award) {
@@ -180,21 +259,22 @@ const Awardpage = () => {
   }
 
   return (
-    <section
-      className="
-        w-full
-        max-w-[1200px]
-        mx-auto
-        mt-[90px]
-        sm:mt-[100px]
-        md:mt-[115px]
-        px-5
-        sm:px-6
-        md:px-8
-        lg:px-0
-        pb-10
-      "
-    >
+    <>
+      <section
+        className="
+          w-full
+          max-w-[1200px]
+          mx-auto
+          mt-[90px]
+          sm:mt-[100px]
+          md:mt-[115px]
+          px-5
+          sm:px-6
+          md:px-8
+          lg:px-0
+          pb-10
+        "
+      >
       {/* Header */}
       <div
         className="
@@ -366,6 +446,78 @@ const Awardpage = () => {
         )}
       </div>
     </section>
+
+    {/* ✅ RELATED WORK SECTION */}
+    <div className="w-full bg-[#BFC2C4] py-20 px-0 lg:px-20 mt-16">
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-6 md:px-8 lg:px-0">
+        {/* Header Row */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-[24px] md:text-[32px] font-normal text-white">
+            Related Work
+          </h2>
+          <Link
+            to="/work"
+            className="text-[#1893D2] text-[12px] tracking-[2px] uppercase font-semibold hover:opacity-70 transition-opacity duration-200"
+          >
+            ALL WORK + 
+          </Link>
+        </div>
+
+        {/* 3 Cards Grid */}
+        {relatedProjects.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0.5">
+            {relatedProjects.map((project, index) => {
+              const projectImageUrl = getImageUrl(project.image || project.imageUrl || project.thumbnail);
+
+              return (
+                <Link
+                  key={project._id || index}
+                  to={`/work/${getWorkNameSlug(project)}`}
+                  state={{
+                    category: project.category,
+                    title: project.title,
+                    buttonText: project.buttonText,
+                    thumbnail: projectImageUrl,
+                    videoUrl: project.mediaUrl || project.videoUrl,
+                    description: project.description,
+                    subDescription: project.subDescription
+                  }}
+                  className="group relative block overflow-hidden"
+                >
+                  <div className="relative w-full aspect-[16/9] overflow-hidden bg-gray-400">
+                    <img
+                      src={projectImageUrl}
+                      alt={project.title || "Related Work"}
+                      className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                    />
+                    {project.hoverImage && !isDaveyImage(project.hoverImage) && (
+                      <img
+                        src={getImageUrl(project.hoverImage)}
+                        alt=""
+                        aria-hidden="true"
+                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    )}
+                    <div className="absolute bottom-4 right-4 bg-black/60 group-hover:bg-[#1893D2] text-white w-45 h-[70px] px-3 py-6 flex items-end justify-between transition-all duration-1200 ease-in-out">
+                      <span className="text-[12px] font-medium leading-tight">
+                        {project.buttonText || project.title || "Watch Now"}
+                      </span>
+                      <FiPlus className="absolute top-2 right-2 text-base" />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="text-[#888] text-sm">No related projects found.</p>
+        )}
+      </div>
+    </div>
+  </>
   );
 };
 

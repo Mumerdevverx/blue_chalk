@@ -4,6 +4,7 @@ import AboutAwards from "./AboutAwards";
 import AboutPeopleData from "./AboutPeopleData";
 import { Link } from "react-router-dom";
 import API_BASE_URL from "../../config/api";
+import BlueChalkLoader from "../common/BlueChalkLoader";
 
 const aboutvideo = "/videos/aboutvideo.mp4";
 
@@ -232,11 +233,7 @@ const About = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <BlueChalkLoader />;
   }
 
   return (
